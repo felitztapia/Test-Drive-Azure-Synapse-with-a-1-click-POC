@@ -1,0 +1,30 @@
+{
+	"name": "LS_SQLPoolWeather",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [
+			{
+				"name": "HackneyLicenseID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "HackneyLicenseBKey",
+				"type": "varchar"
+			},
+			{
+				"name": "HackneyLicenseCode",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Weather"
+		},
+		"sqlPool": {
+			"referenceName": "ftr23m5xeeoklumapocws1p1",
+			"type": "SqlPoolReference"
+		}
+	}
+}
