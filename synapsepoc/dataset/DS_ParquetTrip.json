@@ -1,0 +1,24 @@
+{
+	"name": "DS_ParquetTrip",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "TripFaresDataLakeStorageLinkedService",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"keyVaultName": "kvftr23m5xeeoklumapoc",
+				"datalakeAccountName": "ftr23m5xeeoklumapoc"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "taxidata/Trip",
+				"fileSystem": "dlsftrpocfs1"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
