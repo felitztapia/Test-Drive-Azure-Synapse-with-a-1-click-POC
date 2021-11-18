@@ -18,7 +18,7 @@
 					"source": {
 						"type": "SqlPoolSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select  *,getdate() as updatedtimestamp from trip where dateid = ',pipeline().parameters.Date)",
+							"value": "@concat('SELECT HASHBYTES(''SHA1'',concat([DateID],[MedallionID], [HackneyLicenseID], [PickupTimeID])) AS TripId, *,getdate() as updatedtimestamp from trip where dateid = ',pipeline().parameters.Date)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00"
