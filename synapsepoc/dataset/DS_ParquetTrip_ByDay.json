@@ -28,7 +28,7 @@
 					"value": "@concat('taxidata/Trip/',dataset().DateId)",
 					"type": "Expression"
 				},
-				"fileSystem": "dlsftrpocfs1"
+				"fileSystem": "data"
 			},
 			"compressionCodec": "snappy"
 		},
