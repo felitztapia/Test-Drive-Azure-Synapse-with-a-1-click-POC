@@ -9,6 +9,9 @@
 			"DateId": {
 				"type": "string",
 				"defaultValue": "20130101"
+			},
+			"keyVaultName": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
