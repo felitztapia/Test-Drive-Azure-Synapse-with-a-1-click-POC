@@ -11,7 +11,7 @@
 					"referenceName": "keyVaultLinkedservice",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"keyVaultName": "kvftr23m5xeeoklumapoc "
+						"keyVaultName": "kvftr23m5xeeoklumapoc"
 					}
 				},
 				"secretName": "OpdAdlsAccessKey"
