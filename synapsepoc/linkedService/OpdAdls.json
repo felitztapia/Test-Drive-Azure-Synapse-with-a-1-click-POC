@@ -1,6 +1,11 @@
 {
 	"name": "OpdAdls",
 	"properties": {
+		"parameters": {
+			"keyVaultName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
