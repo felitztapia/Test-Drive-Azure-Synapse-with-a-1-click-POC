@@ -2,12 +2,8 @@
 	"name": "DS_ParquetTrip_ByDay",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "TripFaresDataLakeStorageLinkedService",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"keyVaultName": "kvftr23m5xeeoklumapoc",
-				"datalakeAccountName": "ftr23m5xeeoklumapoc"
-			}
+			"referenceName": "OpdAdls",
+			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"DateId": {
