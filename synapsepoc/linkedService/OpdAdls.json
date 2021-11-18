@@ -9,7 +9,10 @@
 				"type": "AzureKeyVaultSecret",
 				"store": {
 					"referenceName": "keyVaultLinkedservice",
-					"type": "LinkedServiceReference"
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"keyVaultName": "@linkedService().keyVaultName"
+					}
 				},
 				"secretName": "OpdAdlsAccessKey"
 			}
