@@ -9,10 +9,7 @@
 				"type": "AzureKeyVaultSecret",
 				"store": {
 					"referenceName": "keyVaultLinkedservice",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"keyVaultName": "kvftr23m5xeeoklumapoc"
-					}
+					"type": "LinkedServiceReference"
 				},
 				"secretName": "OpdAdlsAccessKey"
 			}
