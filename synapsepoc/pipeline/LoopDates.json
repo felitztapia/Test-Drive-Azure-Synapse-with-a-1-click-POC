@@ -1,0 +1,47 @@
+{
+	"name": "LoopDates",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEachDate",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@createArray('20130101', '20130102','20130103','20130104','20130105')",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Call Extraction",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Extract Trip Data",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Date": {
+										"value": "@item()",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"PartitionDate": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
