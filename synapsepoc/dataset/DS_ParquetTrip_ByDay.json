@@ -3,7 +3,10 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "OpdAdls",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"keyVaultName": "kvftr23m5xeeoklumapoc"
+			}
 		},
 		"parameters": {
 			"DateId": {
@@ -11,7 +14,8 @@
 				"defaultValue": "20130101"
 			},
 			"keyVaultName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "kvftr23m5xeeoklumapoc"
 			}
 		},
 		"annotations": [],
