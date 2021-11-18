@@ -53,7 +53,8 @@
 						"referenceName": "DS_ParquetTrip_ByDay",
 						"type": "DatasetReference",
 						"parameters": {
-							"DateId": "20130101"
+							"DateId": "20130101",
+							"keyVaultName": "kvftr23m5xeeoklumapoc"
 						}
 					}
 				]
