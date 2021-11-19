@@ -51,7 +51,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"DateId": {
-								"value": "@pipeline().parameters.Date",
+								"value": "@concat(formatDateTime(utcnow(),'yyyy'),formatDateTime(utcnow(),'MM'),formatDateTime(utcnow(),'DD'))",
 								"type": "Expression"
 							},
 							"keyVaultName": "kvftr23m5xeeoklumapoc"
