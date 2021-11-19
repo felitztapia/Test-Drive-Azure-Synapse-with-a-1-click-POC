@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@createArray('20130101', '20130102','20130103','20130104','20130105')",
+						"value": "@createArray('20130106', '20130107','20130108','20130109','20130110')",
 						"type": "Expression"
 					},
 					"isSequential": true,
