@@ -1,0 +1,74 @@
+{
+	"name": "Extract Trip Updated Data",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Trip",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlPoolSource",
+						"sqlReaderQuery": "SELECT * FROM UpdatedTripData",
+						"queryTimeout": "02:00:00"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "LS_SQLPoolTrip",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ParquetTrip_ByDay",
+						"type": "DatasetReference",
+						"parameters": {
+							"DateId": {
+								"value": "@pipeline().parameters.Date",
+								"type": "Expression"
+							},
+							"keyVaultName": "kvftr23m5xeeoklumapoc"
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"Date": {
+				"type": "string",
+				"defaultValue": "20130101"
+			}
+		},
+		"folder": {
+			"name": "TripFaresDataPipeline"
+		},
+		"annotations": []
+	}
+}
