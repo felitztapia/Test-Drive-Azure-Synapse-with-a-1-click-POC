@@ -60,12 +60,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"Date": {
-				"type": "string",
-				"defaultValue": "20130101"
-			}
-		},
 		"folder": {
 			"name": "TripFaresDataPipeline"
 		},
