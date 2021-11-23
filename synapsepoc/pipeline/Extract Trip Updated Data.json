@@ -51,7 +51,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"DateId": {
-								"value": "@concat(formatDateTime(utcnow(),'yyyy'),formatDateTime(utcnow(),'MM'),formatDateTime(utcnow(),'dd'))",
+								"value": "@pipeline().parameters.Date",
 								"type": "Expression"
 							},
 							"keyVaultName": "kvftr23m5xeeoklumapoc"
@@ -60,6 +60,12 @@
 				]
 			}
 		],
+		"parameters": {
+			"Date": {
+				"type": "string",
+				"defaultValue": "20211122"
+			}
+		},
 		"folder": {
 			"name": "TripFaresDataPipeline"
 		},
