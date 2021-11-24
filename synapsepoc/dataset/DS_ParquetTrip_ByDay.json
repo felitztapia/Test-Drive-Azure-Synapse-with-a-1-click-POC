@@ -28,7 +28,7 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat('taxidata/DeltaLoadTrip/',dataset().DateId)",
+					"value": "@concat('taxidata/Trip/',dataset().DateId)",
 					"type": "Expression"
 				},
 				"fileSystem": "data"
