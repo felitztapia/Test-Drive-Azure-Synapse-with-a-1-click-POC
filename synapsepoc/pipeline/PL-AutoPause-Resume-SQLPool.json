@@ -54,7 +54,7 @@
 			},
 			{
 				"name": "GetPoolState",
-				"description": "validate the status of the sql pool",
+				"description": "Validate the status of the Dedicated SQL Pool",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
