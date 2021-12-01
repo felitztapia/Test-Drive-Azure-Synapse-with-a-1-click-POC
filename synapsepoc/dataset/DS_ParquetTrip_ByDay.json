@@ -1,0 +1,40 @@
+{
+	"name": "DS_ParquetTrip_ByDay",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "OpdAdls",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"keyVaultName": "kvftr23m5xeeoklumapoc"
+			}
+		},
+		"parameters": {
+			"DateId": {
+				"type": "string",
+				"defaultValue": "20130101"
+			},
+			"keyVaultName": {
+				"type": "string",
+				"defaultValue": "kvftr23m5xeeoklumapoc"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('TripData_',dataset().DateId,'.parquet')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('taxidata/Trip/',dataset().DateId)",
+					"type": "Expression"
+				},
+				"fileSystem": "data"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

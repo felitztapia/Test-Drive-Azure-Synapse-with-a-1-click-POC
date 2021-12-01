@@ -1,0 +1,30 @@
+{
+	"name": "OpdAdls",
+	"properties": {
+		"parameters": {
+			"keyVaultName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://pocsynapseadlseum.dfs.core.windows.net",
+			"accountKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "keyVaultLinkedservice",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"keyVaultName": "@linkedService().keyVaultName"
+					}
+				},
+				"secretName": "OpdAdlsAccessKey"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
