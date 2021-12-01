@@ -26,5 +26,6 @@
 			"referenceName": "ftr23m5xeeoklumapocws1p1",
 			"type": "SqlPoolReference"
 		}
-	}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
 }

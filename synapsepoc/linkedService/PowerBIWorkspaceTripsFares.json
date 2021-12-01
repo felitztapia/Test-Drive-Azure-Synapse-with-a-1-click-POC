@@ -1,5 +1,6 @@
 {
 	"name": "PowerBIWorkspaceTripsFares",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "PowerBIWorkspace",

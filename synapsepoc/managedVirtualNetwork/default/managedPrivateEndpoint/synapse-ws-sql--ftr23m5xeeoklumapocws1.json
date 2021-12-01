@@ -1,0 +1,10 @@
+{
+	"name": "synapse-ws-sql--ftr23m5xeeoklumapocws1",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1",
+		"groupId": "sql",
+		"fqdns": [
+			"ftr23m5xeeoklumapocws1.32c9fbc0-1123-4282-9b15-ccb593ffcad9.sql.azuresynapse.net"
+		]
+	}
+}
