@@ -1,0 +1,89 @@
+{
+	"name": "PL-AutoPause-Resume-SQLPool",
+	"properties": {
+		"description": "Automatically pause and resume the Dedicated SQL Pool based on the schedules defined in the triggers.",
+		"activities": [
+			{
+				"name": "Determine State",
+				"description": "Check whether to Pause or Resume the Dedicated SQL Pool",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "GetPoolState",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@if(and(equals(activity('GetPoolState').output.properties.status,'Online'),lessOrEquals(dayOfWeek(utcnow()),5)),'True','False')",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Pause",
+							"description": "REST API call to pause the Dedicated SQL Pool",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://management.azure.com/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/sqlPools/ftr23m5xeeoklumapocws1p1/pause?api-version=2021-05-01",
+								"connectVia": {
+									"referenceName": "AutoResolveIntegrationRuntime",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "POST",
+								"body": "{}",
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://management.azure.com/"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "GetPoolState",
+				"description": "Validate the status of the Dedicated SQL Pool",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('https://management.azure.com/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/sqlPools/ftr23m5xeeoklumapocws1p1?api-version=2019-06-01-preview')",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com/"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-12-01T15:21:01Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}
