@@ -14,7 +14,7 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Week",
+				"frequency": "Day",
 				"interval": 1,
 				"startTime": "2021-12-01T15:04:00",
 				"timeZone": "Central Standard Time (Mexico)",
@@ -24,13 +24,6 @@
 					],
 					"hours": [
 						18
-					],
-					"weekDays": [
-						"Monday",
-						"Tuesday",
-						"Wednesday",
-						"Thursday",
-						"Friday"
 					]
 				}
 			}
