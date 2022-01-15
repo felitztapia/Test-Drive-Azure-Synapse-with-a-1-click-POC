@@ -18,7 +18,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@if(and(equals(activity('GetPoolState').output.properties.status,'Online'),lessOrEquals(dayOfWeek(utcnow()),5)),'True','False')",
+						"value": "@if(equals(activity('GetPoolState').output.properties.status,'Online'),'True','False')",
 						"type": "Expression"
 					},
 					"ifTrueActivities": [
@@ -42,7 +42,6 @@
 									"type": "IntegrationRuntimeReference"
 								},
 								"method": "POST",
-								"body": "{}",
 								"authentication": {
 									"type": "MSI",
 									"resource": "https://management.azure.com/"
