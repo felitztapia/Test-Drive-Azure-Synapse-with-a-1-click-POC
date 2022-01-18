@@ -42,7 +42,7 @@
 									"type": "IntegrationRuntimeReference"
 								},
 								"method": "POST",
-								"body": "{}",
+								"body": "",
 								"authentication": {
 									"type": "MSI",
 									"resource": "https://management.azure.com/"
