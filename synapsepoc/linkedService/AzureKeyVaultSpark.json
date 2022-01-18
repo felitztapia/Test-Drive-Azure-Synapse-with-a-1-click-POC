@@ -1,0 +1,10 @@
+{
+	"name": "AzureKeyVaultSpark",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kvftr23m5xeeoklumapoc.vault.azure.net/"
+		}
+	}
+}
