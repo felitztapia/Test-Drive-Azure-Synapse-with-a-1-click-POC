@@ -17,7 +17,7 @@
 		},
 		"ADLS_Spark_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net"
+			"defaultValue": "https://aicscpgdemo02.dfs.core.windows.net"
 		},
 		"AzureKeyVaultSpark_properties_typeProperties_baseUrl": {
 			"type": "string",
@@ -3020,7 +3020,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "81e6b270-8e34-4a8a-ab33-bb0f9c351969"
+						"spark.autotune.trackingId": "9805d3af-c14f-48a2-a96f-e472540c060b"
 					}
 				},
 				"metadata": {
@@ -3279,16 +3279,16 @@
 						"source": [
 							"%%pyspark\r\n",
 							"# Python code\r\n",
-							"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"OpdAdls\")\r\n",
+							"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"ADLS_Spark\")\r\n",
 							"spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
 							"spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
 							"\r\n",
-							"df = spark.read.parquet('abfss://data@pocsynapseadlseum.dfs.core.windows.net/taxidata/FullTripData/dbo.Trip.parquet')\r\n",
+							"df = spark.read.parquet('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/Trip/dbo.Trip.parquet')\r\n",
 							"\r\n",
 							"df.count()"
 						],
 						"outputs": [],
-						"execution_count": 9
+						"execution_count": 10
 					},
 					{
 						"cell_type": "code",
