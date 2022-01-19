@@ -5,8 +5,14 @@
 		"workspaceName": {
 			"value": "ftr23m5xeeoklumapocws1"
 		},
+		"ADLS_Spark_accountKey": {
+			"value": ""
+		},
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
 			"value": ""
+		},
+		"ADLS_Spark_properties_typeProperties_url": {
+			"value": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net"
 		},
 		"AzureKeyVaultSpark_properties_typeProperties_baseUrl": {
 			"value": "https://kvftr23m5xeeoklumapoc.vault.azure.net/"
