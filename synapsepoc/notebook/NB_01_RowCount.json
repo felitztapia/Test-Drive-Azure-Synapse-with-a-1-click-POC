@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "08e087fb-d620-4b11-a018-cf44e418834e"
+				"spark.autotune.trackingId": "2cd26664-bfa3-4e6e-b4d7-46a6fe776ecf"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,7 @@
 					"print_common_variables = False\r\n",
 					"print_empty_variables = False"
 				],
-				"execution_count": 1
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -149,7 +149,7 @@
 					"\r\n",
 					""
 				],
-				"execution_count": 2
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
@@ -174,7 +174,7 @@
 					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
 					"sink_params = SinkGlobalParameters"
 				],
-				"execution_count": 3
+				"execution_count": 10
 			},
 			{
 				"cell_type": "code",
@@ -196,7 +196,7 @@
 					"dv_params_dict = dv_params  #json.loads(dv_params)\r\n",
 					"sink_params_dict = sink_params  #json.loads(sink_params)"
 				],
-				"execution_count": 4
+				"execution_count": 11
 			},
 			{
 				"cell_type": "code",
@@ -227,7 +227,7 @@
 					"# Name of the container in the Azure data lake\r\n",
 					"adls_blob_secret_name = sink_params_dict[\"adls2_blob_secret_name\"]"
 				],
-				"execution_count": 5
+				"execution_count": 12
 			},
 			{
 				"cell_type": "code",
@@ -245,13 +245,13 @@
 				"source": [
 					"source_path = dv_params_dict['ConvertPath']\r\n",
 					"#replace // to get the correct path \r\n",
-					"source_path = '/taxidata/Trip/dbo.Trip.parquet'\r\n",
-					"adls_source_name = 'ftr23m5xeeoklumapoc.dfs.core.windows.net'\r\n",
+					"source_path = '/tripData/TripData_20130101.parquet'\r\n",
+					"adls_source_name = 'aicscpgdemo02.dfs.core.windows.net'\r\n",
 					"\r\n",
-					"source_container_name = 'dlsftrpocfs1'\r\n",
+					"source_container_name = 'synapsedata'\r\n",
 					""
 				],
-				"execution_count": 6
+				"execution_count": 15
 			},
 			{
 				"cell_type": "code",
@@ -271,11 +271,11 @@
 					"spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
 					"spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
 					"\r\n",
-					"df = spark.read.parquet('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/Trip/dbo.Trip.parquet')\r\n",
+					"df = spark.read.parquet(\"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path))\r\n",
 					"\r\n",
 					"df.count()"
 				],
-				"execution_count": 7
+				"execution_count": 16
 			},
 			{
 				"cell_type": "code",
@@ -315,9 +315,10 @@
 					"df_converted = spark.read.parquet(converted_path)\r\n",
 					"row_count_converted = df_converted.count()\r\n",
 					"\r\n",
+					"source_path = '/landingData/TripData_20130101.parquet'\r\n",
 					"# LANDING\r\n",
 					"path_landing = converted_path #dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-					"path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, path_landing)\r\n",
+					"path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
 					"\r\n",
 					"df_landing = spark.read.parquet(path_landing)\r\n",
 					"row_count_landing = df_landing.count()\r\n",
@@ -327,7 +328,7 @@
 					"\r\n",
 					"print(row_counted)"
 				],
-				"execution_count": 28
+				"execution_count": 23
 			},
 			{
 				"cell_type": "code",
