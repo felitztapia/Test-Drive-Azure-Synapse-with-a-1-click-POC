@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "8af61691-ba1e-4ec5-a83d-5e5093172e63"
+				"spark.autotune.trackingId": "f60b7381-2036-42f3-bd34-c66f32a06be4"
 			}
 		},
 		"metadata": {
@@ -185,7 +185,7 @@
 					}
 				},
 				"source": [
-					"Print(\"#Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.\")\r\n",
+					"Print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
 					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
 					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
 					"dv_params = DataValidationParameters\r\n",
@@ -642,7 +642,8 @@
 				"source": [
 					"\r\n",
 					"print(' Pass parameter to ADF')\r\n",
-					"#dbutils.notebook.exit(json_output)"
+					"#dbutils.notebook.exit(json_output)\r\n",
+					"mssparkutils.notebook.exit(\"hello world\") "
 				],
 				"execution_count": null
 			}
