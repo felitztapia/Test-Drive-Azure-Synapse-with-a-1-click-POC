@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "c0ae2c6b-6d21-4530-a196-8e4489c5b930"
+				"spark.autotune.trackingId": "677368e8-3d21-4685-ac41-e7851beb30a2"
 			}
 		},
 		"metadata": {
@@ -213,8 +213,8 @@
 					"# Convert string (json) parameters to dictionaries.\r\n",
 					"import json\r\n",
 					"\r\n",
-					"dv_params_dict = json.loads(dv_params)\r\n",
-					"sink_params_dict = json.loads(sink_params)"
+					"dv_params_dict = dv_params #json.loads(dv_params)\r\n",
+					"sink_params_dict = sink_params # json.loads(sink_params)"
 				],
 				"execution_count": 11
 			},
@@ -588,11 +588,11 @@
 					"\r\n",
 					"try:\r\n",
 					"  json_output = Validating_NB_01_RowCount(sink_record_count)\r\n",
-					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
 					"  \r\n",
 					"except:\r\n",
 					"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to Comparing column counts','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method} #mejorar logs\r\n",
-					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
 					"\r\n",
 					""
 				],
@@ -640,8 +640,8 @@
 				},
 				"source": [
 					"\r\n",
-					"# Pass parameter to ADF\r\n",
-					"dbutils.notebook.exit(json_output)"
+					"print(\" # Pass parameter to ADF\")\r\n",
+					"#dbutils.notebook.exit(json_output)"
 				],
 				"execution_count": null
 			}
