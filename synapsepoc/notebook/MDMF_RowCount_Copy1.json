@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "eab37a63-259e-4f98-a4c5-4addb35ab72f"
+				"spark.autotune.trackingId": "5565f4aa-ea7c-44ee-888a-38e71cc9d03e"
 			}
 		},
 		"metadata": {
@@ -115,6 +115,75 @@
 					"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
 					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
 					"sink_params = SinkGlobalParameters"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Convert string (json) parameters to dictionaries.\r\n",
+					"import json\r\n",
+					"\r\n",
+					"dv_params_dict = dv_params #json.loads(dv_params)\r\n",
+					"sink_params_dict = sink_params # json.loads(sink_params)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"ADLS_Spark\")\r\n",
+					"spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"\r\n",
+					"df = spark.read.parquet(\"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path))\r\n",
+					"\r\n",
+					"df.count()"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"\r\n",
+					"#replace // to get the correct path \r\n",
+					"source_path = '/tripData/TripData_20130101.parquet'\r\n",
+					"adls_source_name = 'aicscpgdemo02.dfs.core.windows.net'\r\n",
+					"\r\n",
+					"source_container_name = 'synapsedata'"
 				],
 				"execution_count": null
 			},
