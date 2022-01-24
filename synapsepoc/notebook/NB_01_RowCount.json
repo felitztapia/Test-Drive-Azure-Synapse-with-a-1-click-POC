@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "4e65a887-ee94-4005-994b-c2eb71d3f006"
+				"spark.autotune.trackingId": "c0ae2c6b-6d21-4530-a196-8e4489c5b930"
 			}
 		},
 		"metadata": {
@@ -123,7 +123,7 @@
 					"tags": []
 				},
 				"source": [
-					"# Data for testing.\r\n",
+					"print(\"Data for testing.\")\r\n",
 					"SinkGlobalParameters = {\r\n",
 					"    'kv_scope_name':'KeyVaultSecrets',\r\n",
 					"    'kv_workspace_id':'MDIF - la - workspace - Id',\r\n",
@@ -185,7 +185,7 @@
 					}
 				},
 				"source": [
-					"#Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.\r\n",
+					"Print(\"#Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.\")\r\n",
 					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
 					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
 					"dv_params = DataValidationParameters\r\n",
