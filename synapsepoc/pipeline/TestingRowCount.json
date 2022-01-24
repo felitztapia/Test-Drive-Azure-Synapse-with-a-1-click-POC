@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Rowcount Validation",
+				"name": "Notebook1",
 				"type": "SynapseNotebook",
 				"dependsOn": [],
 				"policy": {
@@ -17,11 +17,11 @@
 				"typeProperties": {
 					"parameters": {
 						"SinkGlobalParameters": {
-							"value": "\"Val1\"",
+							"value": "Val1",
 							"type": "string"
 						},
 						"DataValidationParameters": {
-							"value": "\"Val2\"",
+							"value": "Val2",
 							"type": "string"
 						}
 					},
