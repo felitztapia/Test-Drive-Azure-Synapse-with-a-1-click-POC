@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "f60b7381-2036-42f3-bd34-c66f32a06be4"
+				"spark.autotune.trackingId": "66330c46-1cea-45f5-a926-af50735468f2"
 			}
 		},
 		"metadata": {
@@ -113,69 +113,6 @@
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
-						"outputs_hidden": true
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					},
-					"tags": []
-				},
-				"source": [
-					"print(\"Data for testing.\")\r\n",
-					"SinkGlobalParameters = {\r\n",
-					"    'kv_scope_name':'KeyVaultSecrets',\r\n",
-					"    'kv_workspace_id':'MDIF - la - workspace - Id',\r\n",
-					"    'kv_workspace_pk':'MDIF - la - workspace - pk',\r\n",
-					"    'raw_storage_secret':'',\r\n",
-					"    'raw_storage_name':'',\r\n",
-					"    'sink_container_name':'sink',\r\n",
-					"    'schema_container_name':'schemas',\r\n",
-					"    'output_container_name':'datatransformation',\r\n",
-					"    'adls2_storage_account_name':'adlsmetadatadriven2',\r\n",
-					"    'adls2_blob_secret_name':'MDIF - ADLSmetadatadriven2 - AccountKey',\r\n",
-					"    'sink_type':'ADLS'\r\n",
-					"}\r\n",
-					"\r\n",
-					"\r\n",
-					"DataValidationParameters ={\r\n",
-					"\t'FwkLogId':5,\r\n",
-					"\t'SrcObjectChild':'Product.csv',\r\n",
-					"\t'DvMappingId':11,\r\n",
-					"\t'SourcePath':'source/jsonfile/Product.json',\r\n",
-					"\t'ConvertPath':'Converted/ADLS/XMLFile/books1/2022/01/10/16/',\r\n",
-					"\t'SinkFolderPath':'Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/',\r\n",
-					"\t'FileName':'',\r\n",
-					"\t'RowsRead':'',\r\n",
-					"\t'RowsCopied':'',\r\n",
-					"\t'SourceType':'parquet',\r\n",
-					"\t'SchemaName':'Files',\r\n",
-					"\t'SrcObject':'Books1.xml',\r\n",
-					"\t'InstanceURL':'https://adlsmetadatadriven.dfs.core.windows.net/',\r\n",
-					"\t'Port':'',\r\n",
-					"\t'UserName':'',\r\n",
-					"\t'SecretName':'MDIF-ADLS-AccountKey',\r\n",
-					"\t'SrcPath':'source/jsonfile',\r\n",
-					"\t'IPAddress':'',\r\n",
-					"\t'NotebookPath':'/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount',\r\n",
-					"\t'FileFormat':'json',\r\n",
-					"\t'FunctionName':'RowCount',\r\n",
-					"\t'DvMethod':'Databricks',\r\n",
-					"\t'ConditionFlag':1,\r\n",
-					"\t'EntRunId':'59f03a27-fa44-4c9b-92ec-598d4a808166',\r\n",
-					"\t'InputParameter':''\r\n",
-					"}\r\n",
-					"\r\n",
-					""
-				],
-				"execution_count": 9
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
 						"outputs_hidden": false
 					},
 					"nteract": {
@@ -232,38 +169,7 @@
 					}
 				},
 				"source": [
-					"# Name of the Azure Key Vault-backed scope\r\n",
-					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
-					"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
-					"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
 					"\r\n",
-					"fwklog_id = dv_params_dict[\"FwkLogId\"]\r\n",
-					"function_name = dv_params_dict[\"FunctionName\"].strip()\r\n",
-					"dv_method = dv_params_dict[\"DvMethod\"].strip()\r\n",
-					"\r\n",
-					"# Name of the Azure data lake gen 2 \r\n",
-					"adls_storage_account_name = sink_params_dict[\"adls2_storage_account_name\"]    \r\n",
-					"\r\n",
-					"# Name of the container in the Azure data lake\r\n",
-					"adls_blob_secret_name = sink_params_dict[\"adls2_blob_secret_name\"]"
-				],
-				"execution_count": 12
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
-				"source": [
-					"source_path = dv_params_dict['ConvertPath']\r\n",
 					"#replace // to get the correct path \r\n",
 					"source_path = '/tripData/TripData_20130101.parquet'\r\n",
 					"adls_source_name = 'aicscpgdemo02.dfs.core.windows.net'\r\n",
