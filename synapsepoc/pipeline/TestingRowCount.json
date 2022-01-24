@@ -1,0 +1,51 @@
+{
+	"name": "TestingRowCount",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Rowcount Validation",
+				"type": "SynapseNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "NB_01_RowCount",
+						"type": "NotebookReference"
+					},
+					"parameters": {
+						"SinkGlobalParameters": {
+							"value": {
+								"value": "\"\n{\n'kv_scope_name':'KeyVaultSecrets',\n'kv_workspace_id':'MDIF - la - workspace - Id',\n'kv_workspace_pk':'MDIF - la - workspace - pk',\n'raw_storage_secret':'',\n'raw_storage_name':'',\n'sink_container_name':'sink',\n'schema_container_name':'schemas',\n'output_container_name':'datatransformation',\n'adls2_storage_account_name':'adlsmetadatadriven2',\n'adls2_blob_secret_name':'MDIF - ADLSmetadatadriven2 - AccountKey',\n'sink_type':'ADLS'\n}\n\"",
+								"type": "Expression"
+							},
+							"type": "string"
+						},
+						"DataValidationParameters": {
+							"value": {
+								"value": "\"\n{\n\t'FwkLogId':5,\n\t'SrcObjectChild':'Product.csv',\n\t'DvMappingId':11,\n\t'SourcePath':'source/jsonfile/Product.json',\n\t'ConvertPath':'Converted/ADLS/XMLFile/books1/2022/01/10/16/',\n\t'SinkFolderPath':'Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/',\n\t'FileName':'',\n\t'RowsRead':null,\n\t'RowsCopied':null,\n\t'SourceType':'ADLS',\n\t'SchemaName':'Files',\n\t'SrcObject':'Books1.xml',\n\t'InstanceURL':'https://adlsmetadatadriven.dfs.core.windows.net/',\n\t'Port':null,\n\t'UserName':null,\n\t'SecretName':'MDIF-ADLS-AccountKey',\n\t'SrcPath':'source/jsonfile',\n\t'IPAddress':null,\n\t'NotebookPath':'/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount',\n\t'FileFormat':'json',\n\t'FunctionName':'RowCount',\n\t'DvMethod':'Databricks',\n\t'ConditionFlag':1,\n\t'EntRunId':'59f03a27-fa44-4c9b-92ec-598d4a808166',\n\t'InputParameter':null\n}\n\"",
+								"type": "Expression"
+							},
+							"type": "string"
+						}
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "felitztapia",
+						"type": "BigDataPoolReference"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "MDMF_Validation"
+		},
+		"annotations": []
+	}
+}
