@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "2e4ba7b1-df3c-42c4-b98a-bfbe5cad7fa2"
+				"spark.autotune.trackingId": "fcb66567-8241-4226-a07d-e18855bfe453"
 			}
 		},
 		"metadata": {
@@ -91,7 +91,7 @@
 					}
 				},
 				"source": [
-					"Print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+					"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
 					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
 					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
 					"dv_params = DataValidationParameters\r\n",
