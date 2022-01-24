@@ -1,0 +1,144 @@
+{
+	"name": "MDMF_RowCount_Copy1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "felitztapia",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "eab37a63-259e-4f98-a4c5-4addb35ab72f"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+				"name": "felitztapia",
+				"type": "Spark",
+				"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**IMPORTANT**\r\n",
+					"Configuration for testing and debug\r\n",
+					"Change the value of \"testing=False\" for production environment.\r\n",
+					"Change the value of debug variables to see or hide prints with information"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+					"print_dictionaries = False\r\n",
+					"print_common_variables = False\r\n",
+					"print_empty_variables = False"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"SinkGlobalParameters =\"\"\r\n",
+					"DataValidationParameters=\"\""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+					"dv_params = DataValidationParameters\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+					"sink_params = SinkGlobalParameters"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"\r\n",
+					"print(' Pass parameter to ADF')\r\n",
+					"#dbutils.notebook.exit(json_output)\r\n",
+					"mssparkutils.notebook.exit(\"hello world\") "
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
