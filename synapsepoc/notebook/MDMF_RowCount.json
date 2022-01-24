@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fcb66567-8241-4226-a07d-e18855bfe453"
+				"spark.autotune.trackingId": "fb793142-95f3-4f7d-aacf-3155f3083213"
 			}
 		},
 		"metadata": {
@@ -48,6 +48,22 @@
 			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**IMPORTANT**\r\n",
+					"Configuration for testing and debug\r\n",
+					"Change the value of \"testing=False\" for production environment.\r\n",
+					"Change the value of debug variables to see or hide prints with information"
+				]
+			},
 			{
 				"cell_type": "code",
 				"source": [
