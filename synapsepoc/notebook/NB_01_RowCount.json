@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "8013008d-40d7-4916-9c58-e1bc7938a0d5"
+				"spark.autotune.trackingId": "4e65a887-ee94-4005-994b-c2eb71d3f006"
 			}
 		},
 		"metadata": {
@@ -91,7 +91,7 @@
 				"metadata": {
 					"jupyter": {
 						"source_hidden": false,
-						"outputs_hidden": true
+						"outputs_hidden": false
 					},
 					"nteract": {
 						"transient": {
@@ -101,6 +101,26 @@
 					"tags": [
 						"parameters"
 					]
+				},
+				"source": [
+					"SinkGlobalParameters =\"\"\r\n",
+					"DataValidationParameters=\"\""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": true
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": []
 				},
 				"source": [
 					"# Data for testing.\r\n",
