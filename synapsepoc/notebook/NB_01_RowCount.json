@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "677368e8-3d21-4685-ac41-e7851beb30a2"
+				"spark.autotune.trackingId": "8af61691-ba1e-4ec5-a83d-5e5093172e63"
 			}
 		},
 		"metadata": {
@@ -588,6 +588,7 @@
 					"\r\n",
 					"try:\r\n",
 					"  json_output = Validating_NB_01_RowCount(sink_record_count)\r\n",
+					"  print(json_output)\r\n",
 					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
 					"  \r\n",
 					"except:\r\n",
@@ -640,7 +641,7 @@
 				},
 				"source": [
 					"\r\n",
-					"print(\" # Pass parameter to ADF\")\r\n",
+					"print(' Pass parameter to ADF')\r\n",
 					"#dbutils.notebook.exit(json_output)"
 				],
 				"execution_count": null
