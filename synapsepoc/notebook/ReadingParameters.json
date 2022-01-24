@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "33be45b0-f41a-446b-ba29-7528ef02ebd2"
+				"spark.autotune.trackingId": "7ac15c3b-dd95-4852-9a60-bf665922c80b"
 			}
 		},
 		"metadata": {
@@ -29,6 +29,43 @@
 			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"**IMPORTANT**\r\n",
+					"Configuration for testing and debug\r\n",
+					"Change the value of \"testing=False\" for production environment.\r\n",
+					"Change the value of debug variables to see or hide prints with information"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+					"print_dictionaries = False\r\n",
+					"print_common_variables = False\r\n",
+					"print_empty_variables = False"
+				],
+				"execution_count": null
+			},
 			{
 				"cell_type": "code",
 				"metadata": {
