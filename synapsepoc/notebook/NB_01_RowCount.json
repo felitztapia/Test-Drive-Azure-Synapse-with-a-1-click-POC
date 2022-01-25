@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "0e4c8488-03ad-40e6-be7a-c386bd0a9457"
+				"spark.autotune.trackingId": "db795b17-0750-4722-b2be-0a8c99b4b154"
 			}
 		},
 		"metadata": {
@@ -444,7 +444,7 @@
 					"    message = \"Source and sink records do not match. Source count: {}.\".format(str(source_record_count)) \r\n",
 					"    record_count = 0\r\n",
 					"    \r\n",
-					"  output = {'ExecutionStatus': 'successfull',\"FwkLogId\": dv_params_dict['FwkLogId'], \"Output\": {\"Count\": str(record_count), \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+					"  output = {'ExecutionStatus': 'successfull','FwkLogId': dv_params_dict['FwkLogId'], 'Output': {'Count': str(record_count), 'Validation': { 'Status': validation_bool, 'Message': message}}}\r\n",
 					"  \r\n",
 					"  return output\r\n",
 					"\r\n",
@@ -493,7 +493,7 @@
 				},
 				"source": [
 					"# Pass parameter to ADF\r\n",
-					"dbutils.notebook.exit(json_output)"
+					"mssparkutils.notebook.exit(json_output)"
 				],
 				"execution_count": null
 			}
