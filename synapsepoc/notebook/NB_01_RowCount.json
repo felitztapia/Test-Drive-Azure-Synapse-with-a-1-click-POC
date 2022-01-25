@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "55c54439-8fbe-492d-b45e-893fc02be865"
+				"spark.autotune.trackingId": "673abee9-6730-40d2-b50e-cfc5d378e942"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,7 @@
 					"print_common_variables = False\r\n",
 					"print_empty_variables = False"
 				],
-				"execution_count": 8
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
@@ -152,7 +152,7 @@
 					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
 					"sink_params = SinkGlobalParameters"
 				],
-				"execution_count": 10
+				"execution_count": null
 			},
 			{
 				"cell_type": "code",
