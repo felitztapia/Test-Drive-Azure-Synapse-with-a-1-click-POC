@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "d4105f5e-3f58-4770-8dca-6320ad7bb233"
+				"spark.autotune.trackingId": "0e4c8488-03ad-40e6-be7a-c386bd0a9457"
 			}
 		},
 		"metadata": {
@@ -398,6 +398,7 @@
 				},
 				"source": [
 					"# Depending on the source, execute the function related to it\r\n",
+					"sink_record_count=''\r\n",
 					"try:\r\n",
 					"  \r\n",
 					"  sink_record_count = convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path) \r\n",
