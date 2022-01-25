@@ -3414,7 +3414,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "d4105f5e-3f58-4770-8dca-6320ad7bb233"
+						"spark.autotune.trackingId": "e372172f-3dd8-4be0-be2b-abb622b03e32"
 					}
 				},
 				"metadata": {
@@ -3439,8 +3439,10 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
-					}
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -3800,6 +3802,7 @@
 						},
 						"source": [
 							"# Depending on the source, execute the function related to it\r\n",
+							"sink_record_count=''\r\n",
 							"try:\r\n",
 							"  \r\n",
 							"  sink_record_count = convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path) \r\n",
@@ -4001,7 +4004,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f2b68db4-33f2-483e-a985-a32beb98ae73"
+						"spark.autotune.trackingId": "6500f687-2011-4337-9c64-ede1f9461430"
 					}
 				},
 				"metadata": {
@@ -4026,22 +4029,19 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"\r\n",
 							"result =mssparkutils.notebook.run(\"NB_01_RowCount\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})\r\n",
 							""
 						],
 						"outputs": [],
-						"execution_count": 4
+						"execution_count": 5
 					},
 					{
 						"cell_type": "code",
