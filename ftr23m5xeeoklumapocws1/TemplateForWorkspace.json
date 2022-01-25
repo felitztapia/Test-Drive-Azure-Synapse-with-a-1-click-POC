@@ -3414,7 +3414,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "01e98454-9b3e-412e-816d-349ae7262672"
+						"spark.autotune.trackingId": "1953f2b3-9a2f-44a7-a1f1-c9e74a0f1808"
 					}
 				},
 				"metadata": {
@@ -3521,7 +3521,7 @@
 						},
 						"source": [
 							"# Data for testing.\r\n",
-							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"KeyVaultSecrets\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
 							"\r\n",
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"Books1.xml\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"json\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
 						],
@@ -3595,7 +3595,7 @@
 						},
 						"source": [
 							"# Name of the Azure Key Vault-backed scope\r\n",
-							"#kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
 							"#kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
 							"#kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
 							"\r\n",
@@ -3657,7 +3657,7 @@
 							"    \r\n",
 							"    print(\"Start process\")\r\n",
 							"    #Set up an account access keySet up an account access key\r\n",
-							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", \"ADLS_Spark\")\r\n",
+							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
 							"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
 							"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
 							"\r\n",
@@ -4004,7 +4004,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0cbb885f-bc1d-4cf2-9c15-18f8abda0a7f"
+						"spark.autotune.trackingId": "c1993c30-5dd8-4818-b87d-e8541d03fbbb"
 					}
 				},
 				"metadata": {
@@ -4041,7 +4041,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 7
+						"execution_count": 8
 					},
 					{
 						"cell_type": "code",
@@ -4060,7 +4060,7 @@
 							"print(result)"
 						],
 						"outputs": [],
-						"execution_count": 2
+						"execution_count": 9
 					},
 					{
 						"cell_type": "code",
