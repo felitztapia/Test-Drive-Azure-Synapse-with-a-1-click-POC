@@ -3414,7 +3414,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "673abee9-6730-40d2-b50e-cfc5d378e942"
+						"spark.autotune.trackingId": "d4105f5e-3f58-4770-8dca-6320ad7bb233"
 					}
 				},
 				"metadata": {
@@ -3807,7 +3807,7 @@
 							"except Exception as error:\r\n",
 							"  print('\\n> ***ERROR in :', error)\r\n",
 							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function to validate source type','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
-							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
 							"\r\n",
 							"  \r\n",
 							"print(sink_record_count)"
@@ -4001,7 +4001,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "32e026da-666e-493d-b8a9-485d3fadfdc9"
+						"spark.autotune.trackingId": "f2b68db4-33f2-483e-a985-a32beb98ae73"
 					}
 				},
 				"metadata": {
@@ -4037,11 +4037,11 @@
 						"metadata": {},
 						"source": [
 							"\r\n",
-							"result =mssparkutils.notebook.run(\"ReadingParameters\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})\r\n",
+							"result =mssparkutils.notebook.run(\"NB_01_RowCount\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})\r\n",
 							""
 						],
 						"outputs": [],
-						"execution_count": 11
+						"execution_count": 4
 					},
 					{
 						"cell_type": "code",
@@ -4060,7 +4060,7 @@
 							"print(result)"
 						],
 						"outputs": [],
-						"execution_count": 12
+						"execution_count": 2
 					},
 					{
 						"cell_type": "code",
