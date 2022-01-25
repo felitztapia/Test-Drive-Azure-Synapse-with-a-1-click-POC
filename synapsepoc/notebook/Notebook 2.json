@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "0cbb885f-bc1d-4cf2-9c15-18f8abda0a7f"
+				"spark.autotune.trackingId": "c1993c30-5dd8-4818-b87d-e8541d03fbbb"
 			}
 		},
 		"metadata": {
@@ -55,7 +55,7 @@
 					"result =mssparkutils.notebook.run(\"NB_01_RowCount\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})\r\n",
 					""
 				],
-				"execution_count": 7
+				"execution_count": 8
 			},
 			{
 				"cell_type": "code",
@@ -73,7 +73,7 @@
 				"source": [
 					"print(result)"
 				],
-				"execution_count": 2
+				"execution_count": 9
 			},
 			{
 				"cell_type": "code",
