@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "673abee9-6730-40d2-b50e-cfc5d378e942"
+				"spark.autotune.trackingId": "d4105f5e-3f58-4770-8dca-6320ad7bb233"
 			}
 		},
 		"metadata": {
@@ -405,7 +405,7 @@
 					"except Exception as error:\r\n",
 					"  print('\\n> ***ERROR in :', error)\r\n",
 					"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function to validate source type','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
-					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
 					"\r\n",
 					"  \r\n",
 					"print(sink_record_count)"
