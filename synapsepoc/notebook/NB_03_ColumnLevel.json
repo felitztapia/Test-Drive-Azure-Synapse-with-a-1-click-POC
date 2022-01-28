@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "54a0bf21-2939-4340-8f22-2515af8b6166"
+				"spark.autotune.trackingId": "e9292c4a-43b2-4c93-9cf5-a78d6adc21d3"
 			}
 		},
 		"metadata": {
@@ -186,7 +186,8 @@
 					"\r\n",
 					"dv_params_dict = json.loads(dv_params)\r\n",
 					"\r\n",
-					"sink_params_dict = json.loads(sink_params)"
+					"sink_params_dict = json.loads(sink_params)\r\n",
+					"input_parameter_dict=dv_params_dict['InputParameter']"
 				],
 				"execution_count": null
 			},
