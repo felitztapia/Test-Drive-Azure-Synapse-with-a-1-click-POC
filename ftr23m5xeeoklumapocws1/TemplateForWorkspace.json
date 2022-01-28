@@ -788,6 +788,61 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/TestingRowCount')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Notebook1",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "MDMF_RowCount",
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"SinkGlobalParameters": {
+									"value": "Val1",
+									"type": "string"
+								},
+								"DataValidationParameters": {
+									"value": "Val2",
+									"type": "string"
+								}
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "felitztapia",
+								"type": "BigDataPoolReference"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "MDMF_Validation"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/MDMF_RowCount')]",
+				"[concat(variables('workspaceId'), '/bigDataPools/felitztapia')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/TripFaresDataPipeline')]",
 			"type": "Microsoft.Synapse/workspaces/pipelines",
 			"apiVersion": "2019-06-01-preview",
@@ -3043,7 +3098,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fb793142-95f3-4f7d-aacf-3155f3083213"
+						"spark.autotune.trackingId": "84d0a1f1-69fb-4585-a188-a0f28599684b"
 					}
 				},
 				"metadata": {
@@ -3068,8 +3123,10 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
-					}
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -3090,6 +3147,7 @@
 					},
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
 							"print_dictionaries = False\r\n",
@@ -3192,7 +3250,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "5565f4aa-ea7c-44ee-888a-38e71cc9d03e"
+						"spark.autotune.trackingId": "57c1961c-cf8d-4c2a-83ac-eb73975ce026"
 					}
 				},
 				"metadata": {
@@ -3217,8 +3275,10 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
-					}
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -3239,6 +3299,7 @@
 					},
 					{
 						"cell_type": "code",
+						"metadata": {},
 						"source": [
 							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
 							"print_dictionaries = False\r\n",
@@ -3414,7 +3475,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "a54a7915-cfb0-432a-b8bb-77d1c50bf2fe"
+						"spark.autotune.trackingId": "72e8a2a5-455d-4eb8-86b1-01fdbce5eb97"
 					}
 				},
 				"metadata": {
@@ -3914,81 +3975,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"bigDataPool": {
-					"referenceName": "felitztapia",
-					"type": "BigDataPoolReference"
-				},
-				"sessionProperties": {
-					"driverMemory": "56g",
-					"driverCores": 8,
-					"executorMemory": "56g",
-					"executorCores": 8,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "992e297f-41dd-4089-88ef-09953a43550c"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"a365ComputeOptions": {
-						"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
-						"name": "felitztapia",
-						"type": "Spark",
-						"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
-						"auth": {
-							"type": "AAD",
-							"authResource": "https://dev.azuresynapse.net"
-						},
-						"sparkVersion": "2.4",
-						"nodeCount": 10,
-						"cores": 4,
-						"memory": 28
-					}
-				},
-				"cells": [
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"tags": []
-						},
-						"source": [
-							"mssparkutils.notebook.run(\"NB_01_RowCount\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})"
-						],
-						"outputs": [],
-						"execution_count": 1
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/Notebook 2')]",
+			"name": "[concat(parameters('workspaceName'), '/NB_02_NullCount')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -4008,7 +3995,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "af12039c-a01a-4255-bceb-eaf0962418bc"
+						"spark.autotune.trackingId": "af1cbcf2-6e13-45e3-b5bd-7360ac659bb6"
 					}
 				},
 				"metadata": {
@@ -4016,7 +4003,7 @@
 					"enableDebugMode": false,
 					"kernelspec": {
 						"name": "synapse_pyspark",
-						"display_name": "Synapse PySpark"
+						"display_name": "python"
 					},
 					"language_info": {
 						"name": "python"
@@ -4038,14 +4025,276 @@
 				},
 				"cells": [
 					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							" **Metadata-Driven Ingestion Framework **\r\n",
+							"### Data Validation: NullCount  ###\r\n",
+							"Connect to sink instance and count the Null values from a specific column of the copied file. Validate the result and send it to Azure Data Factory.\r\n",
+							""
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"**IMPORTANT**\r\n",
+							"Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information"
+						]
+					},
+					{
 						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data for testing.\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Import required libraries\r\n",
+							"import pandas as pd\r\n",
+							"import numpy\r\n",
+							"#print('Running', dbutils.notebook.entry_point.getDbutils().notebook().getContext().notebookPath().get())\r\n",
+							"#json_output = {}"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### Declaration of Variables ###"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"tags": [
+								"parameters"
+							]
+						},
+						"source": [
+							"SinkGlobalParameters =\"\"\r\n",
+							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Convert string (json) parameters to dictionaries.\r\n",
+							"\r\n",
+							"dv_params_dict = json.loads(DataValidationParameters)\r\n",
+							"\r\n",
+							"sink_params_dict = json.loads(SinkGlobalParameters)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Name of the Azure Key Vault-backed scope\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"#kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"#kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"\r\n",
+							"fwklog_id = dv_params_dict[\"FwkLogId\"]\r\n",
+							"function_name = dv_params_dict[\"FunctionName\"].strip()\r\n",
+							"dv_method = dv_params_dict[\"DvMethod\"].strip()\r\n",
+							"\r\n",
+							"# Name of the Azure data lake gen 2 \r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls2_storage_account_name\"]    \r\n",
+							"\r\n",
+							"# Name of the container in the Azure data lake\r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls2_blob_secret_name\"]\r\n",
+							"sink_path = dv_params_dict[\"SinkFolderPath\"].strip()                                        # Path of the sink file\r\n",
+							"file_extension = 'parquet'\r\n",
+							"# Format of the sink file\r\n",
+							"condition = dv_params_dict[\"ConditionFlag\"]                                   # UPDATE ConditionFlag new value\r\n",
+							"\r\n",
+							"# Declare input parameter variable\r\n",
+							"column_names = (json.loads(dv_params_dict['InputParameter'])['Column Name']).split(',')\r\n",
+							"#column_names = [columns.lower() for columns in column_names]\r\n",
+							"column_names"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"source_path = dv_params_dict['ConvertPath']\r\n",
+							"#replace // to get the correct path \r\n",
+							"source_path = source_path.replace('//', '/')\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"\r\n",
+							"source_container_name = 'sink'"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+							"  \r\n",
+							"  try:   \r\n",
+							"    print(\"Start process\")\r\n",
+							"     #Set up an account access keySet up an account access key\r\n",
+							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+							"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+							"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+							"    df = spark.read.parquet(f'{path}*.parquet')\r\n",
+							"    \r\n",
+							"    \r\n",
+							"    return df    \r\n",
+							"  \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
 						"source": [
 							"\r\n",
-							"result =mssparkutils.notebook.run(\"NB_01_RowCount\", 600, {\"SinkGlobalParameters\": \"\" , \"DataValidationParameters\":\"\"})\r\n",
-							""
+							"df=read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+							"  "
 						],
 						"outputs": [],
-						"execution_count": 3
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -4061,10 +4310,20 @@
 							}
 						},
 						"source": [
-							"print(result)"
+							"def nullcount(file,cols): #function to count null values\r\n",
+							"  nullarray=[]\r\n",
+							"  cont=0  \r\n",
+							"  for col in cols:\r\n",
+							"    try:\r\n",
+							"      cont=cont+file.filter(file[col] == \"NULL\").count()\r\n",
+							"      cont=cont+file.filter(file[col] == \"\").count()  \r\n",
+							"    except Exception as ex:\r\n",
+							"      raise Exception(f'Error: {ex}')\r\n",
+							"    nullarray.append(cont)\r\n",
+							"  return nullarray"
 						],
 						"outputs": [],
-						"execution_count": 4
+						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -4080,7 +4339,1895 @@
 							}
 						},
 						"source": [
+							"# Depending on condition, the outpout is changed: 1=Just Logs, 2=Separate Good AND Corrupted Data. \r\n",
+							"def condition_output(file, column_names, condition, sink_container_name, sink_path, file_extension, adls_storage_account_name,kv_scope_name, kv_workspace_id, kv_workspace_pk,function_name,dv_method,fwklog_id): \r\n",
+							"  try:\r\n",
+							"    if str(condition) == '1':\r\n",
+							"      print(\"\\n> Running condition 1\")\r\n",
+							"    elif str(condition) == '2':\r\n",
+							"      print(\"\\n> Running condition 2, file:\", file)\r\n",
+							"      file = file.toPandas()\r\n",
+							"      #print(\"\\n> file to pandas:\", file)\r\n",
+							"      corrupt = pd.DataFrame(columns = list(file.columns))\r\n",
+							"      #print('*** 1 *** ')\r\n",
+							"      for i in range(len(column_names)):\r\n",
+							"        count_regex = 0\r\n",
+							"        x=0\r\n",
+							"        for item in file[column_names[i]]:          \r\n",
+							"          y=0\r\n",
+							"          if item is None or item.lower() in (\"null\",\"none\",\"nan\"):            \r\n",
+							"            corrupt.loc[len(corrupt.index)]=list(file.loc[x])\r\n",
+							"          x= x+1\r\n",
+							"      #Load files as csv but if corrupt is empty then pass\r\n",
+							"      if corrupt.empty:\r\n",
+							"        print('No corrupt values')\r\n",
+							"        pass\r\n",
+							"      else:\r\n",
+							"        SinkValid = sink_path.replace('.'+file_extension, \"\")+'_NullCount_Valid'\r\n",
+							"        SinkInvalid = sink_path.replace('.'+file_extension, \"\")+'_NullCount_Invalid'\r\n",
+							"        corrupt = corrupt.drop_duplicates(keep=\"first\")\r\n",
+							"        join = pd.concat([file, corrupt])\r\n",
+							"        correct = join.drop_duplicates(keep=False)\r\n",
+							"        correctSpk = spark.createDataFrame(correct)\r\n",
+							"        correctSpk.write.format(\"parquet\").save(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, SinkValid))\r\n",
+							"        #correctSpk.repartition(1).write.format(\"com.databricks.spark.csv\").option(\"header\", \"true\").mode(\"overwrite\").save(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, SinkValid))\r\n",
+							"        corrupt = corrupt.fillna('')      \r\n",
+							"        corruptSpk = spark.createDataFrame(corrupt) #To Fix Error here: Can not infer schema from empty dataset. https://www.perfectlyrandom.org/bites/2019/10/16/empty-spark-dataframes\r\n",
+							"        print(\"writing corrupt data\")\r\n",
+							"        corrup_path = \"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, SinkInvalid)\r\n",
+							"        print(corrup_path)\r\n",
+							"        corruptSpk.write.format(\"parquet\").save(corrup_path)\r\n",
+							"                                       \r\n",
+							"        #corruptSpk.repartition(1).write.format(\"com.databricks.spark.csv\").option(\"header\", \"true\").mode(\"overwrite\").save(corrup_path)\r\n",
+							"        print(\"\\n> Currated files loaded successfully.\")\r\n",
+							"    else:\r\n",
+							"      print(\"\\n> Not valid ConditionFlag number\")\r\n",
+							"    return \"Condition {0} took place\".format(condition)\r\n",
+							"  \r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in condition_output:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function split data','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error\r\n",
 							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Main method for validation.\r\n",
+							"def Validating_NB_02_NullCount(df,column_names,condition,sink_container_name,sink_path,file_extension,adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+							"  try:\r\n",
+							"    sink_null_array=nullcount(df,column_names)\r\n",
+							"    print('\\n> sink_null_array:', sink_null_array)\r\n",
+							"    condition_message=condition_output(df, column_names, condition, sink_container_name, sink_path, file_extension, adls_storage_account_name,kv_scope_name, kv_workspace_id, kv_workspace_pk,function_name,dv_method,fwklog_id)\r\n",
+							"    print(\"condition_message : {}\".format(condition_message))\r\n",
+							"    validation_status = \"NULL\"\r\n",
+							"    validation_bool = \"True\"\r\n",
+							"    #message = ''\r\n",
+							"\r\n",
+							"    for i in range(len(sink_null_array)):\r\n",
+							"      message = \"NullCount Validation was applied. The '{}' column has '{}' Null values. \".format(column_names[i], sink_null_array[i])\r\n",
+							"      if sink_null_array[i] > 0:\r\n",
+							"        validation_bool = \"False\"\r\n",
+							"    return {'ExecutionStatus': 'successfull',\"FwkLogId\": fwklog_id, \"Output\": {\"Count\": sink_null_array, \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in Validating_NB_02_NullCount:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute Main method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Build the inputs for the DataValidationLog table\r\n",
+							"try:\r\n",
+							"  json_output = Validating_NB_02_NullCount(df,column_names,condition,sink_container_name,sink_path,file_extension,adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+							"except Exception as err:\r\n",
+							"  print(f\"An error has occurred...{err}\")\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to Build the inputs for the DataValidationLog table','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(json_output)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/NB_03_ColumnLevel')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "felitztapia",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "c408e56b-d63f-4169-a0fa-588963775b6c"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+						"name": "felitztapia",
+						"type": "Spark",
+						"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### IMPORTANT!\r\n",
+							"#### Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data for testing.\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Import required libraries\r\n",
+							"import numpy\r\n",
+							"import pandas as pd\r\n",
+							"import re\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"SinkGlobalParameters =\"\"\r\n",
+							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Get the necessary variables\r\n",
+							"fwklog_id = dv_params_dict[\"FwkLogId\"]  \r\n",
+							"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+							"dv_method = str(dv_params_dict[\"DvMethod\"]).strip()                                   # Data validation method name\r\n",
+							"\r\n",
+							"\r\n",
+							"source_path = dv_params_dict['ConvertPath']\r\n",
+							"#replace // to get the correct path \r\n",
+							"source_path = source_path.replace('//', '/')\r\n",
+							"sink_path = dv_params_dict[\"SinkFolderPath\"].strip()                                        # Path of the sink file\r\n",
+							"sink_container_name = sink_params_dict[\"sink_container_name\"].strip() #its also sink\r\n",
+							"source_container_name = 'sink'\r\n",
+							"\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"#kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"#kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
+							"\r\n",
+							"storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"\r\n",
+							"condition = dv_params_dict[\"ConditionFlag\"]                                 # UPDATE ConditionFlag new value\r\n",
+							"column_names = numpy.array(list(input_parameter_dict.keys())) \r\n",
+							"target_expressions = numpy.array(list(input_parameter_dict.values()))                  # Array with the regular expressions"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#connet to the Sink\r\n",
+							" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+							"  \r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    \r\n",
+							"    print(\"Start process\")\r\n",
+							"     #Set up an account access keySet up an account access key\r\n",
+							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+							"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+							"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+							"    try:\r\n",
+							"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
+							"    except:\r\n",
+							"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
+							"\r\n",
+							"    \r\n",
+							"    return df    \r\n",
+							"  \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"df = read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"#display(df)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Function to count values that do not meet the regex parameter in a specified coulmn from the loaded file\r\n",
+							"def count_regex(file, column_names, target_expressions):\r\n",
+							"  try:\r\n",
+							"    \"\"\" Count the number of input parameter in file \"\"\"\r\n",
+							"    file = file.toPandas()\r\n",
+							"    regex_array=[]\r\n",
+							"    for i in range(len(column_names)):\r\n",
+							"      count_regex = 0\r\n",
+							"      for item in file[column_names[i]]:\r\n",
+							"        if item is None:\r\n",
+							"          count_regex = count_regex + 1 \r\n",
+							"        elif not re.match(target_expressions[i], str(item), flags=0): #regex function expects string so convert item to string\r\n",
+							"          count_regex = count_regex + 1\r\n",
+							"      regex_array.append(count_regex) \r\n",
+							"    return regex_array\r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in count_regex:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function to count values that do not meet the regex parameter in a specified coulmn from the loaded file','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Depending on condition, the outpout is changed: 1=Just Logs, 2=Separate Good AND Corrupted Data.\r\n",
+							"def condition_output(file, column_names, condition, target_expressions, sink_container_name, storage_account_name, sink_path, adls_storage_account_name):\r\n",
+							"  try:        \r\n",
+							"    if str(condition) == '1':\r\n",
+							"      print(\"\\n> Running condition 1\")\r\n",
+							"      \r\n",
+							"    elif str(condition) == '2':\r\n",
+							"      file = file.toPandas()\r\n",
+							"      corrupt = pd.DataFrame(columns = list(file.columns))\r\n",
+							"\r\n",
+							"      for i in range(len(column_names)):\r\n",
+							"        count_regex = 0\r\n",
+							"        x=0\r\n",
+							"        for item in file[column_names[i]]:\r\n",
+							"          y=0\r\n",
+							"          if item is None:\r\n",
+							"            corrupt.loc[len(corrupt.index)]=list(file.loc[x])\r\n",
+							"          elif not re.match(target_expressions[i], item, flags=0): \r\n",
+							"            corrupt.loc[len(corrupt.index)]=list(file.loc[x])\r\n",
+							"          x= x+1\r\n",
+							"  \r\n",
+							"      corrupt = corrupt.drop_duplicates(keep=\"first\") #Corrupt df\r\n",
+							"      join = pd.concat([file, corrupt]) #file - corrupt = correct\r\n",
+							"      correct = join.drop_duplicates(keep=False) #Correct df\r\n",
+							"      if corrupt.empty:\r\n",
+							"        print('No corrupt values')\r\n",
+							"        pass\r\n",
+							"      else:\r\n",
+							"      #SinkValid = sink_path.replace('.'+file_extension, \"\")+'_ColumnLevel_Valid'\r\n",
+							"      #SinkInvalid = sink_path.replace('.'+file_extension, \"\")+'_ColumnLevel_Invalid'\r\n",
+							"        SinkValid = sink_path.replace('.parquet', \"\")+'_ColumnLevel_Valid'\r\n",
+							"        SinkInvalid = sink_path.replace('.parquet', \"\")+'_ColumnLevel_Invalid'\r\n",
+							"\r\n",
+							"        correctSpk = spark.createDataFrame(correct)\r\n",
+							"        #correctSpk.repartition(1).write.format(\"com.databricks.spark.csv\").option(\"header\", \"true\").mode(\"overwrite\").save(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, SinkValid))\r\n",
+							"        save_valid_path=\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name,adls_storage_account_name,SinkValid)\r\n",
+							"        correctSpk.write.format(\"parquet\").mode(\"overwrite\").save(save_valid_path)                     \r\n",
+							"        \r\n",
+							"        corruptSpk = spark.createDataFrame(corrupt)\r\n",
+							"        save_invalid_path=\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name,adls_storage_account_name,SinkInvalid)\r\n",
+							"        corruptSpk.write.format(\"parquet\").mode(\"overwrite\").save(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(save_invalid_path))\r\n",
+							"                                                          \r\n",
+							"        #corruptSpk.repartition(1).write.format(\"com.databricks.spark.csv\").option(\"header\", \"true\").mode(\"overwrite\").save(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, SinkInvalid))\r\n",
+							"        print(\"> Currated (Valid & Invalid) files loaded\")\r\n",
+							"    else:\r\n",
+							"      print(\"> Not valid ConditionFlag number\")\r\n",
+							"      \r\n",
+							"    return \"Condition {0} took place\".format(condition)\r\n",
+							"  \r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in condition_output:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function to split data','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Build the inputs for the DataValidationLog table\r\n",
+							"def Validate_Column_Regex(sink_regex_array,column_names):\r\n",
+							"  try:\r\n",
+							"    validation = 0\r\n",
+							"    failed_array = []\r\n",
+							"    failed_columns = []\r\n",
+							"    #message = \"\"\r\n",
+							"\r\n",
+							"    for i in range(len(sink_regex_array)):\r\n",
+							"      if sink_regex_array[i] > 0:\r\n",
+							"        validation = validation + 1\r\n",
+							"        failed_array.append(sink_regex_array[i])\r\n",
+							"        failed_columns.append(column_names[i])\r\n",
+							"\r\n",
+							"    if validation == 0:\r\n",
+							"      validation_status = \"Succeeded\"\r\n",
+							"      validation_bool = \"True\"\r\n",
+							"      message = \"ColumnLevel Validation was applied. All the values follow the regular expression(s).\"\r\n",
+							"    else:\r\n",
+							"      validation_status = \"Failed\"\r\n",
+							"      validation_bool = \"False\"\r\n",
+							"      for i in range(len(failed_array)):\r\n",
+							"        message = \"The column {} has {} values that not follow the regular expression parameter. \".format(failed_columns[i], failed_array[i])\r\n",
+							"\r\n",
+							"    output = {'ExecutionStatus': 'Successfull',\"FwkLogId\": fwklog_id, \"Output\": {\"Count\": sink_regex_array, \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+							"    return output\r\n",
+							"  \r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in Validate_Column_Regex:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute Build the inputs for the DataValidationLog table','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Main method for validation.\r\n",
+							"def Validating_NB_03_ColumnLevel(sink_file,column_names,target_expressions,condition,sink_container_name,storage_account_name,sink_path,adls_storage_account_name):\r\n",
+							"  try:\r\n",
+							"    sink_regex_array = count_regex(sink_file, column_names, target_expressions)\r\n",
+							"    print(sink_regex_array)\r\n",
+							"    if sink_regex_array != {}:\r\n",
+							"      condition_message = condition_output(sink_file, column_names, condition, target_expressions, sink_container_name, storage_account_name, sink_path, adls_storage_account_name)\r\n",
+							"      if condition_message != \"\":\r\n",
+							"        return Validate_Column_Regex(sink_regex_array,column_names)\r\n",
+							"    return {}\r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute ain method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return msg_error"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Checking column(s) with regex.\r\n",
+							"try:\r\n",
+							"  json_output = Validating_NB_03_ColumnLevel(df,column_names,target_expressions,condition,sink_container_name,storage_account_name,sink_path,adls_storage_account_name)\r\n",
+							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+							"except:\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail at Checking columns with regex','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(json_output)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/NB_04_RecordLevel')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "felitztapia",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "c237581c-3346-4080-b172-d46210d47ba3"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+						"name": "felitztapia",
+						"type": "Spark",
+						"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### Metadata-Driven Ingestion Framework \r\n",
+							"#### Data Validation: 04 RecordLevel\r\n",
+							"Connect to sink instance and count the columns from the file copied. Validate the result and send it to Azure Data Factory."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### IMPORTANT!\r\n",
+							"#### Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data for testing.\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"tags": [
+								"parameters"
+							]
+						},
+						"source": [
+							"SinkGlobalParameters =\"\"\r\n",
+							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Convert string (json) parameters to dictionaries.\r\n",
+							"\r\n",
+							"dv_params_dict = json.loads(dv_params)\r\n",
+							"sink_params_dict = json.loads(sink_params)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Declare and fill general variables\r\n",
+							"fwklog_id = str(dv_params_dict[\"FwkLogId\"]).strip()                                   # ID of the Framework Log\r\n",
+							"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+							"dv_method = str(dv_params_dict[\"DvMethod\"]).strip()                                   # Data validation method name\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"].strip()                             # Name of the Azure Key Vault-backed scope\r\n",
+							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"# Declare sink variables \r\n",
+							"#Key on AKV\r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage Account \r\n",
+							"sink_path = dv_params_dict[\"ConvertPath\"].strip()                                     # Path of the sink file\r\n",
+							"# Declare input parameter variable\r\n",
+							"\r\n",
+							"input_parameter_dict = json.loads(dv_params_dict['InputParameter'])\r\n",
+							"\r\n",
+							"column_names = input_parameter_dict[\"Column Name\"] if \"Column Name\" in input_parameter_dict else '' # Name(s) of column(s) to validate, there may be no parameters (for example NB_01) \r\n",
+							"\r\n",
+							"# Declare variables for NB_04_RecordLevel\r\n",
+							"target_count = int(input_parameter_dict[\"Target Count\"])                                   # Expected number of columns from the sink file\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"source_container_name = 'sink'\r\n",
+							"source_path = sink_path.replace('//', '/')\r\n",
+							"#adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"def count_columns(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_path):\r\n",
+							"  \r\n",
+							"    try:\r\n",
+							"        print(\"Start process\")\r\n",
+							"        #Set up an account access keySet up an account access key\r\n",
+							"        spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+							"        spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+							"        spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+							"        \r\n",
+							"        path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"        print(\"***** {}\".format(f\"{path}*.parquet\"))\r\n",
+							"        \r\n",
+							"        df_converted = spark.read.parquet(f\"{path}*.parquet\")\r\n",
+							"        size = len(df_converted.columns)\r\n",
+							"        #print(\"=========> \",size)\r\n",
+							"        \r\n",
+							"        return size\r\n",
+							"      \r\n",
+							"    except Exception as err:\r\n",
+							"        raise Exception(f\"{err}\")"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Main method for validation.\r\n",
+							"def Validating_NB_04_RecordLevel(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, target_count, source_path):\r\n",
+							"  try:\r\n",
+							"    sink_column_count = count_columns(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_path)\r\n",
+							"    output = Compare_Count_Columns(target_count, sink_column_count)\r\n",
+							"    \r\n",
+							"    return output\r\n",
+							"  \r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute main method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    \r\n",
+							"    return msg_error"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Build the inputs for the DataValidationLog table\r\n",
+							"def Compare_Count_Columns(target_count, sink_column_count):\r\n",
+							"  \r\n",
+							"  print('>Comparing count columns:\\n>> Target: {}\\n>> Sink: {}'.format(target_count, sink_column_count))\r\n",
+							"  \r\n",
+							"  if target_count == sink_column_count:\r\n",
+							"    validation_status = \"Succeeded\"\r\n",
+							"    validation_bool = \"True\"\r\n",
+							"    message = \"Target Count parameter and sink column count do match.\"\r\n",
+							"    \r\n",
+							"  else:\r\n",
+							"    \r\n",
+							"    validation_status = \"Failed\"\r\n",
+							"    validation_bool = \"False\"\r\n",
+							"    message = \"Target Count parameter and sink column count do not match. Target count: {} but were found {}\".format(target_count, sink_column_count)\r\n",
+							"  \r\n",
+							"  output = {'ExecutionStatus': 'Successfull', \"FwkLogId\": fwklog_id, \"Output\": {\"Count\": sink_column_count, \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+							"  return output"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#### Declaration of variables and execution of functions"
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Comparing column counts.\r\n",
+							"try:\r\n",
+							"  json_output = Validating_NB_04_RecordLevel(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, target_count, source_path)\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+							"  \r\n",
+							"except:\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed', 'Error Message':'Fail in Record Level', 'FwkLogId': fwklog_id, 'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"  \r\n",
+							"  \r\n",
+							"json_output"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(json_output)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/NB_05_MinMaxRowCount')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "felitztapia",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "1f860a2e-d0c0-4fcc-a7b2-0887062869b5"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+						"name": "felitztapia",
+						"type": "Spark",
+						"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### Metadata-Driven Ingestion Framework \r\n",
+							"#### Data Validation: 05 Min/Max Row Count\r\n",
+							"Connect to sink instance and count the records. Compare the result with the input parameters send it to Azure Data Factory."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### IMPORTANT!\r\n",
+							"#### Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data for testing.\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"tags": [
+								"parameters"
+							]
+						},
+						"source": [
+							"SinkGlobalParameters =\"\"\r\n",
+							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Get the necessary variables\r\n",
+							"fwklog_id = dv_params_dict[\"FwkLogId\"]  \r\n",
+							"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+							"dv_method = str(dv_params_dict[\"DvMethod\"]).strip()                                   # Data validation method name\r\n",
+							"\r\n",
+							"\r\n",
+							"source_path = dv_params_dict['ConvertPath']\r\n",
+							"#replace // to get the correct path \r\n",
+							"source_path = source_path.replace('//', '/')\r\n",
+							"#adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"\r\n",
+							"source_container_name = 'sink'\r\n",
+							"\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
+							"\r\n",
+							"#storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls\r\n",
+							"\r\n",
+							"#condition = dv_params_dict[\"ConditionFlag\"]                                 # UPDATE ConditionFlag new value\r\n",
+							"# Declare input parameter variable\r\n",
+							"#column_names = input_parameter_dict[\"Column Name\"] if \"Column Name\" in input_parameter_dict else '' # Name(s) of column(s) to validate, there may be no parameters (for example NB_01) \r\n",
+							"\r\n",
+							"# Declare variables for NB_05_MinMaxRowCount\r\n",
+							"min_value = input_parameter_dict[\"Min Value\"]                                 # Lower bound of the expected range of records\r\n",
+							"print('min_value:', min_value)\r\n",
+							"max_value = input_parameter_dict[\"Max Value\"]                                 # Upper bound of the expected range of records\r\n",
+							"print('max_value:', max_value)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#read parquet file\r\n",
+							"#connet to the Sink\r\n",
+							" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+							"  \r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    \r\n",
+							"    print(\"Start process\")\r\n",
+							"     #Set up an account access keySet up an account access key\r\n",
+							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+							"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+							"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+							"    try:\r\n",
+							"      \r\n",
+							"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
+							"      \r\n",
+							"    except:\r\n",
+							"      \r\n",
+							"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
+							"\r\n",
+							"    \r\n",
+							"    return df    \r\n",
+							"  \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"df = read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"def row_count(df):\r\n",
+							"  rcnt = df.count()\r\n",
+							"  return rcnt"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"def Compare_Count_Files(sink_file_rows_count, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+							"  # Build the inputs for the DataValidationLog table\r\n",
+							"  # If Min Value is defined as zero, null, or empty -> Min Value will be taken as zero.\r\n",
+							"  if min_value <= max_value:\r\n",
+							"    if isinstance(min_value, str):\r\n",
+							"      if min_value.lower() == \"null\" or min_value == \"\":\r\n",
+							"        min_value = 0\r\n",
+							"      else: \r\n",
+							"        min_value = int(min_value)\r\n",
+							"\r\n",
+							"    if isinstance(max_value, str):\r\n",
+							"      if max_value.lower() == \"null\" or max_value == \"\":\r\n",
+							"        max_value = 0\r\n",
+							"      else:\r\n",
+							"        max_value = int(max_value)\r\n",
+							"\r\n",
+							"    # Validate that the sink record count is inside the thresholds.\r\n",
+							"    if max_value == 0:\r\n",
+							"      if sink_file_rows_count >= min_value:\r\n",
+							"        validation_status = \"Succeeded\"\r\n",
+							"        validation_bool = \"True\"\r\n",
+							"        message = f\"MinMaxRowCount was applied. The values are between {min_value} and {max_value}\"\r\n",
+							"      else:\r\n",
+							"        validation_status = \"Failed\"\r\n",
+							"        validation_bool = \"False\"\r\n",
+							"        message = \"MinMaxRowCount was applied. The number of records is not higher than {}. The actual number is: {}.\".format(str(min_value), str(sink_file_rows_count))\r\n",
+							"    else:\r\n",
+							"      if sink_file_rows_count >= min_value and sink_file_rows_count <= max_value:\r\n",
+							"        validation_status = \"Succeeded\"\r\n",
+							"        validation_bool = \"True\"\r\n",
+							"        message = \"MinMaxRowCount was applied.\"\r\n",
+							"      else:\r\n",
+							"        validation_status = \"Failed\"\r\n",
+							"        validation_bool = \"False\"\r\n",
+							"        message = \"MinMaxRowCount was applied. The number of records is not between {} and {}. The actual number is: {}.\".format(str(min_value), str(max_value), str(sink_file_rows_count))\r\n",
+							"  else:\r\n",
+							"    validation_status = \"Failed\"\r\n",
+							"    validation_bool = \"False\"\r\n",
+							"    message = \"MinMaxRowCount was applied. The min value is greater than the max value.\"\r\n",
+							"  \r\n",
+							"  output = {'ExecutionStatus': 'Successfull',\"FwkLogId\": fwklog_id, \"Output\": {\"Count\": sink_file_rows_count, \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+							"  \r\n",
+							"  #print(output)\r\n",
+							"  return output"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Main method for validation.\r\n",
+							"def Validating_NB_05_MinMaxRowCount(df, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+							"  try:\r\n",
+							"    #sink_file_rows_count = count_rows(sink_file)\r\n",
+							"    sink_file_rows_count = row_count(df)\r\n",
+							"    return Compare_Count_Files(sink_file_rows_count, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+							"  except Exception as error:\r\n",
+							"    print(\"*** ERROR in Validating_NB_05_MinMaxRowCount:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute main method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    return {}"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Comparing rows counts.\r\n",
+							"try:\r\n",
+							"  json_output = Validating_NB_05_MinMaxRowCount(df, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+							"except Exception as err:\r\n",
+							"  print(f\"An error has occurred: {err}\")\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail at Comparing rows MinMaxRow counts','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(json_output)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/NB_06_SchemaDrift')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "felitztapia",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "59169280-a1d5-4a27-94b7-08ffd1048e2d"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+						"name": "felitztapia",
+						"type": "Spark",
+						"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "2.4",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### Metadata-Driven Ingestion Framework \r\n",
+							"#### Data Validation: 06 SchemaDrift\r\n",
+							"Connect to sink instance, obtain the schema of the file ingested and compare it to a schema defined in a JSON file located in the same sink instance.\r\n",
+							"This validation takes as input parameter the allow evolution boolean value."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### IMPORTANT!\r\n",
+							"#### Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Data for testing.\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"tags": [
+								"parameters"
+							]
+						},
+						"source": [
+							"SinkGlobalParameters =\"\"\r\n",
+							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Get the necessary variables\r\n",
+							"fwklog_id = dv_params_dict[\"FwkLogId\"]  \r\n",
+							"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+							"dv_method = str(dv_params_dict[\"DvMethod\"]).strip()                                   # Data validation method name\r\n",
+							"\r\n",
+							"\r\n",
+							"source_path = dv_params_dict['ConvertPath']\r\n",
+							"#replace // to get the correct path \r\n",
+							"source_path = source_path.replace('//', '/')\r\n",
+							"#adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"\r\n",
+							"sink_type=sink_params_dict[\"sink_type\"]\r\n",
+							"source_container_name = 'sink'\r\n",
+							"\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
+							"\r\n",
+							"storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls\r\n",
+							"\r\n",
+							"condition = dv_params_dict[\"ConditionFlag\"]                                 # UPDATE ConditionFlag new value\r\n",
+							"# Declare input parameter variable\r\n",
+							"column_names = input_parameter_dict[\"Column Name\"] if \"Column Name\" in input_parameter_dict else '' # Name(s) of column(s) to validate, there may be no parameters (for example NB_01) \r\n",
+							"allow_evolution_bool = input_parameter_dict[\"Allow Evolution\"]     # Boolean parameter that allows schema drift\r\n",
+							"\r\n",
+							"# Declare variables for NB_06_SchemaDrift\r\n",
+							"schema_file_name = dv_params_dict[\"SrcObjectChild\"].replace('.csv','.json').strip()   # Name of the schema file     \r\n",
+							"schema_container_name = sink_params_dict[\"schema_container_name\"].strip()             # Name of the container of the schema file"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#read parquet file\r\n",
+							"#connet to the Sink\r\n",
+							" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+							"  \r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    \r\n",
+							"    print(\"Start process\")\r\n",
+							"     #Set up an account access keySet up an account access key\r\n",
+							"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+							"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+							"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+							"    try:\r\n",
+							"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
+							"    except:\r\n",
+							"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
+							"\r\n",
+							"    \r\n",
+							"    return df    \r\n",
+							"  \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"sink_file = read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Function to join and separate columns from sink and schema files.\r\n",
+							"import pandas as pd\r\n",
+							"\r\n",
+							"def compare_schema(sink_file_columns, schema_file_columns):\r\n",
+							"  \r\n",
+							"  print('\\n> Comparing columns sink vs schema:\\n>> Source Schema Sink:   {}\\n>> JSON Schema: {}'.format(sink_file_columns, schema_file_columns))\r\n",
+							"  sink_file_columns = pd.DataFrame(sink_file_columns)\r\n",
+							"  schema_file_columns =  pd.DataFrame(schema_file_columns)\r\n",
+							"  merge = sink_file_columns.merge(schema_file_columns, how='outer', indicator=True)\r\n",
+							"  del_cols = merge.query('_merge == \"left_only\"').drop('_merge', 1)\r\n",
+							"  new_cols = merge.query('_merge == \"right_only\"').drop('_merge', 1)\r\n",
+							"  del_cols_list = []\r\n",
+							"  new_cols_list = []\r\n",
+							"  \r\n",
+							"  for item in del_cols[0]:\r\n",
+							"    del_cols_list.append(item)\r\n",
+							"    \r\n",
+							"  for item in new_cols[0]:\r\n",
+							"    new_cols_list.append(item)\r\n",
+							"  \r\n",
+							"  return del_cols_list, new_cols_list"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Build the inputs for the DvLog table\r\n",
+							"def Build_Logs(del_cols_list, new_cols_list,fwklog_id,allow_evolution_bool):\r\n",
+							"  \r\n",
+							"  validation_bool = \"True\"\r\n",
+							"\r\n",
+							"  if new_cols_list is None:\r\n",
+							"    count_drifted_values = 0\r\n",
+							"  else: \r\n",
+							"    count_drifted_values = len(del_cols_list) + len(new_cols_list)\r\n",
+							"\r\n",
+							"  if new_cols_list is None:\r\n",
+							"    message = \"Schema file does not exist\"\r\n",
+							"    validation_bool = \"False\"\r\n",
+							"  elif del_cols_list != [] or new_cols_list != []:\r\n",
+							"    message = \"Schema drift identified. \"\r\n",
+							"    if del_cols_list != []:\r\n",
+							"      message = message + \"Deleted columns: \" + str(del_cols_list) + \". \"\r\n",
+							"      if allow_evolution_bool.lower() == \"false\":\r\n",
+							"        validation_bool = \"False\"\r\n",
+							"\r\n",
+							"    if new_cols_list != []:\r\n",
+							"      message = message + \"Added columns: \" + str(new_cols_list) + \".\"\r\n",
+							"      if allow_evolution_bool.lower() == \"false\":\r\n",
+							"        validation_bool = \"False\"\r\n",
+							"  \r\n",
+							"  json_output = {'ExecutionStatus': 'Successfull',\"FwkLogId\": fwklog_id, \"Output\": {\"Count\": str(count_drifted_values), \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+							"  return json_output"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Main method for validation.\r\n",
+							"def Validating_NB_06_SchemaDrift(schema_file_name, schema_container_name,storage_account_name, adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name,kv_workspace_id,kv_workspace_pk,allow_evolution_bool):\r\n",
+							"  schema_file_columns = []\r\n",
+							"  sink_file_columns = []\r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    \"\"\"Read data from schema file\"\"\"\r\n",
+							"    \r\n",
+							"    if not schema_file_name.endswith(\".json\"):\r\n",
+							"      schema_file_name += \".json\"\r\n",
+							"    \r\n",
+							"    if sink_type.upper() == \"BLOB\":\r\n",
+							"      print('\\n> Getting schema file from BLOB.')\r\n",
+							"      schema_file = spark.read.json(\"wasbs://{}@{}.blob.core.windows.net/{}\".format(schema_container_name, storage_account_name, schema_file_name))\r\n",
+							"    elif sink_type.upper() == \"ADLS\":\r\n",
+							"      print('\\n> Getting schema file from ADLS.')\r\n",
+							"      schema_file = spark.read.json(\"abfss://{}@{}.dfs.core.windows.net/{}\".format(schema_container_name, adls_storage_account_name, schema_file_name))      \r\n",
+							"    else:\r\n",
+							"      print(\"\\n> PLEASE CHOOSE BETWEEN BLOB OR ADLS\")\r\n",
+							"      \r\n",
+							"    schema_file_columns = schema_file.columns #Schema file\r\n",
+							"    sink_file_columns = sink_file.columns  #Original file in sink\r\n",
+							"    \r\n",
+							"  except Exception as error:\r\n",
+							"    schema_file = None\r\n",
+							"    schema_file_columns = None\r\n",
+							"    print(\"*** ERROR:\", error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute main method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"    \r\n",
+							"  if sink_file != None and schema_file != None:\r\n",
+							"    print(\"> Successfull sink and schema file loaded\")\r\n",
+							"    # Compare columns and obtain the added and deleted columns\r\n",
+							"    del_cols, new_cols = compare_schema(sink_file_columns, schema_file_columns)\r\n",
+							"  else:\r\n",
+							"    print(\"> Unsuccessfull to load sink and schema files, please see the logs\")\r\n",
+							"    del_cols, new_cols = sink_file_columns, schema_file_columns\r\n",
+							"    \r\n",
+							"  return Build_Logs(del_cols, new_cols,fwklog_id,allow_evolution_bool)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Getting schema file and comparing with sink file.\r\n",
+							"try:\r\n",
+							"  \r\n",
+							"  json_output = Validating_NB_06_SchemaDrift(schema_file_name, schema_container_name,storage_account_name, adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name,kv_workspace_id,kv_workspace_pk,allow_evolution_bool)\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+							"except Exception as err:\r\n",
+							"  print(f\"An error has occurred: {err}\")\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail at Getting schema file and comparing with sink file','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"  \r\n",
+							"  \r\n",
+							"json_output"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(json_output)"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -4106,7 +6253,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0c4298b8-a205-40c7-8aea-27852922d61b"
+						"spark.autotune.trackingId": "c8d0b3dc-58ba-4ff1-9bb2-c34870974a60"
 					}
 				},
 				"metadata": {
@@ -4118,7 +6265,8 @@
 					},
 					"language_info": {
 						"name": "python"
-					}
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -4238,7 +6386,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0eb43984-2c1f-4bcc-9ad0-f0ee1a21a3c0"
+						"spark.autotune.trackingId": "841d1f44-f889-421a-b897-a575cbac43c8"
 					}
 				},
 				"metadata": {
@@ -4263,8 +6411,10 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
-					}
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -4297,498 +6447,10 @@
 							}
 						},
 						"source": [
-							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
-							"print_dictionaries = False\r\n",
-							"print_common_variables = False\r\n",
-							"print_empty_variables = False"
+							"json_output=mssparkutils.notebook.run(NB_01_RowCount,600, {'SinkGlobalParameters':'Param1','DataValidationParameters':'PAram2'})"
 						],
 						"outputs": [],
 						"execution_count": 1
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": true
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"tags": [
-								"parameters"
-							]
-						},
-						"source": [
-							"# Data for testing.\r\n",
-							"SinkGlobalParameters = {\r\n",
-							"    'kv_scope_name':'KeyVaultSecrets',\r\n",
-							"    'kv_workspace_id':'MDIF - la - workspace - Id',\r\n",
-							"    'kv_workspace_pk':'MDIF - la - workspace - pk',\r\n",
-							"    'raw_storage_secret':'',\r\n",
-							"    'raw_storage_name':'',\r\n",
-							"    'sink_container_name':'sink',\r\n",
-							"    'schema_container_name':'schemas',\r\n",
-							"    'output_container_name':'datatransformation',\r\n",
-							"    'adls2_storage_account_name':'adlsmetadatadriven2',\r\n",
-							"    'adls2_blob_secret_name':'MDIF - ADLSmetadatadriven2 - AccountKey',\r\n",
-							"    'sink_type':'ADLS'\r\n",
-							"}\r\n",
-							"\r\n",
-							"\r\n",
-							"DataValidationParameters ={\r\n",
-							"\t'FwkLogId':5,\r\n",
-							"\t'SrcObjectChild':'Product.csv',\r\n",
-							"\t'DvMappingId':11,\r\n",
-							"\t'SourcePath':'source/jsonfile/Product.json',\r\n",
-							"\t'ConvertPath':'Converted/ADLS/XMLFile/books1/2022/01/10/16/',\r\n",
-							"\t'SinkFolderPath':'Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/',\r\n",
-							"\t'FileName':'',\r\n",
-							"\t'RowsRead':'',\r\n",
-							"\t'RowsCopied':'',\r\n",
-							"\t'SourceType':'ADLS',\r\n",
-							"\t'SchemaName':'Files',\r\n",
-							"\t'SrcObject':'Books1.xml',\r\n",
-							"\t'InstanceURL':'https://adlsmetadatadriven.dfs.core.windows.net/',\r\n",
-							"\t'Port':'',\r\n",
-							"\t'UserName':'',\r\n",
-							"\t'SecretName':'MDIF-ADLS-AccountKey',\r\n",
-							"\t'SrcPath':'source/jsonfile',\r\n",
-							"\t'IPAddress':'',\r\n",
-							"\t'NotebookPath':'/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount',\r\n",
-							"\t'FileFormat':'json',\r\n",
-							"\t'FunctionName':'RowCount',\r\n",
-							"\t'DvMethod':'Databricks',\r\n",
-							"\t'ConditionFlag':1,\r\n",
-							"\t'EntRunId':'59f03a27-fa44-4c9b-92ec-598d4a808166',\r\n",
-							"\t'InputParameter':''\r\n",
-							"}\r\n",
-							"\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": 2
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.\r\n",
-							"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
-							"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
-							"dv_params = DataValidationParameters\r\n",
-							"\r\n",
-							"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
-							"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
-							"sink_params = SinkGlobalParameters"
-						],
-						"outputs": [],
-						"execution_count": 3
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"type(DataValidationParameters)"
-						],
-						"outputs": [],
-						"execution_count": 4
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"type(SinkGlobalParameters)"
-						],
-						"outputs": [],
-						"execution_count": 5
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Convert string (json) parameters to dictionaries.\r\n",
-							"import json\r\n",
-							"\r\n",
-							"dv_params_dict = dv_params #json.loads(dv_params)\r\n",
-							"sink_params_dict = sink_params #json.loads(sink_params)"
-						],
-						"outputs": [],
-						"execution_count": 7
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Name of the Azure Key Vault-backed scope\r\n",
-							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
-							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
-							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
-							"\r\n",
-							"fwklog_id = dv_params_dict[\"FwkLogId\"]\r\n",
-							"function_name = dv_params_dict[\"FunctionName\"].strip()\r\n",
-							"dv_method = dv_params_dict[\"DvMethod\"].strip()\r\n",
-							"\r\n",
-							"# Name of the Azure data lake gen 2 \r\n",
-							"adls_storage_account_name = sink_params_dict[\"adls2_storage_account_name\"]    \r\n",
-							"\r\n",
-							"# Name of the container in the Azure data lake\r\n",
-							"adls_blob_secret_name = sink_params_dict[\"adls2_blob_secret_name\"]"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"source_path = dv_params_dict['ConvertPath']\r\n",
-							"#replace // to get the correct path \r\n",
-							"source_path = source_path.replace('//', '/')\r\n",
-							"adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
-							"\r\n",
-							"source_container_name = 'sink'\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
-							"def convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
-							"  \r\n",
-							"  try:\r\n",
-							"    \r\n",
-							"    print(\"Start process\")\r\n",
-							"    #Set up an account access keySet up an account access key\r\n",
-							"    spark.conf.set(\"fs.azure.account.key.{}.dfs.core.windows.net\".format(adls_storage_account_name),\"{}\".format(dbutils.secrets.get(scope = \"{}\".format(kv_scope_name), key= \"{}\".format(adls_blob_secret_name))))\r\n",
-							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
-							"    \r\n",
-							"    row_counted = {\r\n",
-							"      'row_count_converted': -1,\r\n",
-							"      'row_count_landing': -1\r\n",
-							"    }\r\n",
-							"    \r\n",
-							"    if dv_params_dict['SourceType'].lower() == 'sql': # File y Folder\r\n",
-							"      print(\"SQL\")\r\n",
-							"      # CONVERTED\r\n",
-							"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"      #print(\"******************************** {}\".format(f'{path}*.snappy.parquet'))\r\n",
-							"      df_converted = spark.read.parquet(f'{path}*.parquet')\r\n",
-							"      row_count_converted = df_converted.count()\r\n",
-							"      \r\n",
-							"      \r\n",
-							"      # LANDING\r\n",
-							"      path_landing = dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-							"      path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, path_landing)\r\n",
-							"      #print(\"******************************** {}\".format(f'{path_landing}*.snappy.parquet'))\r\n",
-							"      df_landing = spark.read.parquet(f'{path}*.parquet')\r\n",
-							"      row_count_landing = df_landing.count()\r\n",
-							"      \r\n",
-							"      row_counted['row_count_converted'] = row_count_converted\r\n",
-							"      row_counted['row_count_landing'] = row_count_landing\r\n",
-							"      \r\n",
-							"    else: # ADLS, FTP y FS => File y Folder\r\n",
-							"      \r\n",
-							"      extension_file = (dv_params_dict['SrcObject'].split('.')[-1]).lower()\r\n",
-							"      \r\n",
-							"      #pendiente str split .\r\n",
-							"      if extension_file == 'csv': #=> File y Folder\r\n",
-							"        print(\"CSV FILE\")\r\n",
-							"        \r\n",
-							"        # CONVERTED\r\n",
-							"        converted_path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"        #print(\"converted_path: \",converted_path)\r\n",
-							"        df_converted = spark.read.parquet(converted_path)\r\n",
-							"        row_count_converted = df_converted.count()\r\n",
-							"        \r\n",
-							"        \r\n",
-							"        # LANDING\r\n",
-							"        path_landing = dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-							"        path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, path_landing)\r\n",
-							"        df_landing = spark.read.format(\"csv\").option(\"header\",\"true\").load(path_landing)\r\n",
-							"        row_count_landing = df_landing.count()\r\n",
-							"        \r\n",
-							"        \r\n",
-							"        row_counted['row_count_converted'] = row_count_converted\r\n",
-							"        row_counted['row_count_landing'] = row_count_landing\r\n",
-							"          \r\n",
-							"      elif extension_file == 'parquet':# => File\r\n",
-							"        print(\"PARQUET FILE\")\r\n",
-							"        \r\n",
-							"        # CONVERTED\r\n",
-							"        converted_path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"        \r\n",
-							"        df_converted = spark.read.parquet(converted_path)\r\n",
-							"        row_count_converted = df_converted.count()\r\n",
-							"        \r\n",
-							"        # LANDING\r\n",
-							"        path_landing = dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-							"        path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, path_landing)\r\n",
-							"        \r\n",
-							"        df_landing = spark.read.parquet(path_landing)\r\n",
-							"        row_count_landing = df_landing.count()\r\n",
-							"        \r\n",
-							"        row_counted['row_count_converted'] = row_count_converted\r\n",
-							"        row_counted['row_count_landing'] = row_count_landing\r\n",
-							"        \r\n",
-							"      elif extension_file == 'xml': #=> File y Folder pendiente hacer mount?\r\n",
-							"        \r\n",
-							"        print(\"XML FILE\")\r\n",
-							"        # CONVERTED\r\n",
-							"        converted_path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"        \r\n",
-							"        df_converted = spark.read.parquet(converted_path)\r\n",
-							"        row_count_converted = df_converted.count()\r\n",
-							"        \r\n",
-							"        # LANDING\r\n",
-							"        path_landing = dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-							"        path_landing = f\"/dbfs/mnt/dataingestion/ADLS/Files/{path_landing}{dv_params_dict['SrcObject']}\"\r\n",
-							"        \r\n",
-							"        df = pd.read_xml(path_landing)\r\n",
-							"        \r\n",
-							"        #convert pandas df to spark\r\n",
-							"        df_landing = spark.createDataFrame(df)\r\n",
-							"        row_count_landing = df_landing.count()\r\n",
-							"        \r\n",
-							"        row_counted['row_count_converted'] = row_count_converted\r\n",
-							"        row_counted['row_count_landing'] = row_count_landing\r\n",
-							"        \r\n",
-							"      \r\n",
-							"      elif extension_file == 'json': # => File y Folder\r\n",
-							"        print(\"JSON FILE\")\r\n",
-							"        # CONVERTED\r\n",
-							"        converted_path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"        #print(\"converted ==> \",converted_path)\r\n",
-							"        df_converted = spark.read.parquet(converted_path)\r\n",
-							"        row_count_converted = df_converted.count()\r\n",
-							"        \r\n",
-							"        # LANDING\r\n",
-							"        path_landing = dv_params_dict['ConvertPath'].replace('Converted', 'Landing')\r\n",
-							"        path_landing = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, path_landing)\r\n",
-							"        #print(f\"landing : {path_landing}\")\r\n",
-							"        df_landing = spark.read.option(\"multiline\",\"true\").json(path_landing)\r\n",
-							"        row_count_landing = df_landing.count()\r\n",
-							"        \r\n",
-							"        row_counted['row_count_converted'] = row_count_converted\r\n",
-							"        row_counted['row_count_landing'] = row_count_landing\r\n",
-							"        #print(row_counted)\r\n",
-							"        \r\n",
-							"      else:\r\n",
-							"        print(\"An error has occurred\")\r\n",
-							"      \r\n",
-							"    return row_counted\r\n",
-							"      \r\n",
-							"  except Exception as ex:\r\n",
-							"    raise Exception(f'Error: {ex}')\r\n",
-							"    "
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Depending on the source, execute the function related to it\r\n",
-							"try:\r\n",
-							"  \r\n",
-							"  sink_record_count = convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path) \r\n",
-							"  \r\n",
-							"except Exception as error:\r\n",
-							"  print('\\n> ***ERROR in :', error)\r\n",
-							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute function to validate source type','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
-							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
-							"\r\n",
-							"  \r\n",
-							"sink_record_count"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Function to obtain values for Data Validation in sink\r\n",
-							"def Validating_NB_01_RowCount(sink_record_count):\r\n",
-							"  \r\n",
-							"  if sink_record_count['row_count_converted'] == sink_record_count['row_count_landing']:\r\n",
-							"    \r\n",
-							"    validation_status = \"Succeeded\"\r\n",
-							"    validation_bool = \"True\"\r\n",
-							"    message = \"RowCout Validation was applied. Source and sink records match\"\r\n",
-							"    record_count = sink_record_count['row_count_converted']\r\n",
-							"    \r\n",
-							"  else:\r\n",
-							"    \r\n",
-							"    validation_status = \"Failed\"\r\n",
-							"    validation_bool = \"False\"\r\n",
-							"    message = \"Source and sink records do not match. Source count: {}.\".format(str(source_record_count)) \r\n",
-							"    record_count = 0\r\n",
-							"    \r\n",
-							"  output = {'ExecutionStatus': 'successfull',\"FwkLogId\": dv_params_dict['FwkLogId'], \"Output\": {\"Count\": str(record_count), \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
-							"  \r\n",
-							"  return output\r\n",
-							"\r\n",
-							"\r\n",
-							"result = Validating_NB_01_RowCount(sink_record_count)\r\n",
-							"result"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Count rows in sink_file and compare vs source_record_count\r\n",
-							"\r\n",
-							"try:\r\n",
-							"  json_output = Validating_NB_01_RowCount(sink_record_count)\r\n",
-							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
-							"  \r\n",
-							"except:\r\n",
-							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to Comparing column counts','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method} #mejorar logs\r\n",
-							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
-							"\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"\r\n",
-							"# Debug prints\r\n",
-							"if print_dictionaries == True:\r\n",
-							"  Print_Dictionaries()\r\n",
-							"if print_common_variables == True:\r\n",
-							"  Print_Common_Variables()\r\n",
-							"if print_empty_variables == True:\r\n",
-							"  Print_Empty_Variables()\r\n",
-							"\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
 					},
 					{
 						"cell_type": "code",
@@ -4806,7 +6468,7 @@
 						"source": [
 							"\r\n",
 							"# Pass parameter to ADF\r\n",
-							"dbutils.notebook.exit(json_output)"
+							"mssparkutils.notebook.exit(json_output)"
 						],
 						"outputs": [],
 						"execution_count": null
