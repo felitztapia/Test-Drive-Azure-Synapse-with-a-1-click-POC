@@ -5051,7 +5051,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "6171b83d-2284-48c9-9d67-c197fbd54dc9"
+						"spark.autotune.trackingId": "e9292c4a-43b2-4c93-9cf5-a78d6adc21d3"
 					}
 				},
 				"metadata": {
@@ -5076,10 +5076,8 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
@@ -5100,7 +5098,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
 							"print_dictionaries = False\r\n",
@@ -5605,7 +5602,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3e93f2ac-aa56-4403-ba4f-3538058f0dbd"
+						"spark.autotune.trackingId": "b4b44385-1716-4b15-92de-9d74a9cbaac7"
 					}
 				},
 				"metadata": {
@@ -5720,6 +5717,32 @@
 						"source": [
 							"SinkGlobalParameters =\"\"\r\n",
 							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+							"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+							"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+							"dv_params = DataValidationParameters\r\n",
+							"\r\n",
+							"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+							"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+							"sink_params = SinkGlobalParameters"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -7025,7 +7048,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "6f44ee89-ddfa-4473-84df-95b377fd368d"
+						"spark.autotune.trackingId": "ce8df4c0-7cd1-400e-8922-3409560cc1d9"
 					}
 				},
 				"metadata": {
@@ -7050,10 +7073,8 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
@@ -7094,7 +7115,7 @@
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Target Count\\\":\\\"10\\\"}}\""
 						],
 						"outputs": [],
-						"execution_count": 126
+						"execution_count": 128
 					},
 					{
 						"cell_type": "code",
@@ -7114,7 +7135,7 @@
 							"json_output=mssparkutils.notebook.run('NB_04_RecordLevel',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 127
+						"execution_count": 130
 					},
 					{
 						"cell_type": "code",
