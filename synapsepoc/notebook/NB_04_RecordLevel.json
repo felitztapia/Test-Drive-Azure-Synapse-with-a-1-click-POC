@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "3f1bb98e-7a35-4328-872b-eab6c711cbd1"
+				"spark.autotune.trackingId": "c237581c-3346-4080-b172-d46210d47ba3"
 			}
 		},
 		"metadata": {
@@ -231,25 +231,24 @@
 				"source": [
 					"def count_columns(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_path):\r\n",
 					"  \r\n",
-					"  \r\n",
-					"  try:\r\n",
-					"   print(\"Start process\")\r\n",
-					"     #Set up an account access keySet up an account access key\r\n",
-					"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
-					"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
-					"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
-					"    \r\n",
-					"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-					"    print(\"***** {}\".format(f\"{path}*.parquet\"))\r\n",
-					"    \r\n",
-					"    df_converted = spark.read.parquet(f\"{path}*.parquet\")\r\n",
-					"    size = len(df_converted.columns)\r\n",
-					"    #print(\"=========> \",size)\r\n",
-					"    \r\n",
-					"    return size\r\n",
+					"    try:\r\n",
+					"        print(\"Start process\")\r\n",
+					"        #Set up an account access keySet up an account access key\r\n",
+					"        spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+					"        spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"        spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"        \r\n",
+					"        path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"        print(\"***** {}\".format(f\"{path}*.parquet\"))\r\n",
+					"        \r\n",
+					"        df_converted = spark.read.parquet(f\"{path}*.parquet\")\r\n",
+					"        size = len(df_converted.columns)\r\n",
+					"        #print(\"=========> \",size)\r\n",
+					"        \r\n",
+					"        return size\r\n",
 					"      \r\n",
-					"  except Exception as err:\r\n",
-					"    raise Exception(f\"{err}\")"
+					"    except Exception as err:\r\n",
+					"        raise Exception(f\"{err}\")"
 				],
 				"execution_count": null
 			},
@@ -375,7 +374,7 @@
 				},
 				"source": [
 					"# Pass parameter to ADF\r\n",
-					"dbutils.notebook.exit(json_output)"
+					"mssparkutils.notebook.exit(json_output)"
 				],
 				"execution_count": null
 			}

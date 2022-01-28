@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "338bcf28-12fc-4b89-88fb-f4e487173946"
+				"spark.autotune.trackingId": "c408e56b-d63f-4169-a0fa-588963775b6c"
 			}
 		},
 		"metadata": {
@@ -470,7 +470,7 @@
 				},
 				"source": [
 					"# Pass parameter to ADF\r\n",
-					"dbutils.notebook.exit(json_output)"
+					"mssparkutils.notebook.exit(json_output)"
 				],
 				"execution_count": null
 			}
