@@ -1,6 +1,9 @@
 {
 	"name": "NB_02_NullCount",
 	"properties": {
+		"folder": {
+			"name": "MDMF_Validation"
+		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
@@ -17,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "839c0763-de62-48e4-b8fd-a437b2718513"
+				"spark.autotune.trackingId": "02f87c7d-68c4-4ae0-8de7-d4f926a49b19"
 			}
 		},
 		"metadata": {
@@ -275,7 +278,7 @@
 					"source_path = source_path.replace('//', '/')\r\n",
 					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
 					"\r\n",
-					"source_container_name = 'sink'"
+					"source_container_name = sink_params_dict[\"sink_container_name\"]"
 				],
 				"execution_count": null
 			},

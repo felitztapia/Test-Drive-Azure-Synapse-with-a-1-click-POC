@@ -2,6 +2,9 @@
 	"name": "NB_01_RowCount",
 	"properties": {
 		"description": "Metadata-Driven Ingestion Framework \nData Validation: RowCount\nConnect to source and sink instances and count the rows from the file copied. Validate the result and send it to Azure Data Factory.",
+		"folder": {
+			"name": "MDMF_Validation"
+		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
@@ -43,10 +46,8 @@
 				"sparkVersion": "2.4",
 				"nodeCount": 10,
 				"cores": 4,
-				"memory": 28,
-				"automaticScaleJobs": false
-			},
-			"sessionKeepAliveTimeout": 30
+				"memory": 28
+			}
 		},
 		"cells": [
 			{

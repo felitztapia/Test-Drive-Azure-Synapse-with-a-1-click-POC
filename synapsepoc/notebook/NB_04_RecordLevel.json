@@ -1,6 +1,9 @@
 {
 	"name": "NB_04_RecordLevel",
 	"properties": {
+		"folder": {
+			"name": "MDMF_Validation"
+		},
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
@@ -42,10 +45,8 @@
 				"sparkVersion": "2.4",
 				"nodeCount": 10,
 				"cores": 4,
-				"memory": 28,
-				"automaticScaleJobs": false
-			},
-			"sessionKeepAliveTimeout": 30
+				"memory": 28
+			}
 		},
 		"cells": [
 			{
