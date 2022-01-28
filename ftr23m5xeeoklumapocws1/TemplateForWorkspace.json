@@ -3987,7 +3987,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "fe347339-7c45-4ffa-bccf-3a8bae6d312e"
+						"spark.autotune.trackingId": "046061ec-44f3-4959-94a4-cf742c62b45b"
 					}
 				},
 				"metadata": {
@@ -4012,10 +4012,8 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
@@ -4052,7 +4050,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
 							"print_dictionaries = False\r\n",
@@ -4139,6 +4136,32 @@
 						"source": [
 							"SinkGlobalParameters =\"\"\r\n",
 							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+							"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+							"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+							"dv_params = DataValidationParameters\r\n",
+							"\r\n",
+							"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+							"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+							"sink_params = SinkGlobalParameters"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -6249,7 +6272,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0c4298b8-a205-40c7-8aea-27852922d61b"
+						"spark.autotune.trackingId": "7e0c6887-6f24-4c2e-99d9-71759d0009ba"
 					}
 				},
 				"metadata": {
@@ -6261,7 +6284,8 @@
 					},
 					"language_info": {
 						"name": "python"
-					}
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -6330,8 +6354,12 @@
 							}
 						},
 						"source": [
-							"print(SinkGlobalParameters)\r\n",
-							"print(DataValidationParameters)"
+							"# Convert string (json) parameters to dictionaries.\r\n",
+							"import json\r\n",
+							"\r\n",
+							"dv_params_dict = json.loads(DataValidationParameters)\r\n",
+							"sink_params_dict = json.loads(SinkGlobalParameters)\r\n",
+							""
 						],
 						"outputs": [],
 						"execution_count": null
@@ -6350,7 +6378,27 @@
 							}
 						},
 						"source": [
-							"mssparkutils.notebook.exit('{\"SinkGlobalParameters\":\"20\",\"DataValidationParameters\":\"10\" }')"
+							"print(dv_params_dict)\r\n",
+							"print(sink_params_dict)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"mssparkutils.notebook.exit({\"SinkGlobalParameters\":sink_params_dict,\"DataValidationParameters\":dv_params_dict })"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -6381,7 +6429,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "9bb73cb9-a199-4291-b3f9-c350c9d35cbe"
+						"spark.autotune.trackingId": "8d5c0b4e-a98e-4898-8024-f38069fd70f4"
 					}
 				},
 				"metadata": {
@@ -6406,8 +6454,10 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
-					}
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
 				},
 				"cells": [
 					{
@@ -6446,7 +6496,7 @@
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
 						],
 						"outputs": [],
-						"execution_count": 4
+						"execution_count": 6
 					},
 					{
 						"cell_type": "code",
@@ -6465,7 +6515,7 @@
 							"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 5
+						"execution_count": 7
 					},
 					{
 						"cell_type": "code",
@@ -6487,6 +6537,48 @@
 						],
 						"outputs": [],
 						"execution_count": 3
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"import json\r\n",
+							"\r\n",
+							"dv_params_dict = json.loads(DataValidationParameters)\r\n",
+							"\r\n",
+							"sink_params_dict = json.loads(SinkGlobalParameters)"
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"print(dv_params_dict)"
+						],
+						"outputs": [],
+						"execution_count": 10
 					},
 					{
 						"cell_type": "code",
