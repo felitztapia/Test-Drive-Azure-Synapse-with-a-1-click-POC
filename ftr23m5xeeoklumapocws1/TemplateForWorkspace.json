@@ -5051,7 +5051,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "05e3ad17-f27c-43ca-818a-6a4e612784a6"
+						"spark.autotune.trackingId": "88c9ccc2-59df-436a-ab78-ae03bb57344c"
 					}
 				},
 				"metadata": {
@@ -5171,6 +5171,56 @@
 						"source": [
 							"SinkGlobalParameters =\"\"\r\n",
 							"DataValidationParameters=\"\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+							"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+							"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+							"dv_params = DataValidationParameters\r\n",
+							"\r\n",
+							"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+							"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+							"sink_params = SinkGlobalParameters"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Convert string (json) parameters to dictionaries.\r\n",
+							"import json\r\n",
+							"\r\n",
+							"dv_params_dict = json.loads(dv_params)\r\n",
+							"\r\n",
+							"sink_params_dict = json.loads(sink_params)"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -6967,7 +7017,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "f0cec069-8bc1-42ce-bd08-b29ba3b7f48c"
+						"spark.autotune.trackingId": "23627fe8-9302-45d9-82af-00ef6ef8533a"
 					}
 				},
 				"metadata": {
@@ -7033,7 +7083,7 @@
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"DateId\\\":[\\\"[0-9]{5}\\\"]}}\""
 						],
 						"outputs": [],
-						"execution_count": 90
+						"execution_count": 93
 					},
 					{
 						"cell_type": "code",
@@ -7050,10 +7100,10 @@
 						},
 						"source": [
 							"json_output=\"\"\r\n",
-							"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
+							"json_output=mssparkutils.notebook.run('NB_03_ColumnLevel',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 88
+						"execution_count": 95
 					},
 					{
 						"cell_type": "code",
