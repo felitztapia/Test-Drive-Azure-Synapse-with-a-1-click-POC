@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "df18a9c1-1067-4d45-8f85-819c8ff0529a"
+				"spark.autotune.trackingId": "68149083-4e9d-43c9-ae00-2cda3217b474"
 			}
 		},
 		"metadata": {
@@ -278,7 +278,8 @@
 					"source_path = source_path.replace('//', '/')\r\n",
 					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
 					"\r\n",
-					"source_container_name = 'synapsedata'"
+					"source_container_name = sink_params_dict[\"sink_container_name\"]\r\n",
+					"sink_container_name = sink_params_dict[\"sink_container_name\"]"
 				],
 				"execution_count": null
 			},
