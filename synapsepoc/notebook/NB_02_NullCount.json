@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "68149083-4e9d-43c9-ae00-2cda3217b474"
+				"spark.autotune.trackingId": "311da650-36c5-4c18-9cf7-bc7a128e72da"
 			}
 		},
 		"metadata": {
@@ -235,8 +235,8 @@
 				"source": [
 					"# Name of the Azure Key Vault-backed scope\r\n",
 					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
-					"#kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
-					"#kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+					"kv_workspace_id =\"\" #sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+					"kv_workspace_pk =\"\" # sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
 					"\r\n",
 					"fwklog_id = dv_params_dict[\"FwkLogId\"]\r\n",
 					"function_name = dv_params_dict[\"FunctionName\"].strip()\r\n",
