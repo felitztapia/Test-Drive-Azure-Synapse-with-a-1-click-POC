@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "046061ec-44f3-4959-94a4-cf742c62b45b"
+				"spark.autotune.trackingId": "fc2c231b-aea7-430c-8f06-bd0671fc6e9b"
 			}
 		},
 		"metadata": {
@@ -210,9 +210,9 @@
 					"# Convert string (json) parameters to dictionaries.\r\n",
 					"import json\r\n",
 					"\r\n",
-					"dv_params_dict = json.loads(DataValidationParameters)\r\n",
+					"dv_params_dict = json.loads(dv_params)\r\n",
 					"\r\n",
-					"sink_params_dict = json.loads(SinkGlobalParameters)"
+					"sink_params_dict = json.loads(sink_params)"
 				],
 				"execution_count": null
 			},
