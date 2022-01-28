@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ee7e99a0-581e-4a0a-893a-911033b92a11"
+				"spark.autotune.trackingId": "046061ec-44f3-4959-94a4-cf742c62b45b"
 			}
 		},
 		"metadata": {
@@ -165,6 +165,31 @@
 				"source": [
 					"SinkGlobalParameters =\"\"\r\n",
 					"DataValidationParameters=\"\""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+					"dv_params = DataValidationParameters\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+					"sink_params = SinkGlobalParameters"
 				],
 				"execution_count": null
 			},

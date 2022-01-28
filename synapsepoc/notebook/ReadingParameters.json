@@ -13,7 +13,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "0c4298b8-a205-40c7-8aea-27852922d61b"
+				"spark.autotune.trackingId": "f6e8630b-9175-4181-9efc-09ec689c91e4"
 			}
 		},
 		"metadata": {
@@ -93,6 +93,29 @@
 					}
 				},
 				"source": [
+					"# Convert string (json) parameters to dictionaries.\r\n",
+					"import json\r\n",
+					"\r\n",
+					"dv_params_dict = json.loads(DataValidationParameters)\r\n",
+					"sink_params_dict = json.loads(SinkGlobalParameters)\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
 					"print(SinkGlobalParameters)\r\n",
 					"print(DataValidationParameters)"
 				],
@@ -112,7 +135,7 @@
 					}
 				},
 				"source": [
-					"mssparkutils.notebook.exit('{\"SinkGlobalParameters\":\"20\",\"DataValidationParameters\":\"10\" }')"
+					"mssparkutils.notebook.exit({\"SinkGlobalParameters\":sink_params_dict,\"DataValidationParameters\":dv_params_dict })"
 				],
 				"execution_count": null
 			}
