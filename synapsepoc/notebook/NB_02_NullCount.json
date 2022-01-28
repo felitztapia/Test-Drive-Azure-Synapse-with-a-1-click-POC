@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "02f87c7d-68c4-4ae0-8de7-d4f926a49b19"
+				"spark.autotune.trackingId": "01000ba3-49a1-47aa-a547-4b6b4029b419"
 			}
 		},
 		"metadata": {
@@ -490,6 +490,7 @@
 				},
 				"source": [
 					"# Build the inputs for the DataValidationLog table\r\n",
+					"json_output={'ExecutionStatus': 'N/A','Error Message':'Fail to Build the output for the DataValidationLog table'}\r\n",
 					"try:\r\n",
 					"  json_output = Validating_NB_02_NullCount(df,column_names,condition,sink_container_name,sink_path,file_extension,adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
 					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
