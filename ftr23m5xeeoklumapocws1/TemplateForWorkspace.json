@@ -4508,7 +4508,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "70050d50-fa61-46e7-a8d4-d0428ffd8619"
+						"spark.autotune.trackingId": "3151764b-b88f-4c76-b150-35748663c925"
 					}
 				},
 				"metadata": {
@@ -4774,7 +4774,8 @@
 							"source_path = source_path.replace('//', '/')\r\n",
 							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
 							"\r\n",
-							"source_container_name = 'synapsedata'"
+							"source_container_name = sink_params_dict[\"sink_container_name\"]\r\n",
+							"sink_container_name = sink_params_dict[\"sink_container_name\"]"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -6965,7 +6966,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "49ff6841-24e3-4b8c-b445-bb149c290612"
+						"spark.autotune.trackingId": "77ec7b58-fb77-49e1-9904-5c882b8faefb"
 					}
 				},
 				"metadata": {
@@ -7030,7 +7031,7 @@
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Column Name\\\":\\\"DateId\\\"}}\""
 						],
 						"outputs": [],
-						"execution_count": 78
+						"execution_count": 81
 					},
 					{
 						"cell_type": "code",
@@ -7050,7 +7051,7 @@
 							"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 79
+						"execution_count": 82
 					},
 					{
 						"cell_type": "code",
@@ -7071,7 +7072,7 @@
 							"mssparkutils.notebook.exit(json_output)"
 						],
 						"outputs": [],
-						"execution_count": 80
+						"execution_count": 83
 					},
 					{
 						"cell_type": "code",
