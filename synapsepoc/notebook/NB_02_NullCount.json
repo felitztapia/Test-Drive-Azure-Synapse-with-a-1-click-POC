@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fc2c231b-aea7-430c-8f06-bd0671fc6e9b"
+				"spark.autotune.trackingId": "839c0763-de62-48e4-b8fd-a437b2718513"
 			}
 		},
 		"metadata": {
@@ -250,7 +250,7 @@
 					"condition = dv_params_dict[\"ConditionFlag\"]                                   # UPDATE ConditionFlag new value\r\n",
 					"\r\n",
 					"# Declare input parameter variable\r\n",
-					"column_names = (json.loads(dv_params_dict['InputParameter'])['Column Name']).split(',')\r\n",
+					"column_names = (dv_params_dict['InputParameter']['Column Name']).split(',')\r\n",
 					"#column_names = [columns.lower() for columns in column_names]\r\n",
 					"column_names"
 				],
