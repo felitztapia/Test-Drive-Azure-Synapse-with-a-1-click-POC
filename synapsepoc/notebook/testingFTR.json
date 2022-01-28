@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "ce8df4c0-7cd1-400e-8922-3409560cc1d9"
+				"spark.autotune.trackingId": "c3c482ec-57c0-426e-a8a1-54b78cf3da95"
 			}
 		},
 		"metadata": {
@@ -86,7 +86,7 @@
 					"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"DateId\\\":[\\\"[0-9]{5}\\\"]}}\"\r\n",
 					"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Target Count\\\":\\\"10\\\"}}\""
 				],
-				"execution_count": 128
+				"execution_count": 131
 			},
 			{
 				"cell_type": "code",
@@ -105,7 +105,7 @@
 					"json_output=\"\"\r\n",
 					"json_output=mssparkutils.notebook.run('NB_04_RecordLevel',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 				],
-				"execution_count": 130
+				"execution_count": 132
 			},
 			{
 				"cell_type": "code",

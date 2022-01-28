@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "5d19e190-1a56-45ac-b1a8-fd0219d2f305"
+				"spark.autotune.trackingId": "6b7e91d9-efb1-41a2-afa1-63f6847c62c2"
 			}
 		},
 		"metadata": {
@@ -211,7 +211,7 @@
 					"sink_path = dv_params_dict[\"ConvertPath\"].strip()                                     # Path of the sink file\r\n",
 					"# Declare input parameter variable\r\n",
 					"\r\n",
-					"input_parameter_dict = json.loads(dv_params_dict['InputParameter'])\r\n",
+					"input_parameter_dict = dv_params_dict['InputParameter']\r\n",
 					"\r\n",
 					"column_names = input_parameter_dict[\"Column Name\"] if \"Column Name\" in input_parameter_dict else '' # Name(s) of column(s) to validate, there may be no parameters (for example NB_01) \r\n",
 					"\r\n",
