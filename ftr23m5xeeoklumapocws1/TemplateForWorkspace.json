@@ -3448,6 +3448,521 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/NB_01_ColumnToUpper')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "MDMF_Transformation"
+				},
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "d1720e1c-efe2-4c9f-b3d9-41534de82a35"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### Metadata-Driven Ingestion Framework \r\n",
+							"#### Data Transformation: UpperCase\r\n",
+							"Connect to sink instance and count the Null values from a specific column of the copied file. Validate the result and send it to Azure Data Factory."
+						]
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"### IMPORTANT!\r\n",
+							"#### Configuration for testing and debug\r\n",
+							"Change the value of \"testing=False\" for production environment.\r\n",
+							"Change the value of debug variables to see or hide prints with information."
+						]
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+							"print_dictionaries = False\r\n",
+							"print_common_variables = False\r\n",
+							"print_empty_variables = False"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"SinkGlobalParameters = \"{\\\"kv_scope_name\\\":\\\"KeyVaultSecrets\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"raw_storage_secret_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls_storage_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls_storage_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"\r\n",
+							"DataTransformationParameters = \"{\\\"DtDataSetId\\\":9,\\\"DtConfigId\\\":10,\\\"FwkConfigId\\\":\\\"26;26;26;26;26;26\\\",\\\"DtOutputId\\\":\\\"1;1;1;1;1;1\\\",\\\"ParentDtConfigId\\\":null,\\\"TriggerId\\\":3,\\\"FunctionName\\\":\\\"UpperNameProductCat\\\",\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/DataTransformation/NB_01_ColumnToUpper\\\",\\\"DtMethod\\\":\\\"Databricks\\\",\\\"SinkPath\\\":\\\"Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv\\\",\\\"OutputPath\\\":\\\"LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv\\\",\\\"FlagUpdateOutputDate\\\":\\\"0;0;0;0;0;0\\\",\\\"DtLogId\\\":\\\"39\\\",\\\"EntRunId\\\":\\\"818bddf3-c270-443d-8aca-ab4d142b75cd\\\",\\\"DtRunId\\\":\\\"93e45e67-c414-4c28-bc52-4698091ef3de\\\",\\\"DtStatus\\\":\\\"Failed\\\",\\\"OutputUpdateDate\\\":\\\"2022-01-13T22:34:17.217\\\",\\\"TransformationPathGranularity\\\":\\\"HH\\\",\\\"InputParameter\\\":\\\"{\\\\\\\"Column Name\\\\\\\":\\\\\\\"Name\\\\\\\"}\\\"}\"\r\n",
+							"\r\n",
+							"OutputParameters = \"[{\\\"DtDataSetId\\\":9,\\\"DtConfigId\\\":10,\\\"DtOutputId\\\":\\\"10\\\",\\\"OutputNumber\\\":\\\"1\\\",\\\"FileTransformationName\\\":\\\"UpperColName\\\",\\\"TransformationPathGranularity\\\":\\\"HH\\\",\\\"OutputUpdateDate\\\":\\\"Jan 14 2022  3:14PM\\\",\\\"DeltaTableName\\\":\\\"UpperNameSQL\\\"}]\"\r\n",
+							"\r\n",
+							"TriggerTime = \"2022-01-13 22:34:17\""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Import required libraries\r\n",
+							"from pyspark.sql import SparkSession\r\n",
+							"import pandas \r\n",
+							"import datetime\r\n",
+							"import time"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							},
+							"tags": [
+								"parameters"
+							]
+						},
+						"source": [
+							"DataTransformationParameters=\"\"\r\n",
+							"SinkGlobalParameters=\"\"\r\n",
+							"output_params=\"\"\r\n",
+							"TriggerTime_param=\"\"\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#convert to dict \r\n",
+							"dt_params_dict = json.loads(DataTransformationParameters)\r\n",
+							"sink_params_dict = json.loads(SinkGlobalParameters)\r\n",
+							"output_params_dict= json.loads(output_params)[0]\r\n",
+							"\r\n",
+							"input_parameter_dict = json.loads(dt_params_dict['InputParameter'])"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Get the necessary variables\r\n",
+							"function_name = str(dt_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+							"#dt_method = str(dt_params_dict[\"DtMethod\"]).strip()                                   # Data validation method name\r\n",
+							"\r\n",
+							"\r\n",
+							"source_path = dt_params_dict['SinkPath'].split(';')[0]                       #.split('.')[0]   #to avoid having wrong path when path repeats\r\n",
+							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
+							"\r\n",
+							"#replace // to get the correct path \r\n",
+							"source_path = source_path.replace('//', '/')\r\n",
+							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+							"source_container_name = 'sink'\r\n",
+							"\r\n",
+							"TransformationPathGranularity = output_params_dict[\"TransformationPathGranularity\"]\r\n",
+							"\r\n",
+							"#storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"src_object_child =dt_params_dict[\"SinkPath\"].split(\"/\")[-1]\r\n",
+							"#file_extension = dt_params_dict[\"SinkPath\"].split(\".\")[-1]\r\n",
+							"column_name = input_parameter_dict[\"Column Name\"]\r\n",
+							"#function_name = dt_params_dict[\"FunctionName\"]\r\n",
+							"DtOutputId = output_params_dict[\"DtOutputId\"].split(\";\")\r\n",
+							"FileTransformationName = output_params_dict[\"FileTransformationName\"].split(\";\")\r\n",
+							"output_container_name = sink_params_dict[\"output_container_name\"]\r\n",
+							"TriggerTime = datetime.datetime.strptime(TriggerTime_param,'%Y-%m-%d %H:%M:%S')\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#read parquet file\r\n",
+							"#connet to the Sink\r\n",
+							" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+							"  \r\n",
+							"  try:  \r\n",
+							"    print(\"Start process\")\r\n",
+							"    #Set up an account access keySet up an account access key\r\n",
+							"    spark.conf.set(\"fs.azure.account.key.{}.dfs.core.windows.net\".format(adls_storage_account_name),\"{}\".format(dbutils.secrets.get(scope = \"{}\".format(kv_scope_name), key= \"{}\".format(adls_blob_secret_name))))\r\n",
+							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+							"\r\n",
+							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+							"    try:\r\n",
+							"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
+							"    except:\r\n",
+							"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
+							"\r\n",
+							"    \r\n",
+							"    return df    \r\n",
+							"  \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"sink_file=read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Remove cache files (start with \"_\")\r\n",
+							"def Remove_Cache_Files_From_Sink_Transformation(files,kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+							"  try:\r\n",
+							"    cache_files = [x for x in files if x.name.startswith(\"_\")]\r\n",
+							"    for file in cache_files:\r\n",
+							"      dbutils.fs.rm(file.path)\r\n",
+							"      print('> Cache file removed:', file.path)\r\n",
+							"  except Exception as error:\r\n",
+							"    print('\\n> ***ERROR removing _cache sink files:', error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Remove cache files','FunctionName':'NB_01_ColumnToUpper'}\r\n",
+							"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"#Create output path and file name\r\n",
+							"def Create_Output_Path_And_File_Name(TransformationPathGranularity,output_path,FileTransformationName,TriggerTime,kv_scope_name, kv_workspace_id, kv_workspace_pk,DtOutputId,function_name,output_file_name):\r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    i = 0\r\n",
+							"    for item in DtOutputId:\r\n",
+							"      if TransformationPathGranularity == \"YY\":\r\n",
+							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year))\r\n",
+							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
+							"      elif TransformationPathGranularity == \"MM\":\r\n",
+							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")))\r\n",
+							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
+							"      elif TransformationPathGranularity == \"DD\":\r\n",
+							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")) + \"/\" + str(TriggerTime.strftime(\"%d\")))\r\n",
+							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
+							"      elif TransformationPathGranularity == \"HH\":\r\n",
+							"            output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")) + \"/\" + str(TriggerTime.strftime(\"%d\")) + \"/\" + str(TriggerTime.strftime(\"%H\")))\r\n",
+							"    output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
+							"    i+=1\r\n",
+							"  except Exception as error:\r\n",
+							"    print('\\n> ***ERROR in Create_Output_Path_And_File_Name:', error)\r\n",
+							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Create output path and file name','FunctionName':'NB_01_ColumnToUpper'}\r\n",
+							"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"def Transform_Column_To_Upper(sink_file,column_name,output_container_name,adls_storage_account_name,output_path,src_object_child,\r\n",
+							"                              kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+							"    \r\n",
+							"  sink_file_pandas = sink_file.toPandas()\r\n",
+							"  columns = list(sink_file_pandas.columns)\r\n",
+							"  file_name = src_object_child.split(\".\")[0]\r\n",
+							"  delta_status = False\r\n",
+							"  \r\n",
+							"  if column_name in columns:\r\n",
+							"    print('\\n> Uppercase characters...')\r\n",
+							"    sink_file_pandas[column_name] = sink_file_pandas[column_name].str.upper()\r\n",
+							"    \r\n",
+							"  else:\r\n",
+							"    message = f\"No column '{column_name}' in Table. Columns were found: {columns}\"\r\n",
+							"    return delta_status, message\r\n",
+							"    \r\n",
+							"  \r\n",
+							"  \r\n",
+							"  try:\r\n",
+							"    output_container_path = \"abfss://{}@{}.dfs.core.windows.net\".format(output_container_name, adls_storage_account_name)\r\n",
+							"    output_blob_folder = \"%s/%s\" % (output_container_path,output_path[0])\r\n",
+							"    print('\\n> Saving upper-part file result in:', output_blob_folder)\r\n",
+							"    # Write the dataframe as a single part-file to storage, Spark uses Hadoop File Format, which requires data to be partitioned - that's why you have part- files. You can easily change filename after processing.    \r\n",
+							"    output_file_dataframe = spark.createDataFrame(sink_file_pandas)\r\n",
+							"    print(\"...Saving file: {}\".format(output_blob_folder))\r\n",
+							"    #output_file_dataframe.coalesce(1).write.format(\"csv\").option(\"header\", \"true\").mode(\"overwrite\").save(output_blob_folder)\r\n",
+							"    #output_file_dataframe.coalesce(1).write.format(\"parquet\").save(output_blob_folder)\r\n",
+							"    output_file_dataframe.write.format(\"parquet\").save(output_blob_folder)\r\n",
+							"\r\n",
+							"    # Get the name of the wrangled-data CSV file that was just saved to Azure blob storage (it starts with 'part-')\r\n",
+							"    #files = dbutils.fs.ls(output_blob_folder)\r\n",
+							"    #output_file = [x for x in files if x.name.startswith(\"part-\")]\r\n",
+							"    #output_file_name_id = output_file_name[0] + \".csv\"\r\n",
+							"    #output_file_name_id = output_file_name[0] + \".parquet\"\r\n",
+							"\r\n",
+							"    #print('\\n> Renaming part-file with final name...\\n>> From: {}\\n>> To:   {}\\n'.format(output_file[0].path, \"%s/%s\" % (output_blob_folder,output_file_name_id)))\r\n",
+							"    #dbutils.fs.mv(output_file[0].path, \"%s/%s\" % (output_blob_folder,output_file_name_id))\r\n",
+							"    \r\n",
+							"    #Delete cache files in transformation sink container _SUCCESS...\r\n",
+							"    Remove_Cache_Files_From_Sink_Transformation(files,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+							"    \r\n",
+							"  except Exception as ex:\r\n",
+							"    raise Exception(f'Error: {ex}')\r\n",
+							"    \r\n",
+							"  return delta_status, sink_file_pandas"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"\r\n",
+							"#Create outputs (path and file name)\r\n",
+							"output_path = []\r\n",
+							"output_file_name = []\r\n",
+							"Create_Output_Path_And_File_Name(TransformationPathGranularity,output_path,FileTransformationName,TriggerTime,kv_scope_name, kv_workspace_id, kv_workspace_pk,DtOutputId,function_name,output_file_name)\r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"delta_status = False\r\n",
+							"new_file = False\r\n",
+							"\r\n",
+							"# Obtain the count of nulls\r\n",
+							"try:\r\n",
+							"  delta_status, new_file = Transform_Column_To_Upper(sink_file,column_name,output_container_name,adls_storage_account_name,\r\n",
+							"                                                     output_path,src_object_child,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+							"  \r\n",
+							"except Exception as error:\r\n",
+							"  print(f\"An error has occurred: {error}\")\r\n",
+							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'ERROR in UpperColumnDT','FunctionName':'NB_01_ColumnToUpper'}\r\n",
+							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+							"  \r\n",
+							"  \r\n",
+							"new_file"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# Pass parameter to ADF\r\n",
+							"mssparkutils.notebook.exit(delta_status)"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/NB_01_RowCount')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -3993,7 +4508,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "7b9c34d7-1bba-45a1-9f18-045c3fbdfa36"
+						"spark.autotune.trackingId": "c34673ce-4ed2-4c05-8c6b-8d46c26f6713"
 					}
 				},
 				"metadata": {
@@ -4477,6 +4992,7 @@
 						},
 						"source": [
 							"# Build the inputs for the DataValidationLog table\r\n",
+							"json_output={'ExecutionStatus': 'N/A','Error Message':'Fail to Build the output for the DataValidationLog table'}\r\n",
 							"try:\r\n",
 							"  json_output = Validating_NB_02_NullCount(df,column_names,condition,sink_container_name,sink_path,file_extension,adls_storage_account_name,fwklog_id,function_name,dv_method,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
 							"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
@@ -6449,7 +6965,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "73de1584-cd21-4188-bd1d-72178821a666"
+						"spark.autotune.trackingId": "a912c2e4-261d-41f6-8331-73795f8a7fa5"
 					}
 				},
 				"metadata": {
@@ -6516,7 +7032,7 @@
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Column Name\\\":\\\"DateId\\\"}}\""
 						],
 						"outputs": [],
-						"execution_count": 74
+						"execution_count": 76
 					},
 					{
 						"cell_type": "code",
@@ -6536,7 +7052,7 @@
 							"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 75
+						"execution_count": 77
 					},
 					{
 						"cell_type": "code",
@@ -6724,523 +7240,6 @@
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/NB_01_ColumnToUpper')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "MDMF_Transformation"
-				},
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "e1a7af52-6979-46aa-ba53-7f20bfd55ca8"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "python"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"### Metadata-Driven Ingestion Framework \r\n",
-							"#### Data Transformation: UpperCase\r\n",
-							"Connect to sink instance and count the Null values from a specific column of the copied file. Validate the result and send it to Azure Data Factory."
-						]
-					},
-					{
-						"cell_type": "markdown",
-						"metadata": {
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"### IMPORTANT!\r\n",
-							"#### Configuration for testing and debug\r\n",
-							"Change the value of \"testing=False\" for production environment.\r\n",
-							"Change the value of debug variables to see or hide prints with information."
-						]
-					},
-					{
-						"cell_type": "code",
-						"metadata": {},
-						"source": [
-							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
-							"print_dictionaries = False\r\n",
-							"print_common_variables = False\r\n",
-							"print_empty_variables = False"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"SinkGlobalParameters = \"{\\\"kv_scope_name\\\":\\\"KeyVaultSecrets\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"raw_storage_secret_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls_storage_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls_storage_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
-							"\r\n",
-							"DataTransformationParameters = \"{\\\"DtDataSetId\\\":9,\\\"DtConfigId\\\":10,\\\"FwkConfigId\\\":\\\"26;26;26;26;26;26\\\",\\\"DtOutputId\\\":\\\"1;1;1;1;1;1\\\",\\\"ParentDtConfigId\\\":null,\\\"TriggerId\\\":3,\\\"FunctionName\\\":\\\"UpperNameProductCat\\\",\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/DataTransformation/NB_01_ColumnToUpper\\\",\\\"DtMethod\\\":\\\"Databricks\\\",\\\"SinkPath\\\":\\\"Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv;Converted/SQL/ingfrmdb/SalesLT/ProductCategory/2022/01/13/22/202201132234.csv\\\",\\\"OutputPath\\\":\\\"LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv;LoadedDate/LoadedDate/2022/01/05/23/LoadedDate_202201052312.csv\\\",\\\"FlagUpdateOutputDate\\\":\\\"0;0;0;0;0;0\\\",\\\"DtLogId\\\":\\\"39\\\",\\\"EntRunId\\\":\\\"818bddf3-c270-443d-8aca-ab4d142b75cd\\\",\\\"DtRunId\\\":\\\"93e45e67-c414-4c28-bc52-4698091ef3de\\\",\\\"DtStatus\\\":\\\"Failed\\\",\\\"OutputUpdateDate\\\":\\\"2022-01-13T22:34:17.217\\\",\\\"TransformationPathGranularity\\\":\\\"HH\\\",\\\"InputParameter\\\":\\\"{\\\\\\\"Column Name\\\\\\\":\\\\\\\"Name\\\\\\\"}\\\"}\"\r\n",
-							"\r\n",
-							"OutputParameters = \"[{\\\"DtDataSetId\\\":9,\\\"DtConfigId\\\":10,\\\"DtOutputId\\\":\\\"10\\\",\\\"OutputNumber\\\":\\\"1\\\",\\\"FileTransformationName\\\":\\\"UpperColName\\\",\\\"TransformationPathGranularity\\\":\\\"HH\\\",\\\"OutputUpdateDate\\\":\\\"Jan 14 2022  3:14PM\\\",\\\"DeltaTableName\\\":\\\"UpperNameSQL\\\"}]\"\r\n",
-							"\r\n",
-							"TriggerTime = \"2022-01-13 22:34:17\""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Import required libraries\r\n",
-							"from pyspark.sql import SparkSession\r\n",
-							"import pandas \r\n",
-							"import datetime\r\n",
-							"import time"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							},
-							"tags": [
-								"parameters"
-							]
-						},
-						"source": [
-							"DataTransformationParameters=\"\"\r\n",
-							"SinkGlobalParameters=\"\"\r\n",
-							"output_params=\"\"\r\n",
-							"TriggerTime_param=\"\"\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#convert to dict \r\n",
-							"dt_params_dict = json.loads(DataTransformationParameters)\r\n",
-							"sink_params_dict = json.loads(SinkGlobalParameters)\r\n",
-							"output_params_dict= json.loads(output_params)[0]\r\n",
-							"\r\n",
-							"input_parameter_dict = json.loads(dt_params_dict['InputParameter'])"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Get the necessary variables\r\n",
-							"function_name = str(dt_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
-							"#dt_method = str(dt_params_dict[\"DtMethod\"]).strip()                                   # Data validation method name\r\n",
-							"\r\n",
-							"\r\n",
-							"source_path = dt_params_dict['SinkPath'].split(';')[0]                       #.split('.')[0]   #to avoid having wrong path when path repeats\r\n",
-							"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
-							"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
-							"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
-							"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
-							"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
-							"\r\n",
-							"#replace // to get the correct path \r\n",
-							"source_path = source_path.replace('//', '/')\r\n",
-							"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
-							"source_container_name = 'sink'\r\n",
-							"\r\n",
-							"TransformationPathGranularity = output_params_dict[\"TransformationPathGranularity\"]\r\n",
-							"\r\n",
-							"#storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"src_object_child =dt_params_dict[\"SinkPath\"].split(\"/\")[-1]\r\n",
-							"#file_extension = dt_params_dict[\"SinkPath\"].split(\".\")[-1]\r\n",
-							"column_name = input_parameter_dict[\"Column Name\"]\r\n",
-							"#function_name = dt_params_dict[\"FunctionName\"]\r\n",
-							"DtOutputId = output_params_dict[\"DtOutputId\"].split(\";\")\r\n",
-							"FileTransformationName = output_params_dict[\"FileTransformationName\"].split(\";\")\r\n",
-							"output_container_name = sink_params_dict[\"output_container_name\"]\r\n",
-							"TriggerTime = datetime.datetime.strptime(TriggerTime_param,'%Y-%m-%d %H:%M:%S')\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#read parquet file\r\n",
-							"#connet to the Sink\r\n",
-							" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
-							"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
-							"  \r\n",
-							"  try:  \r\n",
-							"    print(\"Start process\")\r\n",
-							"    #Set up an account access keySet up an account access key\r\n",
-							"    spark.conf.set(\"fs.azure.account.key.{}.dfs.core.windows.net\".format(adls_storage_account_name),\"{}\".format(dbutils.secrets.get(scope = \"{}\".format(kv_scope_name), key= \"{}\".format(adls_blob_secret_name))))\r\n",
-							"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
-							"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-							"\r\n",
-							"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
-							"    try:\r\n",
-							"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
-							"    except:\r\n",
-							"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
-							"\r\n",
-							"    \r\n",
-							"    return df    \r\n",
-							"  \r\n",
-							"  except Exception as ex:\r\n",
-							"    raise Exception(f'Error: {ex}')"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"sink_file=read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Remove cache files (start with \"_\")\r\n",
-							"def Remove_Cache_Files_From_Sink_Transformation(files,kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
-							"  try:\r\n",
-							"    cache_files = [x for x in files if x.name.startswith(\"_\")]\r\n",
-							"    for file in cache_files:\r\n",
-							"      dbutils.fs.rm(file.path)\r\n",
-							"      print('> Cache file removed:', file.path)\r\n",
-							"  except Exception as error:\r\n",
-							"    print('\\n> ***ERROR removing _cache sink files:', error)\r\n",
-							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Remove cache files','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-							"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"#Create output path and file name\r\n",
-							"def Create_Output_Path_And_File_Name(TransformationPathGranularity,output_path,FileTransformationName,TriggerTime,kv_scope_name, kv_workspace_id, kv_workspace_pk,DtOutputId,function_name,output_file_name):\r\n",
-							"  \r\n",
-							"  try:\r\n",
-							"    i = 0\r\n",
-							"    for item in DtOutputId:\r\n",
-							"      if TransformationPathGranularity == \"YY\":\r\n",
-							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year))\r\n",
-							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
-							"      elif TransformationPathGranularity == \"MM\":\r\n",
-							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")))\r\n",
-							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
-							"      elif TransformationPathGranularity == \"DD\":\r\n",
-							"        output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")) + \"/\" + str(TriggerTime.strftime(\"%d\")))\r\n",
-							"        output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
-							"      elif TransformationPathGranularity == \"HH\":\r\n",
-							"            output_path.append(function_name + \"/\" + FileTransformationName[i] + \"/\" + str(TriggerTime.year) + \"/\" + str(TriggerTime.strftime(\"%m\")) + \"/\" + str(TriggerTime.strftime(\"%d\")) + \"/\" + str(TriggerTime.strftime(\"%H\")))\r\n",
-							"    output_file_name.append(FileTransformationName[i] + \"_\" + str(TriggerTime.year) + str(TriggerTime.strftime(\"%m\")) + str(TriggerTime.strftime(\"%d\")) + str(TriggerTime.strftime(\"%H\")) + str(TriggerTime.strftime(\"%M\")))\r\n",
-							"    i+=1\r\n",
-							"  except Exception as error:\r\n",
-							"    print('\\n> ***ERROR in Create_Output_Path_And_File_Name:', error)\r\n",
-							"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Create output path and file name','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-							"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"def Transform_Column_To_Upper(sink_file,column_name,output_container_name,adls_storage_account_name,output_path,src_object_child,\r\n",
-							"                              kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
-							"    \r\n",
-							"  sink_file_pandas = sink_file.toPandas()\r\n",
-							"  columns = list(sink_file_pandas.columns)\r\n",
-							"  file_name = src_object_child.split(\".\")[0]\r\n",
-							"  delta_status = False\r\n",
-							"  \r\n",
-							"  if column_name in columns:\r\n",
-							"    print('\\n> Uppercase characters...')\r\n",
-							"    sink_file_pandas[column_name] = sink_file_pandas[column_name].str.upper()\r\n",
-							"    \r\n",
-							"  else:\r\n",
-							"    message = f\"No column '{column_name}' in Table. Columns were found: {columns}\"\r\n",
-							"    return delta_status, message\r\n",
-							"    \r\n",
-							"  \r\n",
-							"  \r\n",
-							"  try:\r\n",
-							"    output_container_path = \"abfss://{}@{}.dfs.core.windows.net\".format(output_container_name, adls_storage_account_name)\r\n",
-							"    output_blob_folder = \"%s/%s\" % (output_container_path,output_path[0])\r\n",
-							"    print('\\n> Saving upper-part file result in:', output_blob_folder)\r\n",
-							"    # Write the dataframe as a single part-file to storage, Spark uses Hadoop File Format, which requires data to be partitioned - that's why you have part- files. You can easily change filename after processing.    \r\n",
-							"    output_file_dataframe = spark.createDataFrame(sink_file_pandas)\r\n",
-							"    print(\"...Saving file: {}\".format(output_blob_folder))\r\n",
-							"    #output_file_dataframe.coalesce(1).write.format(\"csv\").option(\"header\", \"true\").mode(\"overwrite\").save(output_blob_folder)\r\n",
-							"    #output_file_dataframe.coalesce(1).write.format(\"parquet\").save(output_blob_folder)\r\n",
-							"    output_file_dataframe.write.format(\"parquet\").save(output_blob_folder)\r\n",
-							"\r\n",
-							"    # Get the name of the wrangled-data CSV file that was just saved to Azure blob storage (it starts with 'part-')\r\n",
-							"    #files = dbutils.fs.ls(output_blob_folder)\r\n",
-							"    #output_file = [x for x in files if x.name.startswith(\"part-\")]\r\n",
-							"    #output_file_name_id = output_file_name[0] + \".csv\"\r\n",
-							"    #output_file_name_id = output_file_name[0] + \".parquet\"\r\n",
-							"\r\n",
-							"    #print('\\n> Renaming part-file with final name...\\n>> From: {}\\n>> To:   {}\\n'.format(output_file[0].path, \"%s/%s\" % (output_blob_folder,output_file_name_id)))\r\n",
-							"    #dbutils.fs.mv(output_file[0].path, \"%s/%s\" % (output_blob_folder,output_file_name_id))\r\n",
-							"    \r\n",
-							"    #Delete cache files in transformation sink container _SUCCESS...\r\n",
-							"    Remove_Cache_Files_From_Sink_Transformation(files,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
-							"    \r\n",
-							"  except Exception as ex:\r\n",
-							"    raise Exception(f'Error: {ex}')\r\n",
-							"    \r\n",
-							"  return delta_status, sink_file_pandas"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"\r\n",
-							"#Create outputs (path and file name)\r\n",
-							"output_path = []\r\n",
-							"output_file_name = []\r\n",
-							"Create_Output_Path_And_File_Name(TransformationPathGranularity,output_path,FileTransformationName,TriggerTime,kv_scope_name, kv_workspace_id, kv_workspace_pk,DtOutputId,function_name,output_file_name)\r\n",
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"delta_status = False\r\n",
-							"new_file = False\r\n",
-							"\r\n",
-							"# Obtain the count of nulls\r\n",
-							"try:\r\n",
-							"  delta_status, new_file = Transform_Column_To_Upper(sink_file,column_name,output_container_name,adls_storage_account_name,\r\n",
-							"                                                     output_path,src_object_child,kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
-							"  \r\n",
-							"except Exception as error:\r\n",
-							"  print(f\"An error has occurred: {error}\")\r\n",
-							"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'ERROR in UpperColumnDT','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-							"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
-							"  \r\n",
-							"  \r\n",
-							"new_file"
-						],
-						"outputs": [],
-						"execution_count": null
-					},
-					{
-						"cell_type": "code",
-						"metadata": {
-							"jupyter": {
-								"source_hidden": false,
-								"outputs_hidden": false
-							},
-							"nteract": {
-								"transient": {
-									"deleting": false
-								}
-							}
-						},
-						"source": [
-							"# Pass parameter to ADF\r\n",
-							"mssparkutils.notebook.exit(delta_status)"
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
 			"dependsOn": []
 		}
 	]
