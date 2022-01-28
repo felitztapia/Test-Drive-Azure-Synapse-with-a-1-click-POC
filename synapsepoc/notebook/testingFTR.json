@@ -18,7 +18,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "1",
-				"spark.autotune.trackingId": "17fc7faf-eb5a-4035-bde0-d552b304dad8"
+				"spark.autotune.trackingId": "49ff6841-24e3-4b8c-b445-bb149c290612"
 			}
 		},
 		"metadata": {
@@ -84,7 +84,7 @@
 					"\r\n",
 					"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Column Name\\\":\\\"DateId\\\"}}\""
 				],
-				"execution_count": 76
+				"execution_count": 78
 			},
 			{
 				"cell_type": "code",
@@ -103,7 +103,7 @@
 					"json_output=\"\"\r\n",
 					"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 				],
-				"execution_count": 77
+				"execution_count": 79
 			},
 			{
 				"cell_type": "code",
@@ -123,7 +123,7 @@
 					"# Pass parameter to ADF\r\n",
 					"mssparkutils.notebook.exit(json_output)"
 				],
-				"execution_count": 71
+				"execution_count": 80
 			},
 			{
 				"cell_type": "code",
