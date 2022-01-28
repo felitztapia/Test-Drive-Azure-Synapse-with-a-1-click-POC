@@ -5051,7 +5051,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "04fd67d9-3205-40ba-b98c-4b4b11816d77"
+						"spark.autotune.trackingId": "bed29424-dada-404d-b7ff-37ffa58dfbc8"
 					}
 				},
 				"metadata": {
@@ -5223,7 +5223,8 @@
 							"\r\n",
 							"dv_params_dict = json.loads(dv_params)\r\n",
 							"\r\n",
-							"sink_params_dict = json.loads(sink_params)"
+							"sink_params_dict = json.loads(sink_params)\r\n",
+							"input_parameter_dict=dv_params_dict['InputParameter']"
 						],
 						"outputs": [],
 						"execution_count": null
@@ -7020,7 +7021,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "1",
 						"spark.dynamicAllocation.maxExecutors": "1",
-						"spark.autotune.trackingId": "3e018cf2-d878-455f-b73d-16312a89475a"
+						"spark.autotune.trackingId": "34a3edff-1bb5-491d-b0ad-31de20d4bea1"
 					}
 				},
 				"metadata": {
@@ -7045,10 +7046,8 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
-					},
-					"sessionKeepAliveTimeout": 30
+						"memory": 28
+					}
 				},
 				"cells": [
 					{
@@ -7082,13 +7081,13 @@
 						},
 						"source": [
 							"# Data for testing.\r\n",
-							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"synapsedata\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"aicscpgdemo02\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+							"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"synapsedata\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls_storage_name\\\":\\\"aicscpgdemo02\\\",\\\"adls_storage_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
 							"\r\n",
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"Column Name\\\":\\\"DateId\\\"}}\"\r\n",
 							"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\": {\\\"DateId\\\":[\\\"[0-9]{5}\\\"]}}\""
 						],
 						"outputs": [],
-						"execution_count": 99
+						"execution_count": 111
 					},
 					{
 						"cell_type": "code",
@@ -7108,7 +7107,7 @@
 							"json_output=mssparkutils.notebook.run('NB_03_ColumnLevel',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
 						],
 						"outputs": [],
-						"execution_count": 103
+						"execution_count": 112
 					},
 					{
 						"cell_type": "code",
@@ -7152,7 +7151,7 @@
 							"sink_params_dict = json.loads(SinkGlobalParameters)"
 						],
 						"outputs": [],
-						"execution_count": 100
+						"execution_count": 114
 					},
 					{
 						"cell_type": "code",
@@ -7168,13 +7167,10 @@
 							}
 						},
 						"source": [
-							"print(dv_params_dict[\"InputParameter\"])\r\n",
-							"strVal= str(dv_params_dict[\"InputParameter\"])\r\n",
-							"print(strVal)\r\n",
-							"#json.loads(strVal)"
+							"input_parameter_dict=dv_params_dict['InputParameter']"
 						],
 						"outputs": [],
-						"execution_count": 101
+						"execution_count": 119
 					},
 					{
 						"cell_type": "code",
@@ -7190,10 +7186,30 @@
 							}
 						},
 						"source": [
-							"print(dv_params_dict['InputParameter'])"
+							"import numpy\r\n",
+							"column_names = numpy.array(list(input_parameter_dict.keys())) "
 						],
 						"outputs": [],
-						"execution_count": 41
+						"execution_count": 120
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"print(column_names)"
+						],
+						"outputs": [],
+						"execution_count": 121
 					},
 					{
 						"cell_type": "code",
