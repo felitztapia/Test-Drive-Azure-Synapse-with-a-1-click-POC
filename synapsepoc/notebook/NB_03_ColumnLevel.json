@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "c408e56b-d63f-4169-a0fa-588963775b6c"
+				"spark.autotune.trackingId": "62a4ea2f-e472-4931-9acb-20cf2377e160"
 			}
 		},
 		"metadata": {
@@ -45,8 +45,10 @@
 				"sparkVersion": "2.4",
 				"nodeCount": 10,
 				"cores": 4,
-				"memory": 28
-			}
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
 			{
@@ -162,7 +164,7 @@
 					"source_path = source_path.replace('//', '/')\r\n",
 					"sink_path = dv_params_dict[\"SinkFolderPath\"].strip()                                        # Path of the sink file\r\n",
 					"sink_container_name = sink_params_dict[\"sink_container_name\"].strip() #its also sink\r\n",
-					"source_container_name = 'sink'\r\n",
+					"source_container_name =  sink_params_dict[\"sink_container_name\"]\r\n",
 					"\r\n",
 					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
 					"#kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
@@ -447,12 +449,13 @@
 				},
 				"source": [
 					"# Checking column(s) with regex.\r\n",
+					"json_output={'ExecutionStatus': 'N/A','Error Message':'Fail at Checking columns with regex.'}\r\n",
 					"try:\r\n",
 					"  json_output = Validating_NB_03_ColumnLevel(df,column_names,target_expressions,condition,sink_container_name,storage_account_name,sink_path,adls_storage_account_name)\r\n",
 					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
 					"except:\r\n",
 					"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail at Checking columns with regex','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
-					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
 				],
 				"execution_count": null
 			},
