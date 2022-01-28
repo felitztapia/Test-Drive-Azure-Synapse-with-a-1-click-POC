@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "29f28aff-8453-461b-916b-bb8945debddc"
+				"spark.autotune.trackingId": "18f43dc2-a828-4f6d-a23b-ad056d275a35"
 			}
 		},
 		"metadata": {
@@ -158,7 +158,7 @@
 					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
 					"sink_params = SinkGlobalParameters\r\n",
 					"\r\n",
-					"input_parameter_dict=dv_params_dict['InputParameter']"
+					""
 				],
 				"execution_count": null
 			},
@@ -180,7 +180,9 @@
 					"import json\r\n",
 					"\r\n",
 					"dv_params_dict = json.loads(dv_params)\r\n",
-					"sink_params_dict = json.loads(sink_params)"
+					"sink_params_dict = json.loads(sink_params)\r\n",
+					"\r\n",
+					"input_parameter_dict=dv_params_dict['InputParameter']"
 				],
 				"execution_count": null
 			},
