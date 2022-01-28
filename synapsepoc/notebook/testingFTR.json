@@ -9,16 +9,16 @@
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "56g",
-			"driverCores": 8,
-			"executorMemory": "56g",
-			"executorCores": 8,
-			"numExecutors": 2,
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 1,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
-				"spark.dynamicAllocation.minExecutors": "2",
-				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "876c7892-353f-4e52-b732-b2514785939a"
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "1",
+				"spark.autotune.trackingId": "9bb73cb9-a199-4291-b3f9-c350c9d35cbe"
 			}
 		},
 		"metadata": {
@@ -79,9 +79,30 @@
 					}
 				},
 				"source": [
-					"json_output=mssparkutils.notebook.run(NB_01_RowCount,600, {'SinkGlobalParameters':'Param1','DataValidationParameters':'PAram2'})"
+					"# Data for testing.\r\n",
+					"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+					"\r\n",
+					"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
 				],
-				"execution_count": 1
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"json_output=mssparkutils.notebook.run('NB_02_NullCount',600, {'SinkGlobalParameters':SinkGlobalParameters,'DataValidationParameters':DataValidationParameters})"
+				],
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
@@ -100,6 +121,24 @@
 					"\r\n",
 					"# Pass parameter to ADF\r\n",
 					"mssparkutils.notebook.exit(json_output)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
 				],
 				"execution_count": null
 			}
