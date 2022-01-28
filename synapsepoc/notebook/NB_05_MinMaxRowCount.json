@@ -1,0 +1,404 @@
+{
+	"name": "NB_05_MinMaxRowCount",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "felitztapia",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "e6093c63-6a31-4d13-8662-0c7181be934c"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+				"name": "felitztapia",
+				"type": "Spark",
+				"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"### Metadata-Driven Ingestion Framework \r\n",
+					"#### Data Validation: 05 Min/Max Row Count\r\n",
+					"Connect to sink instance and count the records. Compare the result with the input parameters send it to Azure Data Factory."
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"### IMPORTANT!\r\n",
+					"#### Configuration for testing and debug\r\n",
+					"Change the value of \"testing=False\" for production environment.\r\n",
+					"Change the value of debug variables to see or hide prints with information."
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+					"print_dictionaries = False\r\n",
+					"print_common_variables = False\r\n",
+					"print_empty_variables = False"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Data for testing.\r\n",
+					"SinkGlobalParameters =  \"{\\\"kv_scope_name\\\":\\\"ADLS_Spark\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_secret\\\":\\\"\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls2_storage_account_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls2_blob_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+					"\r\n",
+					"DataValidationParameters = \"{\\\"FwkLogId\\\":5,\\\"SrcObjectChild\\\":\\\"Product.csv\\\",\\\"DvMappingId\\\":11,\\\"SourcePath\\\":\\\"source/jsonfile/Product.json\\\",\\\"ConvertPath\\\":\\\"/Converted/ADLS/TripData/2022/01/25/16/\\\",\\\"SinkFolderPath\\\":\\\"Converted/ADLS/Files/Product/2022/01/07/15/DataValidation/\\\",\\\"FileName\\\":\\\"\\\",\\\"RowsRead\\\":null,\\\"RowsCopied\\\":null,\\\"SourceType\\\":\\\"parquet\\\",\\\"SchemaName\\\":\\\"Files\\\",\\\"SrcObject\\\":\\\"TripData_20130101.parquet\\\",\\\"InstanceURL\\\":\\\"https://adlsmetadatadriven.dfs.core.windows.net/\\\",\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ADLS-AccountKey\\\",\\\"SrcPath\\\":\\\"source/jsonfile\\\",\\\"IPAddress\\\":null,\\\"NotebookPath\\\":\\\"/Shared/Metadata Driven Ingestion Framework/Data Validation/NB_01_RowCount\\\",\\\"FileFormat\\\":\\\"parquet\\\",\\\"FunctionName\\\":\\\"RowCount\\\",\\\"DvMethod\\\":\\\"Databricks\\\",\\\"ConditionFlag\\\":1,\\\"EntRunId\\\":\\\"59f03a27-fa44-4c9b-92ec-598d4a808166\\\",\\\"InputParameter\\\":null}\""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"SinkGlobalParameters =\"\"\r\n",
+					"DataValidationParameters=\"\""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Get the necessary variables\r\n",
+					"fwklog_id = dv_params_dict[\"FwkLogId\"]  \r\n",
+					"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
+					"dv_method = str(dv_params_dict[\"DvMethod\"]).strip()                                   # Data validation method name\r\n",
+					"\r\n",
+					"\r\n",
+					"source_path = dv_params_dict['ConvertPath']\r\n",
+					"#replace // to get the correct path \r\n",
+					"source_path = source_path.replace('//', '/')\r\n",
+					"#adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
+					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+					"\r\n",
+					"source_container_name = 'sink'\r\n",
+					"\r\n",
+					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+					"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+					"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+					"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"].strip()    # Name of the Azure Blob Storage Account \r\n",
+					"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
+					"\r\n",
+					"#storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls\r\n",
+					"\r\n",
+					"#condition = dv_params_dict[\"ConditionFlag\"]                                 # UPDATE ConditionFlag new value\r\n",
+					"# Declare input parameter variable\r\n",
+					"#column_names = input_parameter_dict[\"Column Name\"] if \"Column Name\" in input_parameter_dict else '' # Name(s) of column(s) to validate, there may be no parameters (for example NB_01) \r\n",
+					"\r\n",
+					"# Declare variables for NB_05_MinMaxRowCount\r\n",
+					"min_value = input_parameter_dict[\"Min Value\"]                                 # Lower bound of the expected range of records\r\n",
+					"print('min_value:', min_value)\r\n",
+					"max_value = input_parameter_dict[\"Max Value\"]                                 # Upper bound of the expected range of records\r\n",
+					"print('max_value:', max_value)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#read parquet file\r\n",
+					"#connet to the Sink\r\n",
+					" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+					"def read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path):\r\n",
+					"  \r\n",
+					"  \r\n",
+					"  try:\r\n",
+					"    \r\n",
+					"    print(\"Start process\")\r\n",
+					"     #Set up an account access keySet up an account access key\r\n",
+					"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+					"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+					"    path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"\r\n",
+					"    print(\"******************************** {}\".format(f'{path}*.parquet'))\r\n",
+					"    try:\r\n",
+					"      \r\n",
+					"      df = spark.read.parquet(f'{path}*.snappy.parquet')\r\n",
+					"      \r\n",
+					"    except:\r\n",
+					"      \r\n",
+					"      df = spark.read.parquet(f'{path}*.parquet')\r\n",
+					"\r\n",
+					"    \r\n",
+					"    return df    \r\n",
+					"  \r\n",
+					"  except Exception as ex:\r\n",
+					"    raise Exception(f'Error: {ex}')"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df = read_pqt(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, source_container_name, adls_source_name, source_path)\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def row_count(df):\r\n",
+					"  rcnt = df.count()\r\n",
+					"  return rcnt"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"def Compare_Count_Files(sink_file_rows_count, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+					"  # Build the inputs for the DataValidationLog table\r\n",
+					"  # If Min Value is defined as zero, null, or empty -> Min Value will be taken as zero.\r\n",
+					"  if min_value <= max_value:\r\n",
+					"    if isinstance(min_value, str):\r\n",
+					"      if min_value.lower() == \"null\" or min_value == \"\":\r\n",
+					"        min_value = 0\r\n",
+					"      else: \r\n",
+					"        min_value = int(min_value)\r\n",
+					"\r\n",
+					"    if isinstance(max_value, str):\r\n",
+					"      if max_value.lower() == \"null\" or max_value == \"\":\r\n",
+					"        max_value = 0\r\n",
+					"      else:\r\n",
+					"        max_value = int(max_value)\r\n",
+					"\r\n",
+					"    # Validate that the sink record count is inside the thresholds.\r\n",
+					"    if max_value == 0:\r\n",
+					"      if sink_file_rows_count >= min_value:\r\n",
+					"        validation_status = \"Succeeded\"\r\n",
+					"        validation_bool = \"True\"\r\n",
+					"        message = f\"MinMaxRowCount was applied. The values are between {min_value} and {max_value}\"\r\n",
+					"      else:\r\n",
+					"        validation_status = \"Failed\"\r\n",
+					"        validation_bool = \"False\"\r\n",
+					"        message = \"MinMaxRowCount was applied. The number of records is not higher than {}. The actual number is: {}.\".format(str(min_value), str(sink_file_rows_count))\r\n",
+					"    else:\r\n",
+					"      if sink_file_rows_count >= min_value and sink_file_rows_count <= max_value:\r\n",
+					"        validation_status = \"Succeeded\"\r\n",
+					"        validation_bool = \"True\"\r\n",
+					"        message = \"MinMaxRowCount was applied.\"\r\n",
+					"      else:\r\n",
+					"        validation_status = \"Failed\"\r\n",
+					"        validation_bool = \"False\"\r\n",
+					"        message = \"MinMaxRowCount was applied. The number of records is not between {} and {}. The actual number is: {}.\".format(str(min_value), str(max_value), str(sink_file_rows_count))\r\n",
+					"  else:\r\n",
+					"    validation_status = \"Failed\"\r\n",
+					"    validation_bool = \"False\"\r\n",
+					"    message = \"MinMaxRowCount was applied. The min value is greater than the max value.\"\r\n",
+					"  \r\n",
+					"  output = {'ExecutionStatus': 'Successfull',\"FwkLogId\": fwklog_id, \"Output\": {\"Count\": sink_file_rows_count, \"Validation\": { \"Status\": validation_bool, \"Message\": message}}}\r\n",
+					"  \r\n",
+					"  #print(output)\r\n",
+					"  return output"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Main method for validation.\r\n",
+					"def Validating_NB_05_MinMaxRowCount(df, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk):\r\n",
+					"  try:\r\n",
+					"    #sink_file_rows_count = count_rows(sink_file)\r\n",
+					"    sink_file_rows_count = row_count(df)\r\n",
+					"    return Compare_Count_Files(sink_file_rows_count, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+					"  except Exception as error:\r\n",
+					"    print(\"*** ERROR in Validating_NB_05_MinMaxRowCount:\", error)\r\n",
+					"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail to execute main method for validation','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+					"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+					"    return {}"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Comparing rows counts.\r\n",
+					"try:\r\n",
+					"  json_output = Validating_NB_05_MinMaxRowCount(df, min_value, max_value, fwklog_id, kv_scope_name, kv_workspace_id, kv_workspace_pk)\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, json_output)\r\n",
+					"except Exception as err:\r\n",
+					"  print(f\"An error has occurred: {err}\")\r\n",
+					"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'Fail at Comparing rows MinMaxRow counts','FwkLogId': fwklog_id,'FunctionName': function_name ,'DvMethod':dv_method}\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Pass parameter to ADF\r\n",
+					"dbutils.notebook.exit(json_output)"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
