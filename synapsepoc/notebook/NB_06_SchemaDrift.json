@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "59169280-a1d5-4a27-94b7-08ffd1048e2d"
+				"spark.autotune.trackingId": "d21a04d7-d3ca-4f4c-9b7b-a0fae8f64249"
 			}
 		},
 		"metadata": {
@@ -45,8 +45,10 @@
 				"sparkVersion": "2.4",
 				"nodeCount": 10,
 				"cores": 4,
-				"memory": 28
-			}
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
 		},
 		"cells": [
 			{
@@ -148,6 +150,57 @@
 					}
 				},
 				"source": [
+					"print('Obtain the parameters sent by Azure Data Factory, ***NOTE: Change above the value of \"testing=False\" for production environment.')\r\n",
+					"#dbutils.widgets.text(\"DataValidationParameters\", \"\", \"\")\r\n",
+					"#dv_params = dbutils.widgets.get(\"DataValidationParameters\") if testing==False else DataValidationParameters\r\n",
+					"dv_params = DataValidationParameters\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+					"#sink_params = dbutils.widgets.get(\"SinkGlobalParameters\") if testing==False else SinkGlobalParameters\r\n",
+					"sink_params = SinkGlobalParameters\r\n",
+					"\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Convert string (json) parameters to dictionaries.\r\n",
+					"import json\r\n",
+					"\r\n",
+					"dv_params_dict = json.loads(dv_params)\r\n",
+					"sink_params_dict = json.loads(sink_params)\r\n",
+					"\r\n",
+					"input_parameter_dict=dv_params_dict['InputParameter']"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
 					"#Get the necessary variables\r\n",
 					"fwklog_id = dv_params_dict[\"FwkLogId\"]  \r\n",
 					"function_name = str(dv_params_dict[\"FunctionName\"]).strip()                           # Validation Function name\r\n",
@@ -158,10 +211,11 @@
 					"#replace // to get the correct path \r\n",
 					"source_path = source_path.replace('//', '/')\r\n",
 					"#adls_source_name = 'adlsmetadatadriven2.dfs.core.windows.net/'\r\n",
-					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+					"\r\n",
 					"\r\n",
 					"sink_type=sink_params_dict[\"sink_type\"]\r\n",
-					"source_container_name = 'sink'\r\n",
+					"source_container_name = sink_params_dict[\"sink_container_name\"]\r\n",
+					"\r\n",
 					"\r\n",
 					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
 					"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
@@ -170,6 +224,7 @@
 					"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"].strip()            # Name of the container in the Azure Blob Storage \r\n",
 					"\r\n",
 					"storage_account_name = adls_storage_account_name              # Name of the Azure Blob Storage Account we store it in the same as adls\r\n",
+					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
 					"\r\n",
 					"condition = dv_params_dict[\"ConditionFlag\"]                                 # UPDATE ConditionFlag new value\r\n",
 					"# Declare input parameter variable\r\n",
