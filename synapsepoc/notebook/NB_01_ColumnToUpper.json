@@ -16,7 +16,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "d1720e1c-efe2-4c9f-b3d9-41534de82a35"
+				"spark.autotune.trackingId": "4204bd7b-6cba-4a01-a111-56a88dd82e51"
 			}
 		},
 		"metadata": {
@@ -163,7 +163,7 @@
 					"sink_params_dict = json.loads(SinkGlobalParameters)\r\n",
 					"output_params_dict= json.loads(output_params)[0]\r\n",
 					"\r\n",
-					"input_parameter_dict = json.loads(dt_params_dict['InputParameter'])"
+					"input_parameter_dict = dt_params_dict['InputParameter']"
 				],
 				"execution_count": null
 			},
@@ -196,7 +196,8 @@
 					"#replace // to get the correct path \r\n",
 					"source_path = source_path.replace('//', '/')\r\n",
 					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
-					"source_container_name = 'sink'\r\n",
+					"\r\n",
+					"source_container_name = sink_params_dict[\"sink_container_name\"]\r\n",
 					"\r\n",
 					"TransformationPathGranularity = output_params_dict[\"TransformationPathGranularity\"]\r\n",
 					"\r\n",
@@ -308,12 +309,12 @@
 					"  try:\r\n",
 					"    cache_files = [x for x in files if x.name.startswith(\"_\")]\r\n",
 					"    for file in cache_files:\r\n",
-					"      dbutils.fs.rm(file.path)\r\n",
+					"      mssparkutils.fs.rm(file.path)\r\n",
 					"      print('> Cache file removed:', file.path)\r\n",
 					"  except Exception as error:\r\n",
 					"    print('\\n> ***ERROR removing _cache sink files:', error)\r\n",
 					"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Remove cache files','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-					"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+					"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
 				],
 				"execution_count": null
 			},
@@ -353,7 +354,7 @@
 					"  except Exception as error:\r\n",
 					"    print('\\n> ***ERROR in Create_Output_Path_And_File_Name:', error)\r\n",
 					"    msg_error = {'ExecutionStatus': 'Failed','Error Message':'Create output path and file name','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-					"    post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
+					"    #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)"
 				],
 				"execution_count": null
 			},
@@ -467,7 +468,7 @@
 					"except Exception as error:\r\n",
 					"  print(f\"An error has occurred: {error}\")\r\n",
 					"  msg_error = {'ExecutionStatus': 'Failed','Error Message':'ERROR in UpperColumnDT','FunctionName':'NB_01_ColumnToUpper'}\r\n",
-					"  post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+					"  #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
 					"  \r\n",
 					"  \r\n",
 					"new_file"
