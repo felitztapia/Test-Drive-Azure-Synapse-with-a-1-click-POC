@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "fb793142-95f3-4f7d-aacf-3155f3083213"
+				"spark.autotune.trackingId": "edd9a59f-56c0-4aac-bb9d-062fc70df30c"
 			}
 		},
 		"metadata": {
@@ -135,7 +135,9 @@
 					"\r\n",
 					"print(' Pass parameter to ADF')\r\n",
 					"#dbutils.notebook.exit(json_output)\r\n",
-					"mssparkutils.notebook.exit(\"hello world\") "
+					"output = {'ExecutionStatus': 'successfull','FwkLogId': 10, 'Output': {'Count': 123, 'Validation': { 'Status': 1, 'Message': 'Testing OK'}}}\r\n",
+					"  \r\n",
+					"mssparkutils.notebook.exit(output) "
 				],
 				"execution_count": null
 			}
