@@ -1,0 +1,424 @@
+{
+	"name": "DI_01_Convert_to_Parquet",
+	"properties": {
+		"folder": {
+			"name": "MDMF_DataIngestion"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "felitztapia",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "72c3b4af-45d1-4d28-a728-1a91d7577e91"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
+				"name": "felitztapia",
+				"type": "Spark",
+				"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "2.4",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"### Metadata-Driven Ingestion Framework \r\n",
+					"#### Data Ingestion: Convert to Parquet\r\n",
+					"Connect to sink instance and convert the file to parquet. Validate the result and send it to Azure Data Factory."
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"### IMPORTANT!\r\n",
+					"#### Configuration for testing and debug\r\n",
+					"Change the value of \"testing=False\" for production environment.\r\n",
+					"Change the value of debug variables to see or hide prints with information."
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
+					"print_dictionaries = False\r\n",
+					"print_common_variables = False\r\n",
+					"print_empty_variables = False\r\n",
+					"\r\n",
+					"SinkGlobalParameters = \"{\\\"kv_scope_name\\\":\\\"KeyVaultSecrets\\\",\\\"kv_workspace_id\\\":\\\"MDIF-la-workspace-Id\\\",\\\"kv_workspace_pk\\\":\\\"MDIF-la-workspace-pk\\\",\\\"raw_storage_name\\\":\\\"\\\",\\\"raw_storage_secret_name\\\":\\\"\\\",\\\"sink_container_name\\\":\\\"sink\\\",\\\"schema_container_name\\\":\\\"schemas\\\",\\\"output_container_name\\\":\\\"datatransformation\\\",\\\"adls_storage_name\\\":\\\"adlsmetadatadriven2\\\",\\\"adls_storage_secret_name\\\":\\\"MDIF-ADLSmetadatadriven2-AccountKey\\\",\\\"sink_type\\\":\\\"ADLS\\\"}\"\r\n",
+					"\r\n",
+					"FwkParameters = \"{\\\"FwkSourceId\\\":3,\\\"SourceType\\\":\\\"SQL\\\",\\\"FwkConfigId\\\":25,\\\"SrcObject\\\":\\\"Product\\\",\\\"SchemaName\\\":\\\"SalesLT\\\",\\\"DatabaseName\\\":\\\"ingfrmdb\\\",\\\"WmkColumnName\\\":\\\"ModifiedDate\\\",\\\"WmkDataType\\\":0,\\\"TypeLoad\\\":1,\\\"RelativeURL\\\":null,\\\"ActiveFlag\\\":\\\"Y\\\",\\\"Header01\\\":null,\\\"Header02\\\":null,\\\"InstanceURL\\\":null,\\\"Port\\\":null,\\\"UserName\\\":null,\\\"SecretName\\\":\\\"MDIF-ingfrmdb-CS\\\",\\\"SrcPath\\\":null,\\\"SinkPathGranularity\\\":\\\"HH\\\",\\\"IPAddress\\\":null,\\\"FwkTriggerId\\\":3,\\\"BatchGroupId\\\":2,\\\"ConvertMethod\\\":\\\"Databricks\\\",\\\"SynapseObject\\\":\\\"ExternalView\\\"}\"\r\n",
+					"\r\n",
+					"\r\n",
+					"#SinkPath = \"Converted/SQL/ingfrmdb/SalesLT/Product_202201031458.snappy/2022/01/03/14/\"\r\n",
+					"SinkPath=\"Converted/ADLS/Test/\"\r\n",
+					"#File = \"Landing/SQL/ingfrmdb/SalesLT/Product/2022/01/03/14/Product_202201031458.snappy.parquet\"\r\n",
+					"File = \"Landing/ADLS/SchemaTest3.xlsx\"\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Import required libraries\r\n",
+					"from pyspark.sql import SparkSession\r\n",
+					"import hashlib\r\n",
+					"import pandas as pd\r\n",
+					"import datetime\r\n",
+					"import time\r\n",
+					"import pprint\r\n",
+					"import json\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Declaration of variables and execution of functions"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"SinkGlobalParameters=''\r\n",
+					"FwkParameters=''\r\n",
+					"SinkPath=''\r\n",
+					"File=''"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Obtain the parameters sent by Azure Data Factory\r\n",
+					"#dbutils.widgets.text(\"SinkGlobalParameters\", \"\", \"\")\r\n",
+					"sink_params = SinkGlobalParameters\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"FwkParameters\", \"\", \"\")\r\n",
+					"fwk_params = FwkParameters\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"SinkPath\", \"\", \"\")\r\n",
+					"sink_path = SinkPath\r\n",
+					"\r\n",
+					"#dbutils.widgets.text(\"File\", \"\", \"\")\r\n",
+					"file_name = File"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Convert the string from ADF to a dictionaries using utilities.\r\n",
+					"fwk_params_dict = json.loads(fwk_params)\r\n",
+					"sink_params_dict = json.loads(sink_params)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Name of the Azure Key Vault-backed scope\r\n",
+					"kv_scope_name = sink_params_dict[\"kv_scope_name\"]                                     # Name of the Azure Key Vault-backed scope\r\n",
+					"kv_workspace_id = sink_params_dict[\"kv_workspace_id\"].strip()                         # Name of the secret for the log analytics workspace id\r\n",
+					"kv_workspace_pk = sink_params_dict[\"kv_workspace_pk\"].strip()                         # Name of the secret for the log analytics primary key\r\n",
+					"\r\n",
+					"# Name of the container in the Azure ADLS Storage Account (sink)\r\n",
+					"sink_container_name = 'sink'\r\n",
+					"\r\n",
+					"# Name of the Azure data lake gen 2 \r\n",
+					"adls_storage_account_name = sink_params_dict[\"adls_storage_name\"]    \r\n",
+					"\r\n",
+					"# Name of the container in the Azure data lake\r\n",
+					"adls_blob_secret_name = sink_params_dict[\"adls_storage_secret_name\"]            "
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#Declare source variables\r\n",
+					"\r\n",
+					"source_path = file_name\r\n",
+					"#replace // to get the correct path \r\n",
+					"source_path = source_path.replace('//', '/')\r\n",
+					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
+					"#print(adls_source_name)\r\n",
+					"\r\n",
+					"adls_source_secret = fwk_params_dict['SecretName']\r\n",
+					"source_container_name = 'sink'\r\n",
+					"file_format = (file_name.split('.')[-1]).lower()\r\n",
+					"\r\n",
+					"#Create outputs (path and file name)\r\n",
+					"output_path = sink_path.replace('//', '/')\r\n",
+					"\r\n",
+					"  "
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					" # Function to Access Azure Blob storage using the DataFrame API reads json, csv, parquet and xml file and writes it into parquet \r\n",
+					"def convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, output_path):\r\n",
+					"  parquet_status = True\r\n",
+					"  \r\n",
+					"  try:\r\n",
+					"    print(\"Start process\")\r\n",
+					"    #Set up an account access keySet up an account access key\r\n",
+					"    spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
+					"    spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"    spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"\r\n",
+					"    \r\n",
+					"    \"\"\"Read data Output Files and create delta tables \"\"\"\r\n",
+					"    \r\n",
+					"    if file_format  == 'csv':\r\n",
+					"      print('read.csv')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"      df = spark.read.format(\"csv\").option(\"header\",\"true\").load(path)\r\n",
+					"    \r\n",
+					"    elif file_format  == 'xls' or file_format=='xlsx':\r\n",
+					"      #!pip install openpyxl\r\n",
+					"      print(f'read.{file_format}')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"\r\n",
+					"      file_mounted = f'/dbfs/mnt/dataingestion/ADLS/Files/{source_path}'\r\n",
+					"      print(f\"file mounted: {file_mounted}\")\r\n",
+					"      df=pd.read_excel(file_mounted) \r\n",
+					"      ##convert pandas df to spark to then write it to parquet\r\n",
+					"      print(\"Pandas Dataframe to Spark\")\r\n",
+					"      df=spark.createDataFrame(df.astype(str)) \r\n",
+					"      #dfxl=spark.read.format(\"com.crealytics.spark.excel\").option(\"useHeader\", \"true\").option(\"inferSchema\", \"true\").option(\"dataAddress\", Sheet1).load(path)\r\n",
+					"   \r\n",
+					"    elif file_format  == 'txt':\r\n",
+					"      print(f'read.{file_format}')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"      df = spark.read.option(\"header\", \"true\").option(\"delimiter\",\"|\").csv(path)  #as of spark1.6 you can use  csv to read txt\r\n",
+					"      \r\n",
+					"      #\r\n",
+					"      #import re\r\n",
+					"      #headerList=spark.read.csv(path).take(1) \r\n",
+					"      #delims=['|',';',',','\\t','\\n','\\\\','/','//']\r\n",
+					"      #delimiter=\" \"\r\n",
+					"      #for d in delims:\r\n",
+					"        #if headerList[0][0].find(d)!=-1:\r\n",
+					"      #delimiter=d\r\n",
+					"        #else:\r\n",
+					"          #pass\r\n",
+					"            \r\n",
+					"      #df = spark.read.option(\"header\", \"true\").option(\"delimiter\",delimiter).csv(path)   #as of spark1.6 you can use  csv to read txt\r\n",
+					"      \r\n",
+					"      \r\n",
+					"    elif file_format == 'json':\r\n",
+					"      print('read.json')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      df = spark.read.option(\"multiline\",\"true\").json(path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"      \r\n",
+					"    elif file_format == 'xml':\r\n",
+					"      print('read.xml')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"      \r\n",
+					"      file_mounted = f'/dbfs/mnt/dataingestion/ADLS/Files/{source_path}'\r\n",
+					"      \r\n",
+					"      print(f\"file mounted: {file_mounted}\")\r\n",
+					"      df=pd.read_xml(file_mounted)\r\n",
+					"      #convert pandas df to spark to then write it to parquet\r\n",
+					"      print(\"Pandas Dataframe to Spark\")\r\n",
+					"      df=spark.createDataFrame(df) \r\n",
+					"\r\n",
+					"    elif file_format == 'parquet':\r\n",
+					"      print('read.parquet')\r\n",
+					"      path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
+					"      print(\"******************************** {}\".format(path))\r\n",
+					"      df = spark.read.parquet(path)\r\n",
+					"      \r\n",
+					"    print('getting table')\r\n",
+					"    \r\n",
+					"    save_to_adls = \"abfss://{}@{}.dfs.core.windows.net/{}\".format(sink_container_name, adls_storage_account_name, output_path)\r\n",
+					"    print(f\"File to path: {save_to_adls}\")\r\n",
+					"    df.write.format(\"parquet\").save(save_to_adls)\r\n",
+					"    print('=========> finished')\r\n",
+					"    \r\n",
+					"    return parquet_status\r\n",
+					"\r\n",
+					"  #if error, catch it and display error message \r\n",
+					"  except Exception as exp:\r\n",
+					"    if 'already exists' in str(exp):\r\n",
+					"      print(exp)\r\n",
+					"      return True\r\n",
+					"  \r\n",
+					"    else:\r\n",
+					"      parquet_status = False\r\n",
+					"      print('\\n> ***ERROR in convert_tables method: {}'.format(exp))\r\n",
+					"      msg_error = {'ExecutionStatus': 'Failed','Error Message':'ERROR in convert_tables method','FunctionName':'convert_tables'}\r\n",
+					"      #post_data(kv_scope_name, kv_workspace_id, kv_workspace_pk, msg_error)\r\n",
+					"      raise Exception(\"Check method -> 'convert_tables'\")\r\n",
+					"    \r\n",
+					"  \r\n",
+					"  \r\n",
+					"    \r\n",
+					"\r\n",
+					""
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"st = convert_tables(kv_scope_name, adls_blob_secret_name, adls_storage_account_name, output_path)"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
