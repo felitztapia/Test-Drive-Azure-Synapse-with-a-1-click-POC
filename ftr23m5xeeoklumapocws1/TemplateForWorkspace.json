@@ -15,6 +15,10 @@
 			"type": "string",
 			"defaultValue": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net/"
 		},
+		"ADLS_spark_SAS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net/"
+		},
 		"ADLS_spark_sink_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://aicscpgdemo02.dfs.core.windows.net/"
@@ -2429,6 +2433,37 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/ADLS_spark_SAS')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ADLS_spark_SAS_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "keyVaultLinkedservice",
+							"type": "LinkedServiceReference",
+							"parameters": {
+								"keyVaultName": "kvftr23m5xeeoklumapoc"
+							}
+						},
+						"secretName": "adlsAccessKey"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/keyVaultLinkedservice')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/ADLS_spark_sink')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -3294,7 +3329,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "12197fda-4540-4375-adbc-5e2a41c39681"
+						"spark.autotune.trackingId": "ea7c0d2d-ca7a-4649-bcb2-175ca412b0a9"
 					}
 				},
 				"metadata": {
@@ -3319,8 +3354,7 @@
 						"sparkVersion": "2.4",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -3358,7 +3392,6 @@
 					},
 					{
 						"cell_type": "code",
-						"metadata": {},
 						"source": [
 							"testing = False #<------ IMPORTANT!: Change the value of \"testing=False\" for production environment.\r\n",
 							"print_dictionaries = False\r\n",
@@ -3617,7 +3650,26 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": 3
+						"execution_count": 21
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"df.printSchema()"
+						],
+						"outputs": [],
+						"execution_count": 22
 					},
 					{
 						"cell_type": "code",
@@ -3804,7 +3856,7 @@
 							""
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 4
 					},
 					{
 						"cell_type": "code",
@@ -3820,12 +3872,96 @@
 							}
 						},
 						"source": [
-							"jsonschema = DTypecheck(df).get_schema() #give the dataframe input \r\n",
+							"#Class that will evaluate cast for specific column of each datatype \r\n",
+							"\r\n",
+							"\r\n",
+							"class FTR_Typecheck: # it works for pyspark dataframe only\r\n",
+							"  \r\n",
+							"  def __init__(self, dataframe):\r\n",
+							"  #when class is initialized store dataframe to shorter names\r\n",
+							"      import dateutil\r\n",
+							"      self.df=dataframe\r\n",
+							"  \r\n",
+							"  @classmethod\r\n",
+							"  def from_pdf(cls,pdf): #this is if we have a pandas dataframe it should run like DTypecheck.from_pdf(nameofpandasdf).get_schema()\r\n",
+							"    df=spark.createDataFrame(pdf) \r\n",
+							"    return cls(df)\r\n",
+							"  \r\n",
+							"  def bit(self,column2evaluate): #function to evaluate if values are boolean, 1st function to evaluate\r\n",
+							"    \r\n",
+							"    self.col=column2evaluate\r\n",
+							"    df2=self.df\r\n",
+							"    \r\n",
+							"    #if 1s or 0s replace them with none bc it will think that it is a True or False when casting\r\n",
+							"    df2 = df2.withColumn(self.col, when(df2[self.col] == '1', None).otherwise(df2[self.col]))\r\n",
+							"    df2 = df2.withColumn(self.col, when(df2[self.col] == '0', None).otherwise(df2[self.col]))\r\n",
+							"    \r\n",
+							"    df3 = df2.withColumn(self.col, df2[self.col].cast(BooleanType())) #perform casting\r\n",
+							"    if df3.filter(df3[self.col].isNull()).count()>=0.7*(df3.count()): #if more than 70% are null values then casting failed and col is not bit\r\n",
+							"      return 0\r\n",
+							"    else:\r\n",
+							"      return 1\r\n",
+							" \r\n",
+							"  def maxvarchar(self,column2evaluate): #we should use this function only after validating it it is not anything else \r\n",
+							"    #this function will be evaluated second to last\r\n",
+							"      self.col=column2evaluate\r\n",
+							"      if self.df.where(length(col(self.col)) >255).count()>0: #if we have at least one value higher than 255 use var char max\r\n",
+							"        return 1\r\n",
+							"      else:\r\n",
+							"        return 0\r\n",
+							"       \r\n",
+							"      \r\n",
+							"  def varchar(self,column2evaluate):\r\n",
+							"    #this function should be evaluated last\r\n",
+							"    self.col=column2evaluate\r\n",
+							"    if self.maxvarchar(self.col)==0:\r\n",
+							"      return 1\r\n",
+							"    \r\n",
+							"  def get_schema(self):\r\n",
+							"    \r\n",
+							"    schema = []\r\n",
+							"    cols = self.df.columns\r\n",
+							"    \r\n",
+							"    for n,c in enumerate(cols, 1): #Main logic to validate schemas for each column\r\n",
+							"      \r\n",
+							"      data = {}\r\n",
+							"      data['id'] = str(n)\r\n",
+							"      data['name'] = c\r\n",
+							"\r\n",
+							"      \r\n",
+							"      if self.varchar(c)==1 :\r\n",
+							"        data['type']='Varchar (255)'\r\n",
+							"        print(f'Column {c} is of varchar 255')\r\n",
+							"            \r\n",
+							"      schema.append(data)\r\n",
+							"      \r\n",
+							"    return schema\r\n",
+							"              \r\n",
+							""
+						],
+						"outputs": [],
+						"execution_count": 25
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"jsonschema = FTR_Typecheck(df).get_schema() #give the dataframe input \r\n",
 							"\r\n",
 							"jsonschema"
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 27
 					},
 					{
 						"cell_type": "code",
