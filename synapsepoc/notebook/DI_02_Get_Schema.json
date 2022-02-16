@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "ea7c0d2d-ca7a-4649-bcb2-175ca412b0a9"
+				"spark.autotune.trackingId": "cd683d25-9c72-4a9c-be56-6713688d7ed3"
 			}
 		},
 		"metadata": {
@@ -270,7 +270,7 @@
 					"#adls_source_secret = fwk_params_dict['SecretName']\r\n",
 					"source_container_name = 'dlsftrpocfs1'\r\n",
 					"#source_container_name=sink_container_name\r\n",
-					"kv_scope_name='ADLS_spark'"
+					"kv_scope_name='ADLS_spark_SAS'"
 				],
 				"execution_count": 1
 			},
@@ -295,13 +295,13 @@
 					"print(\"Start process\")\r\n",
 					"#Set up an account access keySet up an account access key\r\n",
 					"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
-					"spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")\r\n",
+					"#spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")\r\n",
 					"\r\n",
-					"#spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
-					"#+spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
 					""
 				],
-				"execution_count": 2
+				"execution_count": 28
 			},
 			{
 				"cell_type": "code",
@@ -322,15 +322,15 @@
 					"#path += '*.parquet'\r\n",
 					"print(f\"reading file from: {path}\")\r\n",
 					"df = spark.read.parquet(path) #all parquet files\r\n",
-					"for colu in df.columns:\r\n",
-					"  df = df.withColumn(colu, df[colu].cast(StringType())) #convert it to string first\r\n",
+					"#for colu in df.columns:\r\n",
+					"  #df = df.withColumn(colu, df[colu].cast(StringType())) #convert it to string first\r\n",
 					"\r\n",
 					"\r\n",
 					"df.count()\r\n",
 					"#display(df)\r\n",
 					""
 				],
-				"execution_count": 21
+				"execution_count": 34
 			},
 			{
 				"cell_type": "code",
@@ -348,7 +348,7 @@
 				"source": [
 					"df.printSchema()"
 				],
-				"execution_count": 22
+				"execution_count": 35
 			},
 			{
 				"cell_type": "code",
@@ -570,6 +570,7 @@
 					"    self.col=column2evaluate\r\n",
 					"    df2=self.df\r\n",
 					"    \r\n",
+					"    \r\n",
 					"    #if 1s or 0s replace them with none bc it will think that it is a True or False when casting\r\n",
 					"    df2 = df2.withColumn(self.col, when(df2[self.col] == '1', None).otherwise(df2[self.col]))\r\n",
 					"    df2 = df2.withColumn(self.col, when(df2[self.col] == '0', None).otherwise(df2[self.col]))\r\n",
@@ -596,7 +597,7 @@
 					"      return 1\r\n",
 					"    \r\n",
 					"  def get_schema(self):\r\n",
-					"    \r\n",
+					"\r\n",
 					"    schema = []\r\n",
 					"    cols = self.df.columns\r\n",
 					"    \r\n",
@@ -617,7 +618,7 @@
 					"              \r\n",
 					""
 				],
-				"execution_count": 25
+				"execution_count": 36
 			},
 			{
 				"cell_type": "code",
@@ -637,7 +638,7 @@
 					"\r\n",
 					"jsonschema"
 				],
-				"execution_count": 27
+				"execution_count": 37
 			},
 			{
 				"cell_type": "code",
