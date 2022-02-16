@@ -5,14 +5,11 @@
 		"workspaceName": {
 			"value": "ftr23m5xeeoklumapocws1"
 		},
-		"ADLS_Spark_accountKey": {
-			"value": ""
-		},
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
 			"value": ""
 		},
-		"ADLS_Spark_properties_typeProperties_url": {
-			"value": "https://aicscpgdemo02.dfs.core.windows.net/"
+		"ADLS_spark_properties_typeProperties_url": {
+			"value": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net/"
 		},
 		"ADLS_spark_sink_properties_typeProperties_url": {
 			"value": "https://aicscpgdemo02.dfs.core.windows.net/"
