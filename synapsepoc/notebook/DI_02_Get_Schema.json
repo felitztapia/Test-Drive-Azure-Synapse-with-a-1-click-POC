@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "b6955a1a-3f5b-4d1d-bbec-07853dab6181"
+				"spark.autotune.trackingId": "6f4ff107-5903-4ae3-9f22-b084432e0d63"
 			}
 		},
 		"metadata": {
@@ -25,7 +25,7 @@
 			"enableDebugMode": false,
 			"kernelspec": {
 				"name": "synapse_pyspark",
-				"display_name": "python"
+				"display_name": "Synapse PySpark"
 			},
 			"language_info": {
 				"name": "python"
@@ -258,19 +258,21 @@
 					"from pyspark.sql.functions import *\r\n",
 					"#Declare source variables\r\n",
 					"\r\n",
-					"source_path = file_name\r\n",
+					"source_path = 'taxidata/Date/dbo.Date.parquet'\r\n",
 					"#replace // to get the correct path \r\n",
 					"source_path = source_path.replace('//', '/')\r\n",
 					"#adls_source_name = fwk_params_dict['InstanceURL'].replace('https://','')\r\n",
+					"adls_storage_account_name='ftr23m5xeeoklumapoc'\r\n",
 					"\r\n",
 					"adls_source_name = adls_storage_account_name + '.dfs.core.windows.net/'\r\n",
 					"print(adls_source_name, \"|\",source_path)\r\n",
 					"\r\n",
 					"#adls_source_secret = fwk_params_dict['SecretName']\r\n",
-					"source_container_name = 'sink'\r\n",
-					"#source_container_name=sink_container_name"
+					"source_container_name = 'dlsftrpocfs1'\r\n",
+					"#source_container_name=sink_container_name\r\n",
+					"kv_scope_name='ADLS_spark'"
 				],
-				"execution_count": null
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
@@ -293,11 +295,13 @@
 					"print(\"Start process\")\r\n",
 					"#Set up an account access keySet up an account access key\r\n",
 					"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", kv_scope_name)\r\n",
-					"spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
-					"spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
+					"spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")\r\n",
+					"\r\n",
+					"#spark.conf.set(\"fs.azure.account.auth.type\", \"SAS\")\r\n",
+					"#+spark.conf.set(\"fs.azure.sas.token.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedSASProvider\")\r\n",
 					""
 				],
-				"execution_count": null
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
@@ -315,17 +319,18 @@
 				"source": [
 					"#Read parquet files from adls path as a dataframe\r\n",
 					"path = \"abfss://{}@{}{}\".format(source_container_name, adls_source_name, source_path)\r\n",
-					"path += '*.parquet'\r\n",
+					"#path += '*.parquet'\r\n",
 					"print(f\"reading file from: {path}\")\r\n",
 					"df = spark.read.parquet(path) #all parquet files\r\n",
 					"for colu in df.columns:\r\n",
 					"  df = df.withColumn(colu, df[colu].cast(StringType())) #convert it to string first\r\n",
 					"\r\n",
 					"\r\n",
+					"df.count()\r\n",
 					"#display(df)\r\n",
 					""
 				],
-				"execution_count": null
+				"execution_count": 3
 			},
 			{
 				"cell_type": "code",
