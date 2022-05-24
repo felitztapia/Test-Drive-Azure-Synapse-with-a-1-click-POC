@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'sink_mdmfadlssynap_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [sink_mdmfadlssynap_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://sink@mdmfadlssynap.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE mdmf_Product (\n\t[SRC_ID] nvarchar(4000),\n\t[SRC_FILENAME] nvarchar(4000),\n\t[BATCH_DATE] nvarchar(4000),\n\t[ERROR_TYPE] nvarchar(4000),\n\t[SRC_COLNAME] nvarchar(4000),\n\t[SRC_COLVALUE] nvarchar(4000),\n\t[ERROR_DESC] nvarchar(4000),\n\t[BATCH_ID] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'Converted/ADLS/ADLSTest/Product/2022/05/23/22/Product_202205232201.snappy.parquet',\n\tDATA_SOURCE = [sink_mdmfadlssynap_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.mdmf_Product\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "mdmf_adls_db",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
