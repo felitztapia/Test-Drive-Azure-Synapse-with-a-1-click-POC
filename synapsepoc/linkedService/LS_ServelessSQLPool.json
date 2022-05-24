@@ -4,15 +4,7 @@
 		"annotations": [],
 		"type": "AzureSqlDW",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=ftr23m5xeeoklumapocws1-ondemand.sql.azuresynapse.net;Initial Catalog=mdmf_adls_db;User ID=felitztapia",
-			"password": {
-				"type": "AzureKeyVaultSecret",
-				"store": {
-					"referenceName": "AzureKeyVaultSpark",
-					"type": "LinkedServiceReference"
-				},
-				"secretName": "synapseSqlLoginPassword"
-			}
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=ftr23m5xeeoklumapocws1-ondemand.sql.azuresynapse.net;Initial Catalog=mdmf_adls_db"
 		},
 		"connectVia": {
 			"referenceName": "AutoResolveIntegrationRuntime",
