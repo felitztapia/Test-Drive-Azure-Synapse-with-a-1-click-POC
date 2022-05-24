@@ -6,7 +6,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "mdmfProduct"
+			"table": "TaxiData"
 		},
 		"sqlPool": {
 			"referenceName": "ftr23m5xeeoklumapocws1p1",
