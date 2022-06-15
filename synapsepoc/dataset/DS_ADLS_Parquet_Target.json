@@ -1,0 +1,20 @@
+{
+	"name": "DS_ADLS_Parquet_Target",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS_spark",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "telemetry/taxi/2022/06/10/16/",
+				"fileSystem": "converted"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
