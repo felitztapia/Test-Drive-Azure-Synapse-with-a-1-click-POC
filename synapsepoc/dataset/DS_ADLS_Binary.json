@@ -1,20 +1,19 @@
 {
-	"name": "DS_ADLS_Parquet_Target",
+	"name": "DS_ADLS_Binary",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ADLS_spark",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "Parquet",
+		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": "*.parquet",
 				"folderPath": "telemetry/taxi/2022/06/10/16/",
-				"fileSystem": "converted"
-			},
-			"compressionCodec": "snappy"
-		},
-		"schema": []
+				"fileSystem": "landing"
+			}
+		}
 	}
 }
