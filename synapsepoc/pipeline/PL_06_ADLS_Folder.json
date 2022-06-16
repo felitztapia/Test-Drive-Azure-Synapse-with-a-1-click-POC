@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "DS_ADLS_Parquet",
+						"referenceName": "DS_ADLS_Binary",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -26,6 +26,9 @@
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,
 						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
 					}
 				}
 			},
@@ -104,7 +107,7 @@
 						"referenceName": "DS_ADLS_Binary",
 						"type": "DatasetReference"
 					},
-					"enableLogging": true,
+					"enableLogging": false,
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,

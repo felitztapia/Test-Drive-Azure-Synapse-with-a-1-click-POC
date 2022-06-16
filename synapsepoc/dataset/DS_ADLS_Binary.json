@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "*.parquet",
 				"folderPath": "telemetry/taxi/2022/06/10/16/",
 				"fileSystem": "landing"
 			}
