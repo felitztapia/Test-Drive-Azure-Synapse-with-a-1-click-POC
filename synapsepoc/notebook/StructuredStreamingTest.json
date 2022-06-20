@@ -4,20 +4,20 @@
 		"nbformat": 4,
 		"nbformat_minor": 2,
 		"bigDataPool": {
-			"referenceName": "felitztapia",
+			"referenceName": "felitztapia3",
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "28g",
-			"driverCores": 4,
-			"executorMemory": "28g",
-			"executorCores": 4,
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "d4caf317-fccc-46da-99e9-d83aba1a9709"
+				"spark.autotune.trackingId": "084afdbd-7de0-4ffc-bd3b-c968eb5ef6de"
 			}
 		},
 		"metadata": {
@@ -31,18 +31,18 @@
 				"name": "python"
 			},
 			"a365ComputeOptions": {
-				"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia",
-				"name": "felitztapia",
+				"id": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Synapse/workspaces/ftr23m5xeeoklumapocws1/bigDataPools/felitztapia3",
+				"name": "felitztapia3",
 				"type": "Spark",
-				"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia",
+				"endpoint": "https://ftr23m5xeeoklumapocws1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/felitztapia3",
 				"auth": {
 					"type": "AAD",
 					"authResource": "https://dev.azuresynapse.net"
 				},
-				"sparkVersion": "2.4",
+				"sparkVersion": "3.1",
 				"nodeCount": 10,
-				"cores": 4,
-				"memory": 28,
+				"cores": 8,
+				"memory": 56,
 				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
@@ -54,7 +54,7 @@
 					"keyVaultName = \"kvftr23m5xeeoklumapoc\";\r\n",
 					"secretName = \"EventHubKey\";"
 				],
-				"execution_count": 10
+				"execution_count": 1
 			},
 			{
 				"cell_type": "code",
@@ -72,7 +72,7 @@
 				"source": [
 					"secret = mssparkutils.credentials.getSecret(keyVaultName, secretName)"
 				],
-				"execution_count": 11
+				"execution_count": 2
 			},
 			{
 				"cell_type": "code",
@@ -94,7 +94,7 @@
 					"  'eventhubs.connectionString' : sc._jvm.org.apache.spark.eventhubs.EventHubsUtils.encrypt(connectionString)\r\n",
 					"}"
 				],
-				"execution_count": 39
+				"execution_count": 3
 			},
 			{
 				"cell_type": "code",
@@ -110,15 +110,20 @@
 					}
 				},
 				"source": [
+					"# Write using AAD Auth to internal table\r\n",
+					"# Add required imports\r\n",
+					"import com.microsoft.spark.sqlanalytics\r\n",
+					"from com.microsoft.spark.sqlanalytics.Constants import Constants\r\n",
+					"\r\n",
 					"def write2table(df2, epoch_id):\r\n",
-					"    df2.write\\\r\n",
+					"    (df2.write\\\r\n",
 					"    .option(Constants.SERVER, \"ftr23m5xeeoklumapocws1.sql.azuresynapse.net\")\\\r\n",
-					"    .option(Constants.TEMP_FOLDER, \"abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/stagingdedicatedpool\")    \r\n",
+					"    .option(Constants.TEMP_FOLDER, \"abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/stagingdedicatedpool\")\\\r\n",
 					"    .mode(\"append\")\\\r\n",
-					"    .synapsesql(\"<database_name>.<schema_name>.<table_name>\"))\r\n",
+					"    .synapsesql(\"ftr23m5xeeoklumapocws1p1.dbo.EventHubData\"))\r\n",
 					""
 				],
-				"execution_count": 44
+				"execution_count": 4
 			},
 			{
 				"cell_type": "code",
@@ -140,7 +145,25 @@
 					"    .options(**ehConf) \\\r\n",
 					"  .load()"
 				],
-				"execution_count": 45
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.printSchema()"
+				],
+				"execution_count": 6
 			},
 			{
 				"cell_type": "code",
@@ -158,7 +181,7 @@
 				"source": [
 					"df1 = df.withColumn(\"body\", df[\"body\"].cast(\"string\"))"
 				],
-				"execution_count": 42
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -174,7 +197,45 @@
 					}
 				},
 				"source": [
-					"df1.writeStream \\\r\n",
+					"#df1 = df.withColumn(\"properties\", df[\"properties\"].cast(\"string\"))\r\n",
+					"#df1 = df.withColumn(\"systemProperties\", df[\"systemProperties\"].cast(\"string\"))"
+				],
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df1.printSchema()"
+				],
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df1.select(\"body\",\"partition\",\"offset\",\"sequenceNumber\",\"enqueuedTime\",\"publisher\",\"partitionKey\")\\\r\n",
+					"    .writeStream\\\r\n",
 					"    .outputMode(\"update\") \\\r\n",
 					"    .trigger(processingTime='5 seconds') \\\r\n",
 					"    .option(\"checkpointLocation\",\"abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net//eventcheckpoint/\") \\\r\n",
@@ -182,7 +243,25 @@
 					"    .start() \\\r\n",
 					"    .awaitTermination()"
 				],
-				"execution_count": 46
+				"execution_count": 22
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					""
+				],
+				"execution_count": null
 			}
 		]
 	}
