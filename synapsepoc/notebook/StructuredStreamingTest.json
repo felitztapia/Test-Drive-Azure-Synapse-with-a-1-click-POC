@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "bd4f33c8-dbb1-4d5b-9513-30ba68ec3ff5"
+				"spark.autotune.trackingId": "27803e58-3baf-4bed-9f32-f57cf0bf2448"
 			}
 		},
 		"metadata": {
@@ -88,8 +88,8 @@
 					}
 				},
 				"source": [
-					"CnnStr = \"Endpoint=sb://rtsynapsepoc-eh.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=pDq5ZjYzAoYgayygdHBr5LaiCHtEUU7ZYulYN3Vu54Q=;EntityPath=telemetry\"\r\n",
-					"connectionString = CnnStr\r\n",
+					"\r\n",
+					"connectionString = secret\r\n",
 					"ehConf = {\r\n",
 					"  'eventhubs.connectionString' : sc._jvm.org.apache.spark.eventhubs.EventHubsUtils.encrypt(connectionString)\r\n",
 					"}"
