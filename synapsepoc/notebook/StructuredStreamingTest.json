@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "27803e58-3baf-4bed-9f32-f57cf0bf2448"
+				"spark.autotune.trackingId": "d4caf317-fccc-46da-99e9-d83aba1a9709"
 			}
 		},
 		"metadata": {
@@ -111,7 +111,12 @@
 				},
 				"source": [
 					"def write2table(df2, epoch_id):\r\n",
-					"    df2.write.mode(\"append\").saveAsTable(\"default.eventhubdata\")"
+					"    df2.write\\\r\n",
+					"    .option(Constants.SERVER, \"ftr23m5xeeoklumapocws1.sql.azuresynapse.net\")\\\r\n",
+					"    .option(Constants.TEMP_FOLDER, \"abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/stagingdedicatedpool\")    \r\n",
+					"    .mode(\"append\")\\\r\n",
+					"    .synapsesql(\"<database_name>.<schema_name>.<table_name>\"))\r\n",
+					""
 				],
 				"execution_count": 44
 			},
