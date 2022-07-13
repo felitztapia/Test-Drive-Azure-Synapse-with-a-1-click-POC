@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "telemetry/taxi/2022/06/10/16/",
+				"fileName": "Dec_2013.parquet",
+				"folderPath": "TaxiTripData",
 				"fileSystem": "landing"
 			},
 			"compressionCodec": "snappy"
