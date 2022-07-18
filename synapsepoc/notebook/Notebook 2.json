@@ -8,16 +8,16 @@
 			"type": "BigDataPoolReference"
 		},
 		"sessionProperties": {
-			"driverMemory": "56g",
-			"driverCores": 8,
-			"executorMemory": "56g",
-			"executorCores": 8,
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "eb9971a4-6ec7-456f-8715-2f74a6a67eb3"
+				"spark.autotune.trackingId": "a052562e-5ce1-4d81-b3ec-bbfa9377ea75"
 			}
 		},
 		"metadata": {
@@ -41,8 +41,8 @@
 				},
 				"sparkVersion": "2.4",
 				"nodeCount": 10,
-				"cores": 8,
-				"memory": 56,
+				"cores": 4,
+				"memory": 28,
 				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
@@ -61,7 +61,7 @@
 					"df = spark.read.load('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/Trip/dbo.Trip.parquet', format='parquet')\r\n",
 					""
 				],
-				"execution_count": 36
+				"execution_count": 18
 			},
 			{
 				"cell_type": "code",
@@ -79,7 +79,7 @@
 				"source": [
 					"df.createOrReplaceTempView('TripData')"
 				],
-				"execution_count": 37
+				"execution_count": 19
 			},
 			{
 				"cell_type": "code",
@@ -103,7 +103,7 @@
 					"dfDate = spark.read.load('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/Date/dbo.Date.parquet', format='parquet')\r\n",
 					""
 				],
-				"execution_count": 38
+				"execution_count": 20
 			},
 			{
 				"cell_type": "code",
@@ -121,7 +121,7 @@
 				"source": [
 					"dfDate.createOrReplaceTempView('DateData')"
 				],
-				"execution_count": 39
+				"execution_count": 21
 			},
 			{
 				"cell_type": "code",
@@ -150,7 +150,7 @@
 					"\r\n",
 					""
 				],
-				"execution_count": 24
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
@@ -170,11 +170,11 @@
 					"        select B.Year,B.MonthName, A.*\r\n",
 					"        from TripData A inner join DateData B\r\n",
 					"        on A.dateID = B.dateid\r\n",
-					"        where B.MonthName = 'December'\r\n",
+					"        where B.MonthName = ''\r\n",
 					"        \r\n",
 					"\"\"\")"
 				],
-				"execution_count": 82
+				"execution_count": 22
 			},
 			{
 				"cell_type": "code",
@@ -187,12 +187,13 @@
 						"transient": {
 							"deleting": false
 						}
-					}
+					},
+					"collapsed": false
 				},
 				"source": [
-					"dfResult.count()"
+					"display(dfResult)"
 				],
-				"execution_count": 83
+				"execution_count": 23
 			},
 			{
 				"cell_type": "code",
@@ -208,10 +209,12 @@
 					}
 				},
 				"source": [
-					"dfResult.repartition(2).write.format('parquet').mode('append').save('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/TripMonthly/')\r\n",
+					"#dfResult.repartition(2).write.format('parquet').mode('append').save('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/taxidata/TripMonthly/')\r\n",
+					"\r\n",
+					"dfResult.write.format('delta').mode('append').save('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/deltataxidata/DecemberTrip/')\r\n",
 					""
 				],
-				"execution_count": 84
+				"execution_count": 25
 			},
 			{
 				"cell_type": "code",
@@ -248,6 +251,42 @@
 					"dfTripPArtitioned.count()"
 				],
 				"execution_count": 86
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"deltaTaxiTrip = spark.read.format('delta').load('abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/deltataxidata/DecemberTrip/')"
+				],
+				"execution_count": 26
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"deltaTaxiTrip.count()"
+				],
+				"execution_count": 27
 			},
 			{
 				"cell_type": "code",

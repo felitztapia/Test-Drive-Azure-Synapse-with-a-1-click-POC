@@ -1,0 +1,17 @@
+{
+	"name": "DeltaTaxiScripts",
+	"properties": {
+		"content": {
+			"query": "drop EXTERNAL DATA SOURCE DeltaLakeStorage\n\nCREATE EXTERNAL DATA SOURCE DeltaLakeStorage\nWITH ( LOCATION = 'https://ftr23m5xeeoklumapoc.dfs.core.windows.net' );\nGO\n\nCREATE EXTERNAL FILE FORMAT DeltaLakeFormat\nWITH (  \n    FORMAT_TYPE = DELTA\n);\nGO\n/*\nSELECT TOP 10 *\nFROM OPENROWSET(\n        BULK 'covid',\n        DATA_SOURCE = 'DeltaLakeStorage',\n        FORMAT = 'delta'\n    ) as rows;\n*/\nSELECT TOP 10 *\nFROM OPENROWSET(\n    BULK 'https://ftr23m5xeeoklumapoc.dfs.core.windows.net/dlsftrpocfs1/deltataxidata/TripMonthly/',\n    FORMAT = 'delta') as rows;\n\nSELECT TOP 10 *\nFROM dELTAtAXItRIP\n\n\nCREATE EXTERNAL TABLE DeltaTaxiTripMonthly (\n\t[Year] nvarchar(55),\n\t[DateID] int,\n\t[MedallionID] int,\n\t[HackneyLicenseID] int,\n\t[PickupTimeID] int,\n\t[DropoffTimeID] int,\n\t[PickupGeographyID] int,\n\t[DropoffGeographyID] int,\n\t[PickupLatitude] float,\n\t[PickupLongitude] float,\n\t[PickupLatLong] nvarchar(55),\n\t[DropoffLatitude] float,\n\t[DropoffLongitude] float,\n\t[DropoffLatLong] nvarchar(55),\n\t[PassengerCount] int,\n\t[TripDurationSeconds] int,\n\t[TripDistanceMiles] float,\n\t[PaymentType] nvarchar(55),\n\t[FareAmount] numeric(19,4),\n\t[SurchargeAmount] numeric(19,4),\n\t[TaxAmount] numeric(19,4),\n\t[TipAmount] numeric(19,4),\n\t[TollsAmount] numeric(19,4),\n\t[TotalAmount] numeric(19,4)\n\t)\n\tWITH (\n\tLOCATION = '/dlsftrpocfs1/deltataxidata/TripMonthly/*.*',\n\tDATA_SOURCE = DeltaLakeStorage,\n\tFILE_FORMAT = DeltaLakeFormat\n\t)\nGO\n\n\n\nCREATE OR ALTER VIEW YellowTaxiView\nAS SELECT *\nFROM  \n    OPENROWSET(\n        BULK '/deltataxidata/TripMonthly/',\n        DATA_SOURCE = 'DeltaLakeStorage',\n        FORMAT='DELTA'\n    ) nyc\n\n\n\nSELECT TOP 10 *\nfrom YellowTaxiView\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "ServelessTaxiTrip",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
