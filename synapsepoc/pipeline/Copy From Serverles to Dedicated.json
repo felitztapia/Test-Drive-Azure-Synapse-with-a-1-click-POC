@@ -22,13 +22,7 @@
 					},
 					"sink": {
 						"type": "SqlDWSink",
-						"allowPolyBase": true,
-						"polyBaseSettings": {
-							"rejectValue": 10,
-							"rejectType": "percentage",
-							"rejectSampleValue": 100,
-							"useTypeDefault": true
-						}
+						"writeBehavior": "Insert"
 					},
 					"enableStaging": false
 				},
