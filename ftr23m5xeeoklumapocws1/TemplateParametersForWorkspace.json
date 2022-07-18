@@ -5,6 +5,15 @@
 		"workspaceName": {
 			"value": "ftr23m5xeeoklumapocws1"
 		},
+		"LS_ServelessSQLPool_connectionString": {
+			"value": ""
+		},
+		"LS_ServerlessSQLPoolTaxi_connectionString": {
+			"value": ""
+		},
+		"LS_Synapse_connectionString": {
+			"value": ""
+		},
 		"TripFaresSynapseAnalyticsLinkedService_connectionString": {
 			"value": ""
 		},
@@ -26,8 +35,14 @@
 		"HttpServerTripFareDataLinkedService_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/Azure/Test-Drive-Azure-Synapse-with-a-1-click-POC/main/tripDataAndFaresCSV/fares-data.csv"
 		},
+		"LS_DeltaTaxi_properties_typeProperties_url": {
+			"value": "https://ftr23m5xeeoklumapoc.dfs.core.windows.net/"
+		},
 		"LS_adls_sink_properties_typeProperties_url": {
 			"value": "https://aicscpgdemo02.dfs.core.windows.net/"
+		},
+		"LS_mdmf_ADLS_properties_typeProperties_url": {
+			"value": "https://mdmfadlssynap.dfs.core.windows.net"
 		},
 		"OpdAdls_properties_typeProperties_url": {
 			"value": "https://pocsynapseadlseum.dfs.core.windows.net"
@@ -40,6 +55,9 @@
 		},
 		"nyc_tlc_yellow_sasUri": {
 			"value": ""
+		},
+		"Trigger 1_properties_typeProperties_scope": {
+			"value": "/subscriptions/28100aed-fbc9-43b5-be58-aebd70043c6b/resourceGroups/MDC-Felix-RG/providers/Microsoft.Storage/storageAccounts/ftr23m5xeeoklumapoc"
 		}
 	}
 }
