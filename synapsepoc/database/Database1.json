@@ -1,0 +1,23 @@
+{
+	"name": "Database1",
+	"properties": {
+		"Name": "Database1",
+		"EntityType": "DATABASE",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"IsSyMSCDMDatabase": true,
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"0.1.0\"}}}"
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/Database1",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "ADLS_spark"
+			}
+		}
+	},
+	"type": "DATABASE"
+}

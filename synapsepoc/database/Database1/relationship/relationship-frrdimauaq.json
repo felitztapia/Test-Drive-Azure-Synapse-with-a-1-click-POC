@@ -1,0 +1,26 @@
+{
+	"name": "relationship-frrdimauaq",
+	"properties": {
+		"Name": "relationship-frrdimauaq",
+		"EntityType": "RELATIONSHIP",
+		"Namespace": {
+			"DatabaseName": "Database1"
+		},
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"FromTableName": "CustomerType",
+		"ToTableName": "Customer",
+		"ColumnRelationshipInformations": [
+			{
+				"FromColumnName": "CustomerTypeId",
+				"ToColumnName": "CustomerTypeId"
+			}
+		],
+		"RelationshipType": 0,
+		"Properties": {
+			"DerivedModelRelationshipInfo": "{\"baseRelationship\":{\"fromEntity\":\"CustomerType.cdm.json/CustomerType\",\"toEntity\":\"Customer.cdm.json/Customer\",\"joinPairs\":[{\"fromAttribute\":\"CustomerTypeId\",\"toAttribute\":\"CustomerTypeId\"}]}}"
+		}
+	},
+	"type": "RELATIONSHIP"
+}
