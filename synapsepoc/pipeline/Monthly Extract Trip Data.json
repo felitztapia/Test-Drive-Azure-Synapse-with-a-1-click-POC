@@ -1,0 +1,97 @@
+{
+	"name": "Monthly Extract Trip Data",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "[ \"20130102\",\n\"20130103\",\n\"20130104\",\n\"20130105\",\n\"20130106\",\n\"20130107\",\n\"20130108\",\n\"20130109\",\n\"20130110\",\n\"20130111\",\n\"20130112\",\n\"20130113\",\n\"20130114\",\n\"20130115\",]",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy Trip_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlPoolSource",
+									"sqlReaderQuery": {
+										"value": "@concat('SELECT HASHBYTES(''SHA1'',concat([DateID],[MedallionID], [HackneyLicenseID], [PickupTimeID])) AS TripId, *,getdate()-', pipeline().parameters.DaysBack, ' as updatedtimestamp from trip where dateid = ',pipeline().parameters.Date)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "LS_SQLPoolTrip",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ADLSTripCsv",
+									"type": "DatasetReference",
+									"parameters": {
+										"DateId": {
+											"value": "@item().value",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Date": {
+				"type": "string",
+				"defaultValue": "20130101"
+			},
+			"DaysBack": {
+				"type": "string",
+				"defaultValue": "3"
+			}
+		},
+		"folder": {
+			"name": "TripFaresDataPipeline"
+		},
+		"annotations": []
+	}
+}
