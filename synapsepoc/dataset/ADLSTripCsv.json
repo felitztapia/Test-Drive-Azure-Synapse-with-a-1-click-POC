@@ -1,0 +1,35 @@
+{
+	"name": "ADLSTripCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS_spark",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DateId": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('TripData_',dataset().DateId,'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat('tripdata/Trip/',dataset().DateId)",
+					"type": "Expression"
+				},
+				"fileSystem": "TaxiData"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
