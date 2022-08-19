@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "[ \"20130102\",\n\"20130103\",\n\"20130104\",\n\"20130105\",\n\"20130106\",\n\"20130107\",\n\"20130108\",\n\"20130109\",\n\"20130110\",\n\"20130111\",\n\"20130112\",\n\"20130113\",\n\"20130114\",\n\"20130115\",]",
+						"value": "@createArray( '20130201','20130202',\n'20130203',\n'20130204',\n'20130205',\n'20130206',\n'20130207',\n'20130208',\n'20130209',\n'20130210',\n'20130211',\n'20130212',\n'20130213',\n'20130214',\n'20130215')\n ",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -30,7 +30,7 @@
 								"source": {
 									"type": "SqlPoolSource",
 									"sqlReaderQuery": {
-										"value": "@concat('SELECT HASHBYTES(''SHA1'',concat([DateID],[MedallionID], [HackneyLicenseID], [PickupTimeID])) AS TripId, *,getdate()-', pipeline().parameters.DaysBack, ' as updatedtimestamp from trip where dateid = ',pipeline().parameters.Date)",
+										"value": "@concat('SELECT HASHBYTES(''SHA1'',concat([DateID],[MedallionID], [HackneyLicenseID], [PickupTimeID])) AS TripId, *,getdate()-', pipeline().parameters.DaysBack, ' as updatedtimestamp from trip where dateid = ',item())",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
@@ -68,7 +68,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"DateId": {
-											"value": "@item().value",
+											"value": "@item()",
 											"type": "Expression"
 										}
 									}
