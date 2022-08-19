@@ -1,0 +1,38 @@
+{
+	"name": "ADLSTime",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADLS_spark",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"DateId": {
+				"type": "string"
+			},
+			"Entity": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat(dataset().Entity,dataset().DateId,'.csv')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat(dataset().Entity)",
+					"type": "Expression"
+				},
+				"fileSystem": "taxidata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
