@@ -1,0 +1,24 @@
+{
+	"name": "Retail_mbb",
+	"properties": {
+		"Name": "Retail_mbb",
+		"EntityType": "DATABASE",
+		"Description": "",
+		"Origin": {
+			"Type": "SPARK"
+		},
+		"Properties": {
+			"DerivedModelDBInfo": "{\"ModelDirectives\":{\"BaseModel\":{\"Name\":\"Retail\",\"Version\":\"0.1.0\"}}}",
+			"IsSyMSCDMDatabase": true
+		},
+		"Source": {
+			"Provider": "ADLS",
+			"Location": "abfss://dlsftrpocfs1@ftr23m5xeeoklumapoc.dfs.core.windows.net/Retail_mbb",
+			"Properties": {
+				"FormatType": "csv",
+				"LinkedServiceName": "ADLS_spark"
+			}
+		}
+	},
+	"type": "DATABASE"
+}
