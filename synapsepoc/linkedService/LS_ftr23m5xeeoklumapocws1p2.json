@@ -1,0 +1,14 @@
+{
+	"name": "LS_ftr23m5xeeoklumapocws1p2",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=ftr23m5xeeoklumapocws1.sql.azuresynapse.net;Initial Catalog=ftr23m5xeeoklumapocws1p2"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
